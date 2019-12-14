@@ -116,13 +116,12 @@ class BasePlugin:
         Domoticz.Debug("Authenticate called")
         payload = '{ "password" : '+Parameters["Password"]+' , "username" : '+Parameters["Username"]+'}'
         sendData = { 'Verb' : 'POST',
-                     'URL'  : '/api/login',
                      'Headers' : { 'User-Agent': "Mozilla/5.0",
                                    'Content-Type': 'application/json; UTF-8', \
                                    'Connection': 'keep-alive', \
                                    'Accept': '*/*', \
                                    'Accept-Charset': 'UTF-8', \
-                                   'Host': Parameters["Address"]+":"+Parameters["Port"] },
+                                   'Host': 'https://'+Parameters["Address"]+":"+Parameters["Port"]+'/api/login' },
                      'Data' : json.dumps(payload)
                    }
         Domoticz.Log("sendData = "+str(sendData))
