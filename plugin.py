@@ -56,7 +56,7 @@ class BasePlugin:
     #        Domoticz.Device(Name=" - Anyone",  Unit=self.ANYONE_UNIT, Type=242, Subtype=1, Image=Images[self.FLAME_OFF_IMG].ID).Create()
     #        UpdateDevice(self.TARGET_TEMP_UNIT, 0, "0.0")
     
-    if (self.ANYONE_UNIT not in Devices):
+    #if (self.ANYONE_UNIT not in Devices):
         #Domoticz.Device(Name="AnyOne", Unit=self.ANYONE_UNIT, TypeName='Selector Switch').Create()
         #UpdateDevice(self.ANYONE_UNIT, 0, "")
     
