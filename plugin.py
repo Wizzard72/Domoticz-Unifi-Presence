@@ -117,7 +117,7 @@ class BasePlugin:
                                    'Connection': 'keep-alive', \
                                    'Accept': '*/*', \
                                    'Accept-Charset': 'UTF-8', \
-                                   'Host': 'https://'+Parameters["Address"]+":"+Parameters["Port"] },
+                                   'Host': 'https://'+Parameters["Address"]+":"+Parameters["Port"]+'/api/login' },
                      'Data' : { '["password"] = '+Parameters["Password"]+' , ["username"] = '+Parameters["Username"]}
                    }
         Domoticz.Log("sendData = "+str(sendData))
