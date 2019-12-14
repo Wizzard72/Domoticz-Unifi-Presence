@@ -114,7 +114,7 @@ class BasePlugin:
         
     def Authenticate(self):
         Domoticz.Debug("Authenticate called")
-        payLoad = '{ "password" : '+Parameters["Password"]+' , "username" : '+Parameters["Username"]+'}'
+        payload = '{ "password" : '+Parameters["Password"]+' , "username" : '+Parameters["Username"]+'}'
         sendData = { 'Verb' : 'POST',
                      'URL'  : '/api/login',
                      'Headers' : { 'User-Agent': "Mozilla/5.0",
