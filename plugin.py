@@ -98,10 +98,6 @@ class BasePlugin:
         
     def RequestDetails(self):
         Domoticz.Debug("RequestDetails called")
-        payload = { "retrieve_message": { "seqnr": 0, 
-                                          "account_auth" : { "user_account": "",
-                                                             "mac_address": self.hostMac },
-                                          "info": self.MESSAGE_INFO_CONTROL+self.MESSAGE_INFO_REPORT } }
         sendData = { 'Verb' : 'GET',
                      'URL'  : '/api/s/default/stat/sta',
                      'Headers' : { 'User-Agent': "Mozilla/5.0",
@@ -109,14 +105,12 @@ class BasePlugin:
                                    'Connection': 'keep-alive', \
                                    'Accept': '*/*', \
                                    'Accept-Charset': 'UTF-8', \
-                                   'Host': Parameters["Address"]+":"+Parameters["Port"] },
-                     'Data' : json.dumps(payload)
+                                   'Host': Parameters["Address"]+":"+Parameters["Port"] }
                    }
         self.unifiConn.Send(sendData)
         
     def Authenticate(self):
         Domoticz.Debug("Authenticate called")
-        payload = '{["password"] ='+Parameters["Password"]+' , ["username"] = '+Parameters["Username"]+'}'
         sendData = { 'Verb' : 'POST',
                      'URL'  : '/api/login',
                      'Headers' : { 'User-Agent': "Mozilla/5.0",
@@ -125,7 +119,7 @@ class BasePlugin:
                                    'Accept': '*/*', \
                                    'Accept-Charset': 'UTF-8', \
                                    'Host': Parameters["Address"]+":"+Parameters["Port"] },
-                     'Data' : json.dumps(payload)
+                     'Data' : { ['password'] = Parameters["Password"],['username'] = Parameters["Username"]}
                    }
         self.unifiConn.Send(sendData)
         
