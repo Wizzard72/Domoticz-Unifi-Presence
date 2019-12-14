@@ -73,7 +73,7 @@ class BasePlugin:
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
             Domoticz.Debug("Unifi Controller connection is alive.")
             
-        if (Status == 200):            
+        if (status == 200):            
             strData = Data["Data"].decode("utf-8", "ignore")
             Domoticz.Debug('Unifi Controller response: '+strData)
             unifiResponse = json.loads(strData)
