@@ -114,11 +114,10 @@ class BasePlugin:
         sendData = { 'Verb' : 'POST',
                      'URL'  : '/api/login',
                      'Headers' : { 'User-Agent': "Mozilla/5.0",
-                                   'Content-Type': 'application/json', \
                                    'Connection': 'keep-alive', \
                                    'Accept': '*/*', \
                                    'Accept-Charset': 'UTF-8', \
-                                   'Host': Parameters["Address"]+":"+Parameters["Port"] },
+                                   'Host': 'https://'+Parameters["Address"]+":"+Parameters["Port"] },
                      'Data' : { '["password"] = '+Parameters["Password"]+' ,["username"] = '+Parameters["Username"]}
                    }
         Domoticz.Log("sendData = "+str(sendData))
