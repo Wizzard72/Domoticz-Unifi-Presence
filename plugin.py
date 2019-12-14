@@ -41,13 +41,13 @@ class BasePlugin:
     PHONE_ON_IMG = 'PhoneOn'
     PHONE_OFF_IMG = 'PhoneOff'
     
-    if (self.PHONE_ON_IMG not in Images):
-        Domoticz.Log('Loading Phone ON images')
-        Domoticz.Image('Smartphone48_On.zip').Create()
+    #if (self.PHONE_ON_IMG not in Images):
+    #    Domoticz.Log('Loading Phone ON images')
+    #    Domoticz.Image('Smartphone48_On.zip').Create()
             
-    if (self.PHONE_OFF_IMG not in Images):
-        Domoticz.Log('Loading Phone OFF images')
-        Domoticz.Image('Smartphone48_Off.zip').Create()
+    #if (self.PHONE_OFF_IMG not in Images):
+    #    Domoticz.Log('Loading Phone OFF images')
+    #    Domoticz.Image('Smartphone48_Off.zip').Create()
     
     #for image in Images:
     #    Domoticz.Debug("Icon " + str(Images[image].ID) + " " + Images[image].Name)
