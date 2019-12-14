@@ -120,7 +120,7 @@ class BasePlugin:
                      'Headers' : { 'User-Agent': "Mozilla/5.0",
                                    'Content-Type': 'application/json; UTF-8', \
                                    'Host': Parameters["Address"]+":"+Parameters["Port"]+'/api/login' },
-                     'Data' : payload
+                     'Data' : json.dumps(payload)
                    }
         Domoticz.Log("sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
