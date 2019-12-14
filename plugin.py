@@ -94,7 +94,7 @@ class BasePlugin:
 
     def SetupConnection(self):
         Domoticz.Debug("SetupConnection called")
-        self.unifiConn = Domoticz.Connection(Name='UnifiPresenceConn', Transport="TCP/IP", Protocol="HTTPS", Address="https://"+Parameters["Address"], Port=Parameters["Port"])
+        self.unifiConn = Domoticz.Connection(Name='UnifiPresenceConn', Transport="TCP/IP", Protocol="HTTPS", Address=Parameters["Address"], Port=Parameters["Port"])
         self.unifiConn.Connect()
         self.Authenticate()
         
@@ -114,6 +114,7 @@ class BasePlugin:
         
     def Authenticate(self):
         Domoticz.Debug("Authenticate called")
+        payLoad = '{ "password" : '+Parameters["Password"]+' , "username" : '+Parameters["Username"]+'}'
         sendData = { 'Verb' : 'POST',
                      'URL'  : '/api/login',
                      'Headers' : { 'User-Agent': "Mozilla/5.0",
@@ -121,7 +122,7 @@ class BasePlugin:
                                    'Accept': '*/*', \
                                    'Accept-Charset': 'UTF-8', \
                                    'Host': 'https://'+Parameters["Address"]+":"+Parameters["Port"]+'/api/login' },
-                     'Data' : { '["password"] : '+Parameters["Password"]+' , ["username"] : '+Parameters["Username"]}
+                     'Data' : json.dumps(payload)
                    }
         Domoticz.Log("sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
