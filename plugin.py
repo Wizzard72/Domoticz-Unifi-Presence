@@ -59,7 +59,7 @@ class BasePlugin:
         Domoticz.Log("onConnect Connection = "+str(Connection))
         Domoticz.Log("onConnect Status = "+str(Status))
         Domoticz.Log("onConnect Description = "+str(Description))
-        if (self.hostAuth = False):
+        if (self.hostAuth == False):
             self.Authenticate()
         if (Status == 0):
             Domoticz.Log("Unifi Controller connected successfully.")
