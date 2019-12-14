@@ -119,7 +119,7 @@ class BasePlugin:
         sendData = { 'Verb' : 'POST',
                      'URL'  : '/api/login',
                      'Headers' : { 'User-Agent': "Mozilla/5.0",
-                                   'Content-Type': 'application/json; UTF-8',
+                                   'Content-Type': 'application/json; UTF-8'}
                      'Data' : json.dumps(payload)
                    }
         Domoticz.Log("sendData = "+str(sendData))
