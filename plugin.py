@@ -121,7 +121,7 @@ class BasePlugin:
                                    'Accept': '*/*', \
                                    'Accept-Charset': 'UTF-8', \
                                    'Host': 'https://'+Parameters["Address"]+":"+Parameters["Port"]+'/api/login' },
-                     'Data' : { '["password"] = '+Parameters["Password"]+' , ["username"] = '+Parameters["Username"]}
+                     'Data' : { '["password"] : '+Parameters["Password"]+' , ["username"] : '+Parameters["Username"]}
                    }
         Domoticz.Log("sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
