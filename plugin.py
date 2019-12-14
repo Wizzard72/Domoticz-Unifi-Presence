@@ -100,7 +100,7 @@ class BasePlugin:
         
         
     def RequestDetails(self):
-        Domoticz.Debug("RequestDetails called")
+        Domoticz.Log("RequestDetails called")
         sendData = { 'Verb' : 'GET',
                      'URL'  : '/api/s/default/stat/sta',
                      'Headers' : { 'User-Agent': "Mozilla/5.0",
@@ -113,7 +113,7 @@ class BasePlugin:
         self.unifiConn.Send(sendData)
         
     def Authenticate(self):
-        Domoticz.Debug("Authenticate called")
+        Domoticz.Log("Authenticate called")
         payload = '{ "password" : '+Parameters["Password"]+' , "username" : '+Parameters["Username"]+'}'
         sendData = { 'Verb' : 'POST',
                      'Headers' : { 'User-Agent': "Mozilla/5.0",
