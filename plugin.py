@@ -62,7 +62,7 @@ class BasePlugin:
         if (Status == 0):
             Domoticz.Log("Unifi Controller connected successfully.")
         else:
-            Domoticz.Log("Failed to connect ("+str(Status)+") to: https://"+Parameters["Address"]+":"+Parameter["Port"]+" with error: "+Description)
+            Domoticz.Log("Failed to connect ("+str(Status)+") to: https://"+Parameters["Address"]+":"+Parameters["Port"]+" with error: "+Description)
 
     def onMessage(self, Connection, Data):
         Domoticz.Debug("onMessage called")
