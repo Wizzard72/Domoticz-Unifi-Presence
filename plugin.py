@@ -122,7 +122,7 @@ class BasePlugin:
                                    'Connection': 'keep-alive', \
                                    'Accept': '*/*', \
                                    'Accept-Charset': 'UTF-8', \
-                                   'Host': 'https://'+Parameters["Address"]+":"+Parameters["Port"] },
+                                   'Host': Parameters["Address"]+":"+Parameters["Port"] },
                      'Data' : json.dumps(payload)
                    }
         Domoticz.Log("sendData = "+str(sendData))
