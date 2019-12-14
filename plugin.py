@@ -119,7 +119,7 @@ class BasePlugin:
                                    'Accept': '*/*', \
                                    'Accept-Charset': 'UTF-8', \
                                    'Host': Parameters["Address"]+":"+Parameters["Port"] },
-                     'Data' : { ['password'] = Parameters["Password"],['username'] = Parameters["Username"]}
+                     'Data' : { '["password"] = '+Parameters["Password"]+' ,["username"] = '+Parameters["Username"]}
                    }
         self.unifiConn.Send(sendData)
         
