@@ -57,7 +57,7 @@ class BasePlugin:
     #        UpdateDevice(self.TARGET_TEMP_UNIT, 0, "0.0")
     
     if (self.ANYONE_UNIT not in Devices):
-        Domoticz.Device(Name="AnyOne", Unit=self.ANYONE_UNIT, TypeName='Selector Switch').Create()
+        #Domoticz.Device(Name="AnyOne", Unit=self.ANYONE_UNIT, TypeName='Selector Switch').Create()
         #UpdateDevice(self.ANYONE_UNIT, 0, "")
     
     def __init__(self):
