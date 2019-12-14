@@ -77,6 +77,12 @@ class BasePlugin:
             strData = Data["Data"].decode("utf-8", "ignore")
             Domoticz.Debug('Unifi Controller response: '+strData)
             unifiResponse = json.loads(strData)
+        elif status == 302:
+            Domoticz.Error("Unifi Controller returned a Page Moved Error.")
+        elif status == 400:
+            Domoticz.Error("Unifi Controller returned a Bad Request Error.")
+        elif (status == 500):
+            Domoticz.Error("Unifi Controller returned a Server Error.")
         else:
             Domoticz.Error('Unifi Controller returned status='+Data['Status'])
 
