@@ -121,6 +121,7 @@ class BasePlugin:
                                    'Host': Parameters["Address"]+":"+Parameters["Port"] },
                      'Data' : { '["password"] = '+Parameters["Password"]+' ,["username"] = '+Parameters["Username"]}
                    }
+        Domoticz.Log("sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
         
       
