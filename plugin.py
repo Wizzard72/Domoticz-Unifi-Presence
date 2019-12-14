@@ -69,15 +69,16 @@ class BasePlugin:
     def onMessage(self, Connection, Data):
         Domoticz.Debug("onMessage called")
         Domoticz.Debug("onMessage Data = "+str(Data))
+        status = int(Data["Status"])
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
             Domoticz.Debug("Unifi Controller connection is alive.")
             
-        #if (Status == 200):            
-        #    strData = Data["Data"].decode("utf-8", "ignore")
-        #    Domoticz.Debug('Unifi Controller response: '+strData)
-        #    unifiResponse = json.loads(strData)
-        #else:
-        #    Domoticz.Error('Unifi Controller returned status='+Data['Status'])
+        if (Status == 200):            
+            strData = Data["Data"].decode("utf-8", "ignore")
+            Domoticz.Debug('Unifi Controller response: '+strData)
+            unifiResponse = json.loads(strData)
+        else:
+            Domoticz.Error('Unifi Controller returned status='+Data['Status'])
 
     def onCommand(self, Unit, Command, Level, Hue):
         Domoticz.Log("onCommand called for Unit " + str(Unit) + ": Parameter '" + str(Command) + "', Level: " + str(Level))
