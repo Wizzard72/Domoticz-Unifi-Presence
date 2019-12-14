@@ -49,8 +49,8 @@ class BasePlugin:
         Domoticz.Log('Loading Phone OFF images')
         Domoticz.Image('Smartphone48_Off.zip').Create()
     
-    for image in Images:
-        Domoticz.Debug("Icon " + str(Images[image].ID) + " " + Images[image].Name)
+    #for image in Images:
+    #    Domoticz.Debug("Icon " + str(Images[image].ID) + " " + Images[image].Name)
     
     if (self.ANYONE_UNIT not in Devices):
             Domoticz.Device(Name=" - Anyone",  Unit=self.ANYONE_UNIT, Type=242, Subtype=1, Image=Images[self.FLAME_OFF_IMG].ID).Create()
