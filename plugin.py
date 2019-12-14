@@ -13,7 +13,8 @@
         <param field="Port" label="Port" width="30px" required="true" default="8443"/>
         <param field="Username" label="Username" width="200px" required="true" default="admin@unifi.com"/>
         <param field="Password" label="Password" width="600px" required="true" default="password" password="true"/>
-        <param field="Mode1" label="MAC Phone Addresses" width="600px" required="true" default="1A:2B:3C:4D:5E:6F,7A:8B:9C:AD:BE:CF">
+        <param field="Mode1" label="Site Name" width="200px" required="true" default="default">
+        <param field="Mode2" label="MAC Phone Addresses" width="600px" required="true" default="1A:2B:3C:4D:5E:6F,7A:8B:9C:AD:BE:CF">
         <param field="Mode3" label="Notifications" width="75px">
             <options>
                 <option label="True" value="True"/>
@@ -112,12 +113,7 @@ class BasePlugin:
         Domoticz.Log("RequestDetails called")
         sendData = { 'Verb' : 'GET',
                      'URL'  : '/api/s/default/stat/sta',
-                     'Headers' : { 'User-Agent': "Mozilla/5.0",
-                                   'Content-Type': 'application/json; UTF-8', \
-                                   'Connection': 'keep-alive', \
-                                   'Accept': '*/*', \
-                                   'Accept-Charset': 'UTF-8', \
-                                   'Host': Parameters["Address"]+":"+Parameters["Port"] }
+                     'Headers' : { 'Host': Parameters["Address"]+":"+Parameters["Port"] }
                    }
         self.unifiConn.Send(sendData)
         
