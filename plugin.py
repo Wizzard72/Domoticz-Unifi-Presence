@@ -114,7 +114,7 @@ class BasePlugin:
         
     def Authenticate(self):
         Domoticz.Debug("Authenticate called")
-        payload = { ['password'] = Parameters["Password"] , 
+        payload = { ['password'] = Parameters["Password"] , \
                     ['username'] = Parameters["Username"] }
         sendData = { 'Verb' : 'POST',
                      'URL'  : '/api/login',
