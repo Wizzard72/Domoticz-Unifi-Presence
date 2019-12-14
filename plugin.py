@@ -38,8 +38,8 @@ class BasePlugin:
     hostAuth = False
     ANYONE_UNIT = 1
     OVERRIDE_UNIT = 2
-    PHONE_ON_IMG = 'PhoneOn'
-    PHONE_OFF_IMG = 'PhoneOff'
+    #PHONE_ON_IMG = 'PhoneOn'
+    #PHONE_OFF_IMG = 'PhoneOff'
     
     #if (self.PHONE_ON_IMG not in Images):
     #    Domoticz.Log('Loading Phone ON images')
