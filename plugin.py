@@ -112,7 +112,7 @@ class BasePlugin:
     def RequestDetails(self):
         Domoticz.Log("RequestDetails called")
         sendData = { 'Verb' : 'GET',
-                     'URL'  : '/api/s/default/stat/sta',
+                     'URL'  : '/api/s/'+Parameters["Mode1"]+'/stat/sta',
                      'Headers' : { 'Host': Parameters["Address"]+":"+Parameters["Port"] }
                    }
         self.unifiConn.Send(sendData)
