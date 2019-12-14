@@ -36,6 +36,25 @@ import json
 
 class BasePlugin:
     hostAuth = False
+    ANYONE_UNIT = 1
+    OVERRIDE_UNIT = 2
+    PHONE_ON_IMG = 'PhoneOn'
+    PHONE_OFF_IMG = 'PhoneOff'
+    
+    if (self.PHONE_ON_IMG not in Images):
+        Domoticz.Log('Loading Phone ON images')
+        Domoticz.Image('Smartphone48_On.zip').Create()
+            
+    if (self.PHONE_OFF_IMG not in Images):
+        Domoticz.Log('Loading Phone OFF images')
+        Domoticz.Image('Smartphone48_Off.zip').Create()
+    
+    for image in Images:
+        Domoticz.Debug("Icon " + str(Images[image].ID) + " " + Images[image].Name)
+    
+    if (self.ANYONE_UNIT not in Devices):
+            Domoticz.Device(Name=" - Anyone",  Unit=self.ANYONE_UNIT, Type=242, Subtype=1, Image=Images[self.FLAME_OFF_IMG].ID).Create()
+            UpdateDevice(self.TARGET_TEMP_UNIT, 0, "0.0")
     
     def __init__(self):
         #self.var = 123
