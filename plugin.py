@@ -34,7 +34,7 @@ import socket
 import json
 
 class BasePlugin:
-    
+    hostAuth = False
     
     def __init__(self):
         #self.var = 123
@@ -59,6 +59,8 @@ class BasePlugin:
         Domoticz.Log("onConnect Connection = "+str(Connection))
         Domoticz.Log("onConnect Status = "+str(Status))
         Domoticz.Log("onConnect Description = "+str(Description))
+        if (self.hostAuth = False):
+            self.Authenticate()
         if (Status == 0):
             Domoticz.Log("Unifi Controller connected successfully.")
         else:
@@ -96,7 +98,7 @@ class BasePlugin:
         Domoticz.Debug("SetupConnection called")
         self.unifiConn = Domoticz.Connection(Name='UnifiPresenceConn', Transport="TCP/IP", Protocol="HTTPS", Address=Parameters["Address"], Port=Parameters["Port"])
         self.unifiConn.Connect()
-        self.Authenticate()
+        #self.Authenticate()
         
         
     def RequestDetails(self):
