@@ -55,7 +55,7 @@ class BasePlugin:
         Domoticz.Log("onStop called")
 
     def onConnect(self, Connection, Status, Description):
-        Domoticz.Debug("onConnect called")
+        Domoticz.Log("onConnect called")
         Domoticz.Log("onConnect Connection = "+str(Connection))
         Domoticz.Log("onConnect Status = "+str(Status))
         Domoticz.Log("onConnect Description = "+str(Description))
@@ -95,7 +95,7 @@ class BasePlugin:
             return
 
     def SetupConnection(self):
-        Domoticz.Debug("SetupConnection called")
+        Domoticz.Log("SetupConnection called")
         self.unifiConn = Domoticz.Connection(Name='UnifiPresenceConn', Transport="TCP/IP", Protocol="HTTPS", Address=Parameters["Address"], Port=Parameters["Port"])
         self.unifiConn.Connect()
         #self.Authenticate()
