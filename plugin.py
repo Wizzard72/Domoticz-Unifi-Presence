@@ -121,7 +121,7 @@ class BasePlugin:
                                    'Host': 'https://'+Parameters["Address"]+":"+Parameters["Port"]+'/api/login' },
                      'Data' : json.dumps(payload)
                    }
-        Domoticz.Log("sendData = "+str(sendData))
+        Domoticz.Log("sendData = "+(sendData))
         self.unifiConn.Send(sendData)
         
       
