@@ -118,9 +118,6 @@ class BasePlugin:
         sendData = { 'Verb' : 'POST',
                      'Headers' : { 'User-Agent': "Mozilla/5.0",
                                    'Content-Type': 'application/json; UTF-8', \
-                                   'Connection': 'keep-alive', \
-                                   'Accept': '*/*', \
-                                   'Accept-Charset': 'UTF-8', \
                                    'Host': 'https://'+Parameters["Address"]+":"+Parameters["Port"]+'/api/login' },
                      'Data' : json.dumps(payload)
                    }
