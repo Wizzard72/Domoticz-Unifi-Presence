@@ -56,6 +56,9 @@ class BasePlugin:
 
     def onConnect(self, Connection, Status, Description):
         Domoticz.Debug("onConnect called")
+        Domoticz.Log("onConnect Connection = "+str(Connection))
+        Domoticz.Log("onConnect Status = "+str(Status))
+        Domoticz.Log("onConnect Description = "+str(Description))
         if (Status == 0):
             Domoticz.Log("Unifi Controller connected successfully.")
         else:
