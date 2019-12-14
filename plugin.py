@@ -114,14 +114,15 @@ class BasePlugin:
         
     def Authenticate(self):
         Domoticz.Log("Authenticate called")
-        payload = { "password" : +Parameters["Password"]+' , "username" : '+Parameters["Username"]}
+        payload = { "password" : Parameters["Password"] , 
+                   "username" : Parameters["Username"]}
         sendData = { 'Verb' : 'POST',
                      'Headers' : { 'User-Agent': "Mozilla/5.0",
                                    'Content-Type': 'application/json; UTF-8', \
                                    'Host': 'https://'+Parameters["Address"]+":"+Parameters["Port"]+'/api/login' },
                      'Data' : json.dumps(payload)
                    }
-        Domoticz.Log("sendData = "+(sendData))
+        Domoticz.Log("sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
         
       
