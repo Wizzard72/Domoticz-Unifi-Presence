@@ -96,6 +96,13 @@ class BasePlugin:
         Domoticz.Log("onMessage called")
         Domoticz.Log("onMessage Data = "+str(Data))
         status = int(Data["Status"])
+        
+        unifiResponse = json.loads(strData)
+        Domoticz.Log("onMessage unifiResponse = "+str(unifiResponse))
+        if ('Set-Cookie' in unifiResponse):
+            Domoticz.Log("Found Cookie = "+unifiResponse['Set-Cookie'])
+        
+        
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
             Domoticz.Debug("onMessage Unifi Controller connection is alive.")
             
