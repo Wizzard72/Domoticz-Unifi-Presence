@@ -108,7 +108,7 @@ class BasePlugin:
             #self.setCookie = str(Data['Headers']).split("'")[19]
             #self.setCookie = setCookie.split(";")[0]
             self.setCookie = str(Data['Headers']).split("[")[1]
-            self.setCookie = self.setCookie.split("]")[0]
+            self.setCookie = "["+self.setCookie.split("]")[0]+"]"
             Domoticz.Log("onMessage Found Cookie ("+str(self.setCookie)+")")
         
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
