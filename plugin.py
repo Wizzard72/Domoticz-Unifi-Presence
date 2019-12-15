@@ -88,29 +88,29 @@ class BasePlugin:
         if (self.hostAuth == False):
             self.Authenticate()
         if (Status == 0):
-            Domoticz.Log("Unifi Controller connected successfully.")
+            Domoticz.Log("onConnect Unifi Controller connected successfully.")
         else:
-            Domoticz.Log("Failed to connect ("+str(Status)+") to: https://"+Parameters["Address"]+":"+Parameters["Port"]+" with error: "+Description)
+            Domoticz.Log("onConnect Failed to connect ("+str(Status)+") to: https://"+Parameters["Address"]+":"+Parameters["Port"]+" with error: "+Description)
 
     def onMessage(self, Connection, Data):
         Domoticz.Log("onMessage called")
         Domoticz.Log("onMessage Data = "+str(Data))
         status = int(Data["Status"])
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
-            Domoticz.Debug("Unifi Controller connection is alive.")
+            Domoticz.Debug("onMessage Unifi Controller connection is alive.")
             
         if (status == 200):            
             strData = Data["Data"].decode("utf-8", "ignore")
-            Domoticz.Debug('Unifi Controller response: '+strData)
+            Domoticz.Log('onMessage Unifi Controller response: '+strData)
             unifiResponse = json.loads(strData)
-            Domoticz.Log("unifiResponse = "+str(unifiResponse))
+            Domoticz.Log("onMessage unifiResponse = "+str(unifiResponse))
             if (('meta' in unifiResponse)):
                 hostAuth = True
-                Domoticz.Log("hostAuth = True")
+                Domoticz.Log("onMessage hostAuth = True")
                 self.countDown = self.ProcessDetails(unifiResponse['meta'])
                 return
             else:
-                Domoticz.Log("Error: HostAuth = False")
+                Domoticz.Log("onMessage Error: HostAuth = False")
         elif status == 302:
             Domoticz.Error("Unifi Controller returned a Page Moved Error.")
         elif status == 400:
@@ -124,14 +124,14 @@ class BasePlugin:
         Domoticz.Log("onCommand called for Unit " + str(Unit) + ": Parameter '" + str(Command) + "', Level: " + str(Level))
 
     def onNotification(self, Name, Subject, Text, Status, Priority, Sound, ImageFile):
-        Domoticz.Debug("onNotification called")
+        Domoticz.Log("onNotification called")
         Domoticz.Log("Notification: " + Name + "," + Subject + "," + Text + "," + Status + "," + str(Priority) + "," + Sound + "," + ImageFile)
 
     def onDisconnect(self, Connection):
-        Domoticz.Debug("onDisconnect called")
+        Domoticz.Log("onDisconnect called")
 
     def onHeartbeat(self):
-        Domoticz.Debug("onHeartbeat called")
+        Domoticz.Log("onHeartbeat called")
         if (self.unifiConn != None) and (self.unifiConn.Connecting()):
             return
         
@@ -140,11 +140,11 @@ class BasePlugin:
                 self.SetupConnection()
         else:
             if self.hostAuth:
-                Domoticz.Log('Requesting Unifi Controller details')
+                Domoticz.Log('onHeartbeat Requesting Unifi Controller details')
                 self.RequestDetails()
             else:
-                Domoticz.Log("Requesting Unifi Controller authorization.")
-                Domoticz.Log("hostAuth = "+str(self.hostAuth))
+                Domoticz.Log("onHeartbeat Requesting Unifi Controller authorization.")
+                Domoticz.Log("onHeartbeat hostAuth = "+str(self.hostAuth))
                 #self.Authenticate()
 
     def SetupConnection(self):
