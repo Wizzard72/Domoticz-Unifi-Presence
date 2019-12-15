@@ -103,6 +103,10 @@ class BasePlugin:
             strData = Data["Data"].decode("utf-8", "ignore")
             Domoticz.Debug('Unifi Controller response: '+strData)
             unifiResponse = json.loads(strData)
+            if (('rc' in atagResponse) and (str(response['rc']) == "ok"):
+                hostAuth = True
+                self.countDown = self.ProcessDetails(unifiResponse['rc'])
+                return
         elif status == 302:
             Domoticz.Error("Unifi Controller returned a Page Moved Error.")
         elif status == 400:
@@ -167,6 +171,12 @@ class BasePlugin:
     
     def ProcessDetails(self, response):
         Domoticz.Log("ProcessDetails called")
+        if (('rc' in response) and (str(response['rc']) == "ok")):
+            Domoticz.Log("Authenticated succesfull to Unifi Controller")
+            hostAuth = True
+        else:
+            Domoticz.Log("Authenticated NOT succesfull to Unifi Controller")
+            hostAuth = False
         
       
 global _plugin
