@@ -175,7 +175,7 @@ class BasePlugin:
                     'URL'  : '/api/s/default/stat/sta',
                     'Headers' : { 
                         'User-Agent': "Mozilla/5.0", \
-                        'Cookie': self.setCookie, \
+                        'Set-Cookie': self.setCookie, \
                         'X-OneApp-Version': '1.0.0', \
                         'Content-Type': 'application/json; UTF-8', \
                         'Connection': 'keep-alive', \
