@@ -190,8 +190,8 @@ class BasePlugin:
                         #'Cookie': self.setCookie, \
                         #'Connection': 'keep-alive', \
                         'Host': Parameters["Address"]+":"+Parameters["Port"]
-                    },
-                    'Data' : 'json={}'
+                    }
+                    #'Data' : 'json={}'
                    }
         Domoticz.Log("RequestDetails sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
