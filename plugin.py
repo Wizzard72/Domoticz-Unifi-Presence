@@ -108,7 +108,7 @@ class BasePlugin:
             Domoticz.Log("Found Cookie!")
             setCookie = str(Data['Headers']).split("'")[19]
             Domoticz.Log("onMessage Set-Cookie 1 = "+str(setCookie))
-            setCookie = setCookie.split(";")[1]
+            setCookie = setCookie.split(";")[0]
             Domoticz.Log("onMessage Set-Cookie 2 = "+str(setCookie))
         
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
