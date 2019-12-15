@@ -164,7 +164,7 @@ class BasePlugin:
                          'Content-Encoding': 'gzip', \
                          'Content-Type': 'application/json;charset=UTF-8', \
                          'Host': Parameters["Address"]+":"+Parameters["Port"] },
-                         'Data' : json.dumps(payload)
+                         'Data' : payload
                    }
         self.unifiConn.Send(sendData)
         
