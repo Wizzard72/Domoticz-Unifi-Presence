@@ -74,7 +74,7 @@ class BasePlugin:
             Domoticz.Debugging(0)
                 
         self.SetupConnection()
-        Domoticz.Heartbeat(Parameters["Mode3"])
+        Domoticz.Heartbeat(int(Parameters["Mode3"]))
 
     def onStop(self):
         Domoticz.Log("onStop called")
