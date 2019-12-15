@@ -107,7 +107,7 @@ class BasePlugin:
             if (('meta' in unifiResponse)):
                 hostAuth = True
                 Domoticz.Log("hostAuth = True")
-                self.countDown = self.ProcessDetails(unifiResponse['rc'])
+                self.countDown = self.ProcessDetails(unifiResponse['meta'])
                 return
             else:
                 Domoticz.Log("Error: HostAuth = False")
