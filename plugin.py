@@ -176,8 +176,8 @@ class BasePlugin:
         sendData = {'Verb' : 'GET',
                     'URL'  : '/api/s/default/stat/sta',
                     'Headers' : { 
-                        'Cookie': self.setCookie, \
-                        'Host': Parameters["Address"]+":"+Parameters["Port"]
+                        #'Cookie': self.setCookie, \
+                        'Host': "https://"+Parameters["Address"]+":"+Parameters["Port"]
                     }
                    }
         Domoticz.Log("RequestDetails sendData = "+str(sendData))
