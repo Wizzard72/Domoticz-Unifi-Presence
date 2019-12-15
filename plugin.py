@@ -182,7 +182,7 @@ class BasePlugin:
                         'Accept-Encoding': 'gzip, deflate, br', \
                         'Accept-Language': 'en-US,en;q=0.5', \
                         'Connection': 'keep-alive', \
-                        'Content-Length': '62', \
+                        #'Content-Length': '62', \
                         'Content-Type': 'text/plain;charset=UTF-8', \
                         'Upgrade-Insecure-Requests': '1', \
                         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0', \
