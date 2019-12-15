@@ -98,8 +98,8 @@ class BasePlugin:
         Domoticz.Log("onMessage Data = "+str(Data))
         status = int(Data["Status"])
         strHeaders = str(Data["Headers"])
-        #unifiResponse = strHeaders
-        #Domoticz.Log("onMessage unifiResponse = "+str(unifiResponse))
+        unifiResponse = strHeaders
+        Domoticz.Log("onMessage unifiResponse = "+str(unifiResponse))
         #if ('Set-Cookie' in unifiResponse):
             #Domoticz.Log("Found Cookie!")
             #self.setCookie = json.loads(unifiResponse['Set-Cookie'])
@@ -170,7 +170,7 @@ class BasePlugin:
         sendData = {'Verb' : 'GET',
                     'URL'  : '/api/s/default/stat/sta',
                     'Headers' : { 
-                        'User-Agent': "Mozilla/5.0 (compatible; AtagOneLocalAPI/1.0.0; http://atag.one/)",
+                        'User-Agent': "Mozilla/5.0",
                         'X-OneApp-Version': '1.0.0', \
                         'Content-Type': 'application/json; UTF-8', \
                         'Connection': 'keep-alive', \
