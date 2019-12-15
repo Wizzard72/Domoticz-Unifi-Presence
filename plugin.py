@@ -93,8 +93,8 @@ class BasePlugin:
             Domoticz.Log("Failed to connect ("+str(Status)+") to: https://"+Parameters["Address"]+":"+Parameters["Port"]+" with error: "+Description)
 
     def onMessage(self, Connection, Data):
-        Domoticz.Debug("onMessage called")
-        Domoticz.Debug("onMessage Data = "+str(Data))
+        Domoticz.Log("onMessage called")
+        Domoticz.Log("onMessage Data = "+str(Data))
         status = int(Data["Status"])
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
             Domoticz.Debug("Unifi Controller connection is alive.")
@@ -172,6 +172,7 @@ class BasePlugin:
                    }
         Domoticz.Log("sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
+        
     
     def ProcessDetails(self, response):
         Domoticz.Log("ProcessDetails called")
