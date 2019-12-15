@@ -104,8 +104,7 @@ class BasePlugin:
             Domoticz.Debug('Unifi Controller response: '+strData)
             unifiResponse = json.loads(strData)
             Domoticz.Log("unifiResponse = "+str(unifiResponse))
-            Domoticz.Log("response rc = "+str(unifiResponse['rc']))
-            if (('rc' in unifiResponse) and (str(unifiResponse['rc']) == "ok")):
+            if (('rc' in unifiResponse) and (str(unifiResponse['rc']) == 'ok')):
                 hostAuth = True
                 Domoticz.Log("hostAuth = True")
                 self.countDown = self.ProcessDetails(unifiResponse['rc'])
