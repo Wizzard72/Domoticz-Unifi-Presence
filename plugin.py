@@ -102,7 +102,7 @@ class BasePlugin:
         if ('Set-Cookie' in unifiResponse):
             Domoticz.Log("Found Cookie!")
             setCookie = unifiResponse['Set-Cookie']
-            Domoticz.Log("Set-Cookie = "+str(setCookie))
+            Domoticz.Log("Set-Cookie = "+int(setCookie))
         
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
             Domoticz.Debug("onMessage Unifi Controller connection is alive.")
