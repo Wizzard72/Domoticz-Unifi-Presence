@@ -158,9 +158,13 @@ class BasePlugin:
         Domoticz.Log("RequestDetails called")
         Domoticz.Log("URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
         payload = {  }
-        sendData = { 'Verb' : 'GET',
-                     'URL'  : '/api/s/default/stat/sta',
-                     'Data' : json.dumps(payload)
+        sendData = {'Verb' : 'GET',
+                    'URL'  : '/api/s/default/stat/sta',
+                    'Headers' : { 
+                        'Connection': 'keep-alive', \
+                        'Host': Parameters["Address"]+":"+Parameters["Port"]
+                    },
+                    'Data' : json.dumps(payload)
                    }
         Domoticz.Log("RequestDetails sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
