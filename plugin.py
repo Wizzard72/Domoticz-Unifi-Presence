@@ -96,8 +96,8 @@ class BasePlugin:
         Domoticz.Log("onMessage called")
         Domoticz.Log("onMessage Data = "+str(Data))
         status = int(Data["Status"])
-        strData = Data["Data"].decode("utf-8", "ignore")
-        unifiResponse = json.loads(strData)
+        strHeaders = Data["Headers"].decode("utf-8", "ignore")
+        unifiResponse = json.loads(strHeaders)
         Domoticz.Log("onMessage unifiResponse = "+str(unifiResponse))
         if ('Set-Cookie' in unifiResponse):
             Domoticz.Log("Found Cookie = "+unifiResponse['Set-Cookie'])
