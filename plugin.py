@@ -97,7 +97,7 @@ class BasePlugin:
         Domoticz.Log("onMessage called")
         Domoticz.Log("onMessage Data = "+str(Data))
         status = int(Data["Status"])
-        strHeaders = str(Data['Headers']).split("'")[11]
+        strHeaders = str(Data['Headers']).split("'")[19]
         Domoticz.Log("onMessage strHeaders = "+strHeaders)
         #for strHeader in strHeaders:
             #Domoticz.Log("strHeader = "+strHeader)
