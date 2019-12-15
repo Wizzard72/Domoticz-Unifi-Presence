@@ -159,7 +159,9 @@ class BasePlugin:
         Domoticz.Log("URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
         sendData = { 'Verb' : 'GET',
                      'URL'  : '/api/s/'+Parameters["Mode1"]+'/stat/sta',
-                     'Headers' : { 'Host': Parameters["Address"]+":"+Parameters["Port"] }
+                     'Headers' : { 
+                         'Content-Type': 'application/json', \
+                         'Host': Parameters["Address"]+":"+Parameters["Port"] }
                    }
         self.unifiConn.Send(sendData)
         
@@ -169,9 +171,7 @@ class BasePlugin:
                    "username" : Parameters["Username"]}
         sendData = { 'Verb' : 'POST',
                      'URL'  : '/api/login',
-                     'Headers' : { 
-                         'Content-Type': 'application/json', \
-                         'Host': Parameters["Address"]+":"+Parameters["Port"] },
+                     'Headers' : { 'Host': Parameters["Address"]+":"+Parameters["Port"] },
                      'Data' : json.dumps(payload)
                    }
         Domoticz.Log("sendData = "+str(sendData))
