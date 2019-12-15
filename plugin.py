@@ -178,7 +178,8 @@ class BasePlugin:
                     'Headers' : { 
                         'Cookie': self.setCookie, \
                         'Host': Parameters["Address"]+":"+Parameters["Port"]
-                    }
+                    },
+                    'Data' : payload
                    }
         Domoticz.Log("RequestDetails sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
