@@ -126,6 +126,17 @@ class BasePlugin:
         Domoticz.Debug("onHeartbeat called")
         if (self.unifiConn != None) and (self.unifiConn.Connecting()):
             return
+        
+        if (self.unifiConn == None) or (not self.unifiConn.Connected()):
+                Domoticz.Debug('Attempting to reconnect Unifi Controller')
+                self.SetupConnection()
+        else:
+            if self.hostAuth:
+                Domoticz.Log('Requesting Unifi Controller details')
+                self.RequestDetails()
+            else:
+                Domoticz.Log("Requesting Unifi Controller authorization.")
+                self.Authenticate()
 
     def SetupConnection(self):
         Domoticz.Log("SetupConnection called")
@@ -137,7 +148,7 @@ class BasePlugin:
     def RequestDetails(self):
         Domoticz.Log("RequestDetails called")
         sendData = { 'Verb' : 'GET',
-                     'URL'  : '/api/s/'+Parameters["Mode1"]+'/stat/sta',
+                     'URL'  : '/api/s/'+str(Parameters["Mode1"])+'/stat/sta',
                      'Headers' : { 'Host': Parameters["Address"]+":"+Parameters["Port"] }
                    }
         self.unifiConn.Send(sendData)
@@ -153,6 +164,9 @@ class BasePlugin:
                    }
         Domoticz.Log("sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
+    
+    def ProcessDetails(self, response):
+        Domoticz.Log("ProcessDetails called")
         
       
 global _plugin
