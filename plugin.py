@@ -99,7 +99,7 @@ class BasePlugin:
         status = int(Data["Status"])
         strHeaders = str(Data["Headers"])
         for x in strHeaders:
-            Domoticz.Log("'" + x + "':'" + str(strHeaders[x]) + "'")
+            Domoticz.Log("'" + x + "':'" + int(strHeaders[x]) + "'")
             
             
         #unifiResponseHeaders = strHeaders
