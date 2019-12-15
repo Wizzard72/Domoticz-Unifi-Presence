@@ -98,10 +98,10 @@ class BasePlugin:
         Domoticz.Log("onMessage Data = "+str(Data))
         status = int(Data["Status"])
         strHeaders = str(Data["Headers"])
-        unifiResponse = strHeaders
-        Domoticz.Log("onMessage unifiResponse = "+str(unifiResponse))
-        if ('Set-Cookie' in unifiResponse):
-            Domoticz.Log("Found Cookie!")
+        #unifiResponse = strHeaders
+        #Domoticz.Log("onMessage unifiResponse = "+str(unifiResponse))
+        #if ('Set-Cookie' in unifiResponse):
+            #Domoticz.Log("Found Cookie!")
             #self.setCookie = json.loads(unifiResponse['Set-Cookie'])
             #Domoticz.Log("Set-Cookie = "+int(setCookie))
         
@@ -170,11 +170,8 @@ class BasePlugin:
         sendData = {'Verb' : 'GET',
                     'URL'  : '/api/s/default/stat/sta',
                     'Headers' : { 
-                        'Connection': 'keep-alive', \
-                        'Set-Cookie': self.setCookie, \
                         'Host': Parameters["Address"]+":"+Parameters["Port"]
-                    },
-                    'Data' : json.dumps(payload)
+                    }
                    }
         Domoticz.Log("RequestDetails sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
