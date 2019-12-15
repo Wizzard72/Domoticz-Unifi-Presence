@@ -177,6 +177,7 @@ class BasePlugin:
                     'URL'  : '/api/s/default/stat/sta',
                     'Headers' : { 
                         #'Cookie': self.setCookie, \
+                        'Connection': 'keep-alive', \
                         'Host': Parameters["Address"]+":"+Parameters["Port"]
                     },
                     'Data' : 'json={}'
