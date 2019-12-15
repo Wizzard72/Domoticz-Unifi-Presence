@@ -97,9 +97,14 @@ class BasePlugin:
         Domoticz.Log("onMessage called")
         Domoticz.Log("onMessage Data = "+str(Data))
         status = int(Data["Status"])
-        strHeaders = str(Data["Headers"].decode("utf-8"))
-        unifiResponseHeaders = strHeaders
-        Domoticz.Log("onMessage unifiResponseHeaders = "+str(unifiResponseHeaders))
+        strHeaders = str(Data["Headers"])
+        for x in strHeaders:
+            if strHeaders[x] != "":
+                Domoticz.Log("'" + x + "':'" + str(strHeaders[x]) + "'")
+            
+            
+        #unifiResponseHeaders = strHeaders
+        #Domoticz.Log("onMessage unifiResponseHeaders = "+str(unifiResponseHeaders))
         #if ('Set-Cookie' in unifiResponse):
             #Domoticz.Log("Found Cookie!")
             #self.setCookie = json.loads(unifiResponse['Set-Cookie'])
