@@ -105,11 +105,9 @@ class BasePlugin:
         #unifiResponseHeaders = strHeaders
         #Domoticz.Log("onMessage unifiResponseHeaders = "+str(unifiResponseHeaders))
         if ('Set-Cookie' in strHeaders):
-            Domoticz.Log("Found Cookie!")
             setCookie = str(Data['Headers']).split("'")[19]
-            Domoticz.Log("onMessage Set-Cookie 1 = "+str(setCookie))
             self.setCookie = setCookie.split(";")[0]
-            Domoticz.Log("onMessage Set-Cookie 2 = "+str(self.setCookie))
+            Domoticz.Log("onMessage Found Cookie ("+str(self.setCookie)+")")
         
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
             Domoticz.Debug("onMessage Unifi Controller connection is alive.")
