@@ -158,7 +158,7 @@ class BasePlugin:
         Domoticz.Log("RequestDetails called")
         Domoticz.Log("URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
         sendData = { 'Verb' : 'GET',
-                     'URL'  : '/api/s/'+str(Parameters["Mode1"])+'/stat/sta',
+                     'URL'  : '/api/s/default/stat/sta',
                      'Headers' : { 
                          'Content-Encoding': 'gzip', \
                          'Content-Type': 'application/json;charset=UTF-8', \
