@@ -159,8 +159,7 @@ class BasePlugin:
         Domoticz.Log("URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
         payload = {  }
         sendData = { 'Verb' : 'GET',
-                     'URL'  : '/api/s/default/stat/sta',
-                     'Headers' : { 'Host': Parameters["Address"]+":"+Parameters["Port"] },
+                     'URL'  : '/api/s/default/stat/sta'},
                      'Data' : json.dumps(payload)
                    }
         Domoticz.Log("RequestDetails sendData = "+str(sendData))
