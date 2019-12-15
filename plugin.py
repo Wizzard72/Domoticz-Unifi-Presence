@@ -100,7 +100,7 @@ class BasePlugin:
         unifiResponse = strHeaders
         Domoticz.Log("onMessage unifiResponse = "+str(unifiResponse))
         if ('Set-Cookie' in unifiResponse):
-            Domoticz.Log("Found Cookie = "+unifiResponse['Set-Cookie'])
+            Domoticz.Log("Found Cookie = "+str)unifiResponse['Set-Cookie']))
         
         
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
