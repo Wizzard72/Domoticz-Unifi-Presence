@@ -195,6 +195,7 @@ class BasePlugin:
         sendData = { 'Verb' : 'POST',
                      'URL'  : '/api/login',
                      'Headers' : { 
+                         'User-Agent': 'Mozilla/5.0', \
                          'Connection': 'keep-alive', \
                          'Host': Parameters["Address"]+":"+Parameters["Port"]
                          },
