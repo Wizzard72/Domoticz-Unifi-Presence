@@ -112,8 +112,10 @@ class BasePlugin:
             setCookie = str(Data['Headers']).split("[")[1]
             setCookie = setCookie.split("]")[0]
             setCookie1 = setCookie.split("'")[1]
+            setCookie2 = setCookie.split("'")[2]
             Domoticz.Log("onMessage Found Cookie ("+str(setCookie)+")")
-            Domoticz.Log("onMessage Found Cookie ("+str(setCookie1)+")")
+            Domoticz.Log("onMessage Found Cookie1 ("+str(setCookie1)+")")
+            Domoticz.Log("onMessage Found Cookie2 ("+str(setCookie2)+")")
         
         #['unifises=jafQW8jKmGJOJue8nNOX79d6xpz2TuUl; Path=/; Secure; HttpOnly', 'csrf_token=vLGXCRwNCxgQyEekFetRA3N5JdY6broR; Path=/; Secure']
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
