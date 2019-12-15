@@ -105,8 +105,11 @@ class BasePlugin:
             unifiResponse = json.loads(strData)
             if (('rc' in unifiResponse) and (str(response['rc']) == "ok")):
                 hostAuth = True
+                Domoticz.Log("hostAuth = True")
                 self.countDown = self.ProcessDetails(unifiResponse['rc'])
                 return
+            else:
+                Domoticz.Log("Error: HostAuth = False")
         elif status == 302:
             Domoticz.Error("Unifi Controller returned a Page Moved Error.")
         elif status == 400:
