@@ -160,7 +160,8 @@ class BasePlugin:
         sendData = { 'Verb' : 'GET',
                      'URL'  : '/api/s/'+str(Parameters["Mode1"])+'/stat/sta',
                      'Headers' : { 
-                         'Content-Type': 'application/json', \
+                         'Content-Encoding': 'gzip', \
+                         'Content-Type': 'application/json;charset=UTF-8', \
                          'Host': Parameters["Address"]+":"+Parameters["Port"] }
                    }
         self.unifiConn.Send(sendData)
