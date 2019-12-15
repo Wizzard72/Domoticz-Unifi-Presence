@@ -196,7 +196,7 @@ class BasePlugin:
                         'Upgrade-Insecure-Requests': '1', \
                         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0', \
                         #'User-Agent': 'Mozilla/5.0', \
-                        #'Cookie': self.setCookie, \
+                        'Cookie': self.setCookie, \
                         #'Connection': 'keep-alive', \
                         'Host': Parameters["Address"]+":"+Parameters["Port"]
                     }
