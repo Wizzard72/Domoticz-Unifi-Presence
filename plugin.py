@@ -73,7 +73,9 @@ class BasePlugin:
             DumpConfigToLog()
         else:
             Domoticz.Debugging(0)
-                
+        
+        Domoticz.Debugging(16 | 64)
+        
         self.SetupConnection()
         #Domoticz.Heartbeat(int(Parameters["Mode3"]))
         Domoticz.Heartbeat(10)
