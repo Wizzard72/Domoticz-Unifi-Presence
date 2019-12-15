@@ -163,6 +163,7 @@ class BasePlugin:
                      'Headers' : { 'Host': Parameters["Address"]+":"+Parameters["Port"] },
                      'Data' : json.dumps(payload)
                    }
+        Domoticz.Log("RequestDetails sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
         
     def Authenticate(self):
