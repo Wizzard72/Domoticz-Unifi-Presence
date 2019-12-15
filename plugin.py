@@ -108,8 +108,8 @@ class BasePlugin:
             Domoticz.Log("Found Cookie!")
             setCookie = str(Data['Headers']).split("'")[19]
             Domoticz.Log("onMessage Set-Cookie 1 = "+str(setCookie))
-            setCookie = setCookie.split(";")[0]
-            Domoticz.Log("onMessage Set-Cookie 2 = "+str(setCookie))
+            self.setCookie = setCookie.split(";")[0]
+            Domoticz.Log("onMessage Set-Cookie 2 = "+str(self.setCookie))
         
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
             Domoticz.Debug("onMessage Unifi Controller connection is alive.")
@@ -176,7 +176,8 @@ class BasePlugin:
         sendData = {'Verb' : 'GET',
                     'URL'  : '/api/s/default/stat/sta',
                     'Headers' : { 
-                        'User-Agent': "Mozilla/5.0",
+                        'User-Agent': "Mozilla/5.0", \
+                        'Cookie': self.setCookie, \
                         'X-OneApp-Version': '1.0.0', \
                         'Content-Type': 'application/json; UTF-8', \
                         'Connection': 'keep-alive', \
