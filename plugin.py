@@ -97,7 +97,7 @@ class BasePlugin:
         Domoticz.Log("onMessage called")
         Domoticz.Log("onMessage Data = "+str(Data))
         status = int(Data["Status"])
-        strHeaders = str(Data['Headers']).split("'")[19]
+        strHeaders = str(Data['Headers'])
         Domoticz.Log("onMessage strHeaders = "+strHeaders)
         #for strHeader in strHeaders:
             #Domoticz.Log("strHeader = "+strHeader)
@@ -106,6 +106,7 @@ class BasePlugin:
         #Domoticz.Log("onMessage unifiResponseHeaders = "+str(unifiResponseHeaders))
         if ('Set-Cookie' in strHeaders):
             Domoticz.Log("Found Cookie!")
+            strHeaders = str(Data['Headers']).split("'")[19]
             setCookie = strHeaders['Set-Cookie'].split("'")[10]
             setCookie = setCookie.split(";")[1]
             Domoticz.Log("onMessage Set-Cookie = "+str(setCookie))
