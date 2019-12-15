@@ -176,7 +176,7 @@ class BasePlugin:
         sendData = {'Verb' : 'GET',
                     'URL'  : '/api/s/default/stat/sta',
                     'Headers' : { 
-                        'Cookie': self.setCookie, \
+                        #'Cookie': self.setCookie, \
                         'Host': Parameters["Address"]+":"+Parameters["Port"]
                     },
                     'Data' : 'json={}'
