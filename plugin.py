@@ -98,9 +98,8 @@ class BasePlugin:
         Domoticz.Log("onMessage Data = "+str(Data))
         status = int(Data["Status"])
         strHeaders = str(Data["Headers"])
-        #for x in strHeaders:
-            #Domoticz.Log("'" + x + "':'" + str(strHeaders[x]) + "'")
-            
+        for strHeader in strHeaders:
+            Domoticz.Log("strHeader = " strHeader)
             
         #unifiResponseHeaders = strHeaders
         #Domoticz.Log("onMessage unifiResponseHeaders = "+str(unifiResponseHeaders))
