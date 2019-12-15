@@ -98,11 +98,11 @@ class BasePlugin:
         Domoticz.Log("onMessage Data = "+str(Data))
         status = int(Data["Status"])
         strHeaders = str(Data["Headers"])
-        unifiResponse = strHeaders
+        unifiResponse = json.loads(strHeaders)
         Domoticz.Log("onMessage unifiResponse = "+str(unifiResponse))
         if ('Set-Cookie' in unifiResponse):
             Domoticz.Log("Found Cookie!")
-            self.setCookie = json.loads(unifiResponse['Set-Cookie'])
+            #self.setCookie = json.loads(unifiResponse['Set-Cookie'])
             #Domoticz.Log("Set-Cookie = "+int(setCookie))
         
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
