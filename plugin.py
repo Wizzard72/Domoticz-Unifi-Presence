@@ -41,6 +41,7 @@ class BasePlugin:
     OVERRIDE_UNIT = 2
     #PHONE_ON_IMG = 'PhoneOn'
     #PHONE_OFF_IMG = 'PhoneOff'
+    setCookie = None
     
     #if (self.PHONE_ON_IMG not in Images):
     #    Domoticz.Log('Loading Phone ON images')
@@ -101,8 +102,8 @@ class BasePlugin:
         Domoticz.Log("onMessage unifiResponse = "+str(unifiResponse))
         if ('Set-Cookie' in unifiResponse):
             Domoticz.Log("Found Cookie!")
-            setCookie = unifiResponse['Set-Cookie']
-            Domoticz.Log("Set-Cookie = "+int(setCookie))
+            self.setCookie = unifiResponse['Set-Cookie']
+            #Domoticz.Log("Set-Cookie = "+int(setCookie))
         
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
             Domoticz.Debug("onMessage Unifi Controller connection is alive.")
@@ -170,6 +171,7 @@ class BasePlugin:
                     'URL'  : '/api/s/default/stat/sta',
                     'Headers' : { 
                         'Connection': 'keep-alive', \
+                        'Set-Cookie': self.setCookie, \
                         'Host': Parameters["Address"]+":"+Parameters["Port"]
                     },
                     'Data' : json.dumps(payload)
