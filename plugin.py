@@ -103,7 +103,7 @@ class BasePlugin:
             strData = Data["Data"].decode("utf-8", "ignore")
             Domoticz.Debug('Unifi Controller response: '+strData)
             unifiResponse = json.loads(strData)
-            if (('rc' in atagResponse) and (str(response['rc']) == "ok")):
+            if (('rc' in unifiResponse) and (str(response['rc']) == "ok")):
                 hostAuth = True
                 self.countDown = self.ProcessDetails(unifiResponse['rc'])
                 return
