@@ -175,7 +175,7 @@ class BasePlugin:
         Domoticz.Log("RequestDetails called")
         Domoticz.Log("URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
         payload = {  }
-        sendData = {'Verb' : 'POST',
+        sendData = {'Verb' : 'GET',
                     'URL'  : '/api/s/default/stat/sta/',
                     'Headers' : { 
                         'Accept': "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", \
