@@ -74,7 +74,7 @@ class BasePlugin:
         else:
             Domoticz.Debugging(0)
         
-        Domoticz.Debugging(16 | 64)
+        #Domoticz.Debugging(16 | 64)
         
         self.SetupConnection()
         #Domoticz.Heartbeat(int(Parameters["Mode3"]))
