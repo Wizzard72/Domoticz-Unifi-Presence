@@ -136,7 +136,7 @@ class BasePlugin:
                 self.RequestDetails()
             else:
                 Domoticz.Log("Requesting Unifi Controller authorization.")
-                self.Authenticate()
+                #self.Authenticate()
 
     def SetupConnection(self):
         Domoticz.Log("SetupConnection called")
