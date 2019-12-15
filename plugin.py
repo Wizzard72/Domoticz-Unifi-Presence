@@ -157,12 +157,14 @@ class BasePlugin:
     def RequestDetails(self):
         Domoticz.Log("RequestDetails called")
         Domoticz.Log("URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
+        payload = {}
         sendData = { 'Verb' : 'GET',
                      'URL'  : '/api/s/default/stat/sta',
                      'Headers' : { 
                          'Content-Encoding': 'gzip', \
                          'Content-Type': 'application/json;charset=UTF-8', \
-                         'Host': Parameters["Address"]+":"+Parameters["Port"] }
+                         'Host': Parameters["Address"]+":"+Parameters["Port"] },
+                         'Data' : json.dumps(payload)
                    }
         self.unifiConn.Send(sendData)
         
