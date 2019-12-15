@@ -112,7 +112,9 @@ class BasePlugin:
             setCookie = str(Data['Headers']).split("[")[1]
             setCookie = setCookie.split("]")[0]
             setCookie1 = setCookie.split("'")[1]
-            setCookie2 = setCookie.split("'")[2]
+            setCookie1 = setCookie1.split(";")[0]
+            setCookie2 = setCookie.split("'")[3]
+            setCookie2 = setCookie2.split(";")[0]
             Domoticz.Log("onMessage Found Cookie ("+str(setCookie)+")")
             Domoticz.Log("onMessage Found Cookie1 ("+str(setCookie1)+")")
             Domoticz.Log("onMessage Found Cookie2 ("+str(setCookie2)+")")
