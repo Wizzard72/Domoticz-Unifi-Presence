@@ -105,7 +105,7 @@ class BasePlugin:
             unifiResponse = json.loads(strData)
             Domoticz.Log("onMessage unifiResponse = "+str(unifiResponse))
             if (('meta' in unifiResponse)):
-                hostAuth = True
+                self.hostAuth = True
                 Domoticz.Log("onMessage hostAuth = True")
                 self.countDown = self.ProcessDetails(unifiResponse['meta'])
                 return
@@ -136,7 +136,7 @@ class BasePlugin:
             return
         
         if (self.unifiConn == None) or (not self.unifiConn.Connected()):
-                Domoticz.Debug('Attempting to reconnect Unifi Controller')
+                Domoticz.Log('onHeartbeat Attempting to reconnect Unifi Controller')
                 self.SetupConnection()
         else:
             if self.hostAuth:
