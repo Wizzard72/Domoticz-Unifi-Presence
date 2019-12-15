@@ -178,6 +178,7 @@ class BasePlugin:
         sendData = {'Verb' : 'POST',
                     'URL'  : '/api/s/default/stat/sta',
                     'Headers' : { 
+                        'User-Agent': 'Mozilla/5.0', \
                         #'Cookie': self.setCookie, \
                         'Connection': 'keep-alive', \
                         'Host': Parameters["Address"]+":"+Parameters["Port"]
