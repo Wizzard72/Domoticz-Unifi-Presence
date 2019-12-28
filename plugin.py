@@ -201,7 +201,7 @@ class BasePlugin:
                         #'Authorization': "", \
                         #'Authorization': 'Basic UGx1Z2luMjpEaWUtV2VldC1pay1OVS1uaWV0LSMzMg==', \
                         #'Connection': 'keep-alive', \
-                        'Set-Cookie': str(self.setCookie), \
+                        'Set-Cookie': '['+str(self.setCookie)+']', \
                         'Host': Parameters["Address"]+":"+Parameters["Port"]
                     }
                     #'Data' : 'json={}'
