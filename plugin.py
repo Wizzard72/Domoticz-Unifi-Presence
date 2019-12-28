@@ -197,7 +197,7 @@ class BasePlugin:
                         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0', \
                         #'User-Agent': 'Mozilla/5.0', \
                         'Cookie': self.setCookie, \
-                        'Authorization': "", \
+                        #'Authorization': "", \
                         'Authorization': 'Basic UGx1Z2luMjpEaWUtV2VldC1pay1OVS1uaWV0LSMzMg==', \
                         #'Connection': 'keep-alive', \
                         'Host': Parameters["Address"]+":"+Parameters["Port"]
