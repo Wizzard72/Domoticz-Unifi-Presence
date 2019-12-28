@@ -218,7 +218,7 @@ class BasePlugin:
         Domoticz.Log("Authenticate called")
         payload = { "password" : Parameters["Password"] , 
                    "username" : Parameters["Username"] ,
-                   "remember" = true}
+                   "remember" : true}
         sendData = { 'Verb' : 'POST',
                      'URL'  : '/api/login',
                      'Headers' : { 
