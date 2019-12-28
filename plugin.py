@@ -185,7 +185,8 @@ class BasePlugin:
         Domoticz.Log("URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
         payload = {  }
         sendData = {'Verb' : 'GET',
-                    'URL'  : '/api/s/default/stat/sta/',
+                    'URL': '/api/s/default/self',
+                    #'URL'  : '/api/s/default/stat/sta/',
                     'Headers' : { 
                         #'Accept': "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", \
                         #'Accept-Encoding': 'gzip, deflate, br', \
