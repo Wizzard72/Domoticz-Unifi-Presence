@@ -187,18 +187,18 @@ class BasePlugin:
         sendData = {'Verb' : 'GET',
                     'URL'  : '/api/s/default/stat/sta/',
                     'Headers' : { 
-                        'Accept': "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", \
-                        'Accept-Encoding': 'gzip, deflate, br', \
-                        'Accept-Language': 'en-US,en;q=0.5', \
-                        'Connection': 'keep-alive', \
+                        #'Accept': "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", \
+                        #'Accept-Encoding': 'gzip, deflate, br', \
+                        #'Accept-Language': 'en-US,en;q=0.5', \
+                        #'Connection': 'keep-alive', \
                         #'Content-Length': '62', \
-                        'Content-Type': 'text/plain;charset=UTF-8', \
-                        'Upgrade-Insecure-Requests': '1', \
-                        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0', \
+                        #'Content-Type': 'text/plain;charset=UTF-8', \
+                        #'Upgrade-Insecure-Requests': '1', \
+                        #'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0', \
                         #'User-Agent': 'Mozilla/5.0', \
-                        'Cookie': self.setCookie, \
+                        #'Cookie': self.setCookie, \
                         #'Authorization': "", \
-                        'Authorization': 'Basic UGx1Z2luMjpEaWUtV2VldC1pay1OVS1uaWV0LSMzMg==', \
+                        #'Authorization': 'Basic UGx1Z2luMjpEaWUtV2VldC1pay1OVS1uaWV0LSMzMg==', \
                         #'Connection': 'keep-alive', \
                         'Host': Parameters["Address"]+":"+Parameters["Port"]
                     }
