@@ -170,7 +170,8 @@ class BasePlugin:
     def RequestDetails(self):
         Domoticz.Log("RequestDetails called")
         Domoticz.Log("URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
-        payload = {  }
+        payload = { "password" : Parameters["Password"] , 
+                   "username" : Parameters["Username"]}
         sendData = {'Verb' : 'GET',
                     #'URL': '/api/s/default/self',
                     'URL'  : '/api/s/default/stat/sta/',
