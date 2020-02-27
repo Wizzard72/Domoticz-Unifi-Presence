@@ -108,7 +108,7 @@ class BasePlugin:
         #Domoticz.Log("onMessage called")
         #Domoticz.Log("onMessage Data = "+str(Data))
         #status = int(Data["Status"])
-        #strHeaders = str(Data['Headers'])
+        strHeaders = str(Data['Headers'])
         #Domoticz.Log("onMessage strHeaders = "+strHeaders)
         #for strHeader in strHeaders:
             #Domoticz.Log("strHeader = "+strHeader)
@@ -116,20 +116,20 @@ class BasePlugin:
         #unifiResponseHeaders = strHeaders
         #Domoticz.Log("onMessage unifiResponseHeaders = "+str(unifiResponseHeaders))
         
-        #if ('Set-Cookie' in strHeaders):
-            #self.setCookie = str(Data['Headers']).split("'")[19]
-            #self.setCookie = setCookie.split(";")[0]
-            #setCookie = str(Data['Headers']).split("[")[1]
-            #setCookie = setCookie.split("]")[0]
-            #setCookie1 = setCookie.split("'")[1]
-            #setCookie1 = setCookie1.split(";")[0]
-            #setCookie2 = setCookie.split("'")[3]
-            #setCookie2 = setCookie2.split(";")[0]
-            #self.setCookie = setCookie1 + "; " + setCookie2
-            #Domoticz.Log("onMessage Found setCookie ("+str(setCookie)+")")
-            #Domoticz.Log("onMessage Found setCookie1 ("+str(setCookie1)+")")
-            #Domoticz.Log("onMessage Found setCookie2 ("+str(setCookie2)+")")
-            #Domoticz.Log("onMessage Found self.setCookie ("+str(self.setCookie)+")")
+        if ('Set-Cookie' in strHeaders):
+            self.setCookie = str(Data['Headers']).split("'")[19]
+            self.setCookie = setCookie.split(";")[0]
+            setCookie = str(Data['Headers']).split("[")[1]
+            setCookie = setCookie.split("]")[0]
+            setCookie1 = setCookie.split("'")[1]
+            setCookie1 = setCookie1.split(";")[0]
+            setCookie2 = setCookie.split("'")[3]
+            setCookie2 = setCookie2.split(";")[0]
+            self.setCookie = setCookie1 + "; " + setCookie2
+            Domoticz.Log("onMessage Found setCookie ("+str(setCookie)+")")
+            Domoticz.Log("onMessage Found setCookie1 ("+str(setCookie1)+")")
+            Domoticz.Log("onMessage Found setCookie2 ("+str(setCookie2)+")")
+            Domoticz.Log("onMessage Found self.setCookie ("+str(self.setCookie)+")")
         
         #['unifises=jafQW8jKmGJOJue8nNOX79d6xpz2TuUl; Path=/; Secure; HttpOnly', 'csrf_token=vLGXCRwNCxgQyEekFetRA3N5JdY6broR; Path=/; Secure']
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
@@ -213,7 +213,7 @@ class BasePlugin:
                         #'Authorization': "", \
                         #'Authorization': 'Basic UGx1Z2luMjpEaWUtV2VldC1pay1OVS1uaWV0LSMzMg==', \
                         #'Connection': 'keep-alive', \
-                        #'Cookie': '['+str(self.setCookie)+']', \
+                        'Cookie': '['+str(self.setCookie)+']', \
                         'Host': Parameters["Address"]+":"+Parameters["Port"]
                     }
                     #'Data' : 'json={}'
