@@ -177,7 +177,7 @@ class BasePlugin:
                     'Headers' : { 
                         'Connection': 'keep-alive', \
                         'Host': Parameters["Address"]+":"+Parameters["Port"], \
-                        'Cookie': ['unifises='+self.unifises+, 'csrf_token='+self.csrftoken]
+                        'Cookie': ['unifises='+self.unifises+'; Path=/; Secure; HttpOnly', 'csrf_token='+self.csrftoken+'; Path=/; Secure;']
                     },
                     'Data' : json.dumps(payload)
                    }
