@@ -321,6 +321,24 @@ def onHeartbeat():
     global _plugin
     _plugin.onHeartbeat()
 
+def DumpHTTPResponseToLog(httpResp, level=0):
+    if (level==0): Domoticz.Debug("HTTP Details ("+str(len(httpResp))+"):")
+    indentStr = ""
+    for x in range(level):
+        indentStr += "----"
+    if isinstance(httpResp, dict):
+        for x in httpResp:
+            if not isinstance(httpResp[x], dict) and not isinstance(httpResp[x], list):
+                Domoticz.Debug(indentStr + ">'" + x + "':'" + str(httpResp[x]) + "'")
+            else:
+                Domoticz.Debug(indentStr + ">'" + x + "':")
+                DumpHTTPResponseToLog(httpResp[x], level+1)
+    elif isinstance(httpResp, list):
+        for x in httpResp:
+            Domoticz.Debug(indentStr + "['" + x + "']")
+    else:
+        Domoticz.Debug(indentStr + ">'" + x + "':'" + str(httpResp[x]) + "'")
+
 def UpdateDevice(Unit, nValue, sValue, Image=None):
     # Make sure that the Domoticz device still exists (they can be deleted) before updating it 
     if (Unit in Devices):
