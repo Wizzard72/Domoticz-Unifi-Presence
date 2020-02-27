@@ -97,7 +97,7 @@ class BasePlugin:
         #    self.Authenticate()
         if (Status == 0):
             Domoticz.Log("onConnect - Unifi Controller connected successfully.")
-            self.Authenticate()
+            #self.Authenticate()
         else:
             Domoticz.Log("onConnect - Failed to connect ("+str(Status)+") to: https://"+Parameters["Address"]+":"+Parameters["Port"]+" with error: "+Description)
 
