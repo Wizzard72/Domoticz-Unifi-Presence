@@ -102,7 +102,7 @@ class BasePlugin:
     def onMessage(self, Connection, Data):
         DumpHTTPResponseToLog(Data)
         strData = Data["Data"].decode("utf-8", "ignore")
-        Status = int(Data["Status"])
+        status = int(Data["Status"])
         LogMessage(strData)
         #Domoticz.Log("onMessage called")
         #Domoticz.Log("onMessage Data = "+str(Data))
