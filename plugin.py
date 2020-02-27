@@ -99,25 +99,27 @@ class BasePlugin:
             Domoticz.Log("onConnect - Unifi Controller connected successfully.")
             self.Authenticate()
         else:
-            Domoticz.Log("onConnect Failed to connect ("+str(Status)+") to: https://"+Parameters["Address"]+":"+Parameters["Port"]+" with error: "+Description)
+            Domoticz.Log("onConnect - Failed to connect ("+str(Status)+") to: https://"+Parameters["Address"]+":"+Parameters["Port"]+" with error: "+Description)
 
     def onMessage(self, Connection, Data):
         DumpHTTPResponseToLog(Data)
+        
         strData = Data["Data"].decode("utf-8", "ignore")
         status = int(Data["Status"])
         LogMessage(strData)
 
-        strHeaders = str(Data['Headers'])
-        self.ProcessCookie(Data)  
+        #strHeaders = str(Data['Headers'])
+        #self.ProcessCookie(Data)  
 
         
         #['unifises=jafQW8jKmGJOJue8nNOX79d6xpz2TuUl; Path=/; Secure; HttpOnly', 'csrf_token=vLGXCRwNCxgQyEekFetRA3N5JdY6broR; Path=/; Secure']
-        if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
-            Domoticz.Debug("onMessage Unifi Controller connection is alive.")
+        #if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
+            #Domoticz.Debug("onMessage Unifi Controller connection is alive.")
             
         if (status == 200):
             unifiResponse = json.loads(strData)
             Domoticz.Log("Retrieved following json: "+json.dumps(unifiResponse))
+            
             self.ProcessCookie(Data)   
             if (('meta' in unifiResponse)):
                 self.hostAuth = True
