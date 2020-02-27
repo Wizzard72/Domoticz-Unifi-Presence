@@ -266,30 +266,30 @@ class BasePlugin:
 
     def ProcessCookie(self, httpDict):
         if isinstance(httpDict, dict):            
-            Domoticz.Debug("Analyzing Data ("+str(len(httpDict))+"):")
+            Domoticz.Log("Analyzing Data ("+str(len(httpDict))+"):")
             for x in httpDict:
                 if isinstance(httpDict[x], dict):
                     if (x == "Headers"):
-                        Domoticz.Debug("---> Headers found")    
+                        Domoticz.Log("---> Headers found")    
                         for y in httpDict[x]:
                             # Domoticz.Debug("------->'" + y + "':'" + str(httpDict[x][y]) + "'")
                             if (y == "Set-Cookie"):        
-                                Domoticz.Debug("---> Process Cookie Started")
+                                Domoticz.Log("---> Process Cookie Started")
                                 try:
                                     self.unifises = re.search(r"(?<=JSESSIONID=).*?(?=;)", str(httpDict[x][y])).group(0)
-                                    Domoticz.Debug("---> SessionID found: "+ str(self.unifises)) 
+                                    Domoticz.Log("---> SessionID found: "+ str(self.unifises)) 
                                     self.cookieAvailable = True
                                 except AttributeError:
                                     self.cookieAvailable = False
-                                    #Domoticz.Debug("---> SessionID NOT found") 
+                                    #Domoticz.Log("---> SessionID NOT found") 
 
                                 if self.cookieAvailable:
                                     try:
                                         self.csrftoken = re.search(r"(?<=SERVERID=).*?(?=;)", str(httpDict[x][y])).group(0)
-                                        Domoticz.Debug("---> ServerID found: "+ str(self.csrftoken)) 
+                                        Domoticz.Log("---> ServerID found: "+ str(self.csrftoken)) 
                                     except AttributeError:
                                         self.cookieAvailable = False
-                                        Domoticz.Debug("---> ServerID NOT found") 
+                                        Domoticz.Log("---> ServerID NOT found") 
         
       
 global _plugin
