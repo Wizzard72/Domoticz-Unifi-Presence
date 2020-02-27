@@ -190,6 +190,7 @@ class BasePlugin:
 				'Cookie': 'unifises=IxGj1zWySk63GJdKZ7YWm40ZrUJN33iA; csrf_token=KzPRVxhtrGMQups5gLXeP5kudV2Ds7aN', \
                     		'Host': Parameters["Address"]+":"+Parameters["Port"]
                     		#'Cookie': 'unifises='+self.unifises+'; csrf_token='+self.csrftoken
+		    },
                     }
         Domoticz.Log("RequestDetails sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
