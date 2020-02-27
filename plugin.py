@@ -192,7 +192,7 @@ class BasePlugin:
 			    	'Content-Length' : "%d"%(len(payload))
                     		#'Cookie': 'unifises='+self.unifises+'; csrf_token='+self.csrftoken
 		    		},
-		    'Data' : json.dumps(payload)
+		    'Data' : ''
                     }
         Domoticz.Log("RequestDetails sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
