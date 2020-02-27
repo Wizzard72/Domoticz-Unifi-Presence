@@ -215,9 +215,11 @@ class BasePlugin:
                         #'Cookie': self.setCookie, \
                         #'Authorization': "", \
                         #'Authorization': 'Basic UGx1Z2luMjpEaWUtV2VldC1pay1OVS1uaWV0LSMzMg==', \
-                        #'Connection': 'keep-alive', \
-                        'Cookie': [self.setCookie], \
-                        'Host': Parameters["Address"]+":"+Parameters["Port"]
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', \
+                        'Accept-Encoding': 'gzip',
+                        'Connection': 'keep-alive', \
+                        'Host': Parameters["Address"]+":"+Parameters["Port"], \
+                        'Cookie': [self.setCookie]
                     }
                     #'Data' : 'json={}'
                    }
