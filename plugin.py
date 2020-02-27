@@ -277,7 +277,7 @@ class BasePlugin:
                                 Domoticz.Log("---> Process Cookie Started")
                                 try:
                                     self.unifises = re.search(r"(?<=unifises=).*?(?=;)", str(httpDict[x][y])).group(0)
-                                    Domoticz.Log("---> SessionID found: "+ str(self.unifises)) 
+                                    Domoticz.Log("---> unifises found: "+ str(self.unifises)) 
                                     self.cookieAvailable = True
                                 except AttributeError:
                                     self.cookieAvailable = False
@@ -286,7 +286,7 @@ class BasePlugin:
                                 if self.cookieAvailable:
                                     try:
                                         self.csrftoken = re.search(r"(?<=csrf_token=).*?(?=;)", str(httpDict[x][y])).group(0)
-                                        Domoticz.Log("---> ServerID found: "+ str(self.csrftoken)) 
+                                        Domoticz.Log("---> csrf_token found: "+ str(self.csrftoken)) 
                                     except AttributeError:
                                         self.cookieAvailable = False
                                         Domoticz.Log("---> ServerID NOT found") 
