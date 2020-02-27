@@ -105,34 +105,10 @@ class BasePlugin:
         strData = Data["Data"].decode("utf-8", "ignore")
         status = int(Data["Status"])
         LogMessage(strData)
-        #Domoticz.Log("onMessage called")
-        #Domoticz.Log("onMessage Data = "+str(Data))
-        #status = int(Data["Status"])
+
         strHeaders = str(Data['Headers'])
-        #Domoticz.Log("onMessage strHeaders = "+strHeaders)
-        #for strHeader in strHeaders:
-            #Domoticz.Log("strHeader = "+strHeader)
-            
-        #unifiResponseHeaders = strHeaders
-        #Domoticz.Log("onMessage unifiResponseHeaders = "+str(unifiResponseHeaders))
         self.ProcessCookie(Data)  
-        #if ('Set-Cookie' in strHeaders):
-            #self.setCookie = str(Data['Headers']).split("'")[19]
-            #self.setCookie = setCookie.split(";")[0]
-            #setCookie = str(Data['Headers']).split("[")[1]
-            #setCookie = setCookie.split("]")[0]
-            #setCookie1 = setCookie.split("'")[1]
-            #setCookie1 = setCookie1.split(";")[0]
-            #setCookie2 = setCookie.split("'")[3]
-            #setCookie2 = setCookie2.split(";")[0]
-            #self.setCookie = setCookie1 + "; " + setCookie2
-            #self.setCookie = setCookie
-            #self.unifises = setCookie1
-            #self.csrftoken = setCookie2
-            #Domoticz.Log("onMessage Found setCookie ("+str(setCookie)+")")
-            #Domoticz.Log("onMessage Found setCookie1 ("+str(setCookie1)+")")
-            #Domoticz.Log("onMessage Found setCookie2 ("+str(setCookie2)+")")
-            #Domoticz.Log("onMessage Found self.setCookie ("+str(self.setCookie)+")")
+
         
         #['unifises=jafQW8jKmGJOJue8nNOX79d6xpz2TuUl; Path=/; Secure; HttpOnly', 'csrf_token=vLGXCRwNCxgQyEekFetRA3N5JdY6broR; Path=/; Secure']
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
@@ -141,9 +117,6 @@ class BasePlugin:
         if (status == 200):
             unifiResponse = json.loads(strData)
             Domoticz.Log("Retrieved following json: "+json.dumps(unifiResponse))
-            #strData = Data["Data"].decode("utf-8", "ignore")
-            #Domoticz.Log('onMessage Unifi Controller response: '+strData)
-            #Domoticz.Log("onMessage unifiResponse = "+str(unifiResponse))
             self.ProcessCookie(Data)   
             if (('meta' in unifiResponse)):
                 self.hostAuth = True
@@ -182,7 +155,7 @@ class BasePlugin:
         else:
             if self.hostAuth:
                 Domoticz.Log('onHeartbeat Requesting Unifi Controller details')
-                #self.RequestDetails()
+                self.RequestDetails()
             else:
                 Domoticz.Log("onHeartbeat Requesting Unifi Controller authorization.")
                 Domoticz.Log("onHeartbeat hostAuth = "+str(self.hostAuth))
@@ -202,23 +175,9 @@ class BasePlugin:
                     'URL': '/api/s/default/self',
                     #'URL'  : '/api/s/default/stat/sta/',
                     'Headers' : { 
-                        #'Accept': "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", \
-                        #'Accept-Encoding': 'gzip, deflate, br', \
-                        #'Accept-Language': 'en-US,en;q=0.5', \
-                        #'Connection': 'keep-alive', \
-                        #'Content-Length': '62', \
-                        #'Content-Type': 'text/plain;charset=UTF-8', \
-                        #'Upgrade-Insecure-Requests': '1', \
-                        #'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0', \
-                        #'User-Agent': 'Mozilla/5.0', \
-                        #'Cookie': self.setCookie, \
-                        #'Authorization': "", \
-                        #'Authorization': 'Basic UGx1Z2luMjpEaWUtV2VldC1pay1OVS1uaWV0LSMzMg==', \
-                        #'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', \
-                        #'Accept-Encoding': 'gzip',
                         'Connection': 'keep-alive', \
                         'Host': Parameters["Address"]+":"+Parameters["Port"], \
-                        'Set-Cookie': ['unifises=fdHNSubaXuF1r8hAJPmEpzs0nrGGZOLJ; Path=/; Secure; HttpOnly', 'csrf_token=3LAF9vHpqvsgs5cqoQeAujmBu5FQ7OPl; Path=/; Secure']
+                        'Set-Cookie': ['unifises='+self.unifises, 'csrf_token='+self.csrftoken]
                     }
                     #'Data' : 'json={}'
                    }
