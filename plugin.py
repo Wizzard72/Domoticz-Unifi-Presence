@@ -183,7 +183,7 @@ class BasePlugin:
         else:
             if self.hostAuth:
                 Domoticz.Log('onHeartbeat Requesting Unifi Controller details')
-                self.RequestDetails()
+                #self.RequestDetails()
             else:
                 Domoticz.Log("onHeartbeat Requesting Unifi Controller authorization.")
                 Domoticz.Log("onHeartbeat hostAuth = "+str(self.hostAuth))
