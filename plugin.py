@@ -215,7 +215,7 @@ class BasePlugin:
                         #'Authorization': "", \
                         #'Authorization': 'Basic UGx1Z2luMjpEaWUtV2VldC1pay1OVS1uaWV0LSMzMg==', \
                         #'Connection': 'keep-alive', \
-                        'Cookie': '['unifises='+self.unifises, 'csrf_token='+self.csrftoken]', \
+                        'Cookie': ['unifises='+self.unifises, 'csrf_token='+self.csrftoken], \
                         'Host': Parameters["Address"]+":"+Parameters["Port"]
                     }
                     #'Data' : 'json={}'
