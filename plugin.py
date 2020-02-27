@@ -166,7 +166,7 @@ class BasePlugin:
 
     def SetupConnection(self):
         Domoticz.Log("SetupConnection called")
-        self.unifiConn = Domoticz.Connection(Name='UnifiPresenceConn', Transport="TCP/IP", Protocol="HTTP", Address=Parameters["Address"], Port=Parameters["Port"])
+        self.unifiConn = Domoticz.Connection(Name='UnifiPresenceConn', Transport="TCP/IP", Protocol="HTTPS", Address=Parameters["Address"], Port=Parameters["Port"])
         self.unifiConn.Connect()
         
     def RequestDetails(self):
