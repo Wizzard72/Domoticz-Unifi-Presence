@@ -219,7 +219,7 @@ class BasePlugin:
                         'Accept-Encoding': 'gzip',
                         'Connection': 'keep-alive', \
                         'Host': Parameters["Address"]+":"+Parameters["Port"], \
-                        'Cookie': ['csrf_token:3LAF9vHpqvsgs5cqoQeAujmBu5FQ7OPl, unifises:fdHNSubaXuF1r8hAJPmEpzs0nrGGZOLJ']
+                        'Cookie': ['csrf_token=3LAF9vHpqvsgs5cqoQeAujmBu5FQ7OPl; unifises=fdHNSubaXuF1r8hAJPmEpzs0nrGGZOLJ']
                     }
                     #'Data' : 'json={}'
                    }
