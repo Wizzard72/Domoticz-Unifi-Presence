@@ -215,8 +215,8 @@ class BasePlugin:
                         #'Cookie': self.setCookie, \
                         #'Authorization': "", \
                         #'Authorization': 'Basic UGx1Z2luMjpEaWUtV2VldC1pay1OVS1uaWV0LSMzMg==', \
-                        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', \
-                        'Accept-Encoding': 'gzip',
+                        #'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', \
+                        #'Accept-Encoding': 'gzip',
                         'Connection': 'keep-alive', \
                         'Host': Parameters["Address"]+":"+Parameters["Port"], \
                         'Cookie': ['csrf_token=3LAF9vHpqvsgs5cqoQeAujmBu5FQ7OPl; Path=/; Secure; HttpOnly', 'unifises=fdHNSubaXuF1r8hAJPmEpzs0nrGGZOLJ; Path=/; Secure']
