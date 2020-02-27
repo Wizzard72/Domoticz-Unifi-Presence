@@ -272,11 +272,11 @@ class BasePlugin:
                     if (x == "Headers"):
                         Domoticz.Log("---> Headers found")    
                         for y in httpDict[x]:
-                            # Domoticz.Debug("------->'" + y + "':'" + str(httpDict[x][y]) + "'")
+                            Domoticz.Log("------->'" + y + "':'" + str(httpDict[x][y]) + "'")
                             if (y == "Set-Cookie"):        
                                 Domoticz.Log("---> Process Cookie Started")
                                 try:
-                                    self.unifises = re.search(r"(?<=JSESSIONID=).*?(?=;)", str(httpDict[x][y])).group(0)
+                                    self.unifises = re.search(r"(?<=unifises=).*?(?=;)", str(httpDict[x][y])).group(0)
                                     Domoticz.Log("---> SessionID found: "+ str(self.unifises)) 
                                     self.cookieAvailable = True
                                 except AttributeError:
@@ -285,7 +285,7 @@ class BasePlugin:
 
                                 if self.cookieAvailable:
                                     try:
-                                        self.csrftoken = re.search(r"(?<=SERVERID=).*?(?=;)", str(httpDict[x][y])).group(0)
+                                        self.csrftoken = re.search(r"(?<=csrf_token=).*?(?=;)", str(httpDict[x][y])).group(0)
                                         Domoticz.Log("---> ServerID found: "+ str(self.csrftoken)) 
                                     except AttributeError:
                                         self.cookieAvailable = False
