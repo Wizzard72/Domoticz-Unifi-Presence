@@ -174,7 +174,7 @@ class BasePlugin:
                    "username" : Parameters["Username"]}
         sendData = {'Verb' : 'GET',
                     #'URL': '/api/s/default/self',
-                    'URL'  : '/api/s/JH102/stat/sta/',
+                    'URL'  : '/api/s/default/stat/sta/',
                     'Headers' : { 
                         'Connection': 'keep-alive', \
                         'Host': Parameters["Address"]+":"+Parameters["Port"], \
