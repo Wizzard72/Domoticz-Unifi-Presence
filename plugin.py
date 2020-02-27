@@ -125,7 +125,8 @@ class BasePlugin:
             setCookie1 = setCookie1.split(";")[0]
             setCookie2 = setCookie.split("'")[3]
             setCookie2 = setCookie2.split(";")[0]
-            self.setCookie = setCookie1 + "; " + setCookie2
+            #self.setCookie = setCookie1 + "; " + setCookie2
+            self.setCookie = setCookie
             self.unifises = setCookie1
             self.csrftoken = setCookie2
             Domoticz.Log("onMessage Found setCookie ("+str(setCookie)+")")
@@ -215,7 +216,7 @@ class BasePlugin:
                         #'Authorization': "", \
                         #'Authorization': 'Basic UGx1Z2luMjpEaWUtV2VldC1pay1OVS1uaWV0LSMzMg==', \
                         #'Connection': 'keep-alive', \
-                        'Cookie': [self.unifises, self.csrftoken], \
+                        'Cookie': [self.setCookie], \
                         'Host': Parameters["Address"]+":"+Parameters["Port"]
                     }
                     #'Data' : 'json={}'
