@@ -172,14 +172,14 @@ class BasePlugin:
         Domoticz.Log("URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
         payload = {  }
         sendData = {'Verb' : 'GET',
-                    'URL': '/api/s/default/self',
-                    #'URL'  : '/api/s/default/stat/sta/',
+                    #'URL': '/api/s/default/self',
+                    'URL'  : '/api/s/default/stat/sta/',
                     'Headers' : { 
                         'Connection': 'keep-alive', \
                         'Host': Parameters["Address"]+":"+Parameters["Port"], \
                         'Cookie': ['unifises='+self.unifises, 'csrf_token='+self.csrftoken]
                     }
-                    #'Data' : 'json={}'
+                    'Data' : json.dumps(payload)
                    }
         Domoticz.Log("RequestDetails sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
