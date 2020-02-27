@@ -264,7 +264,7 @@ class BasePlugin:
                                     self.cookieAvailable = True
                                 except AttributeError:
                                     self.cookieAvailable = False
-                                    Domoticz.Debug("---> SessionID NOT found") 
+                                    #Domoticz.Debug("---> SessionID NOT found") 
 
                                 if self.cookieAvailable:
                                     try:
