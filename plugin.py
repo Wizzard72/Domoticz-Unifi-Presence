@@ -188,9 +188,11 @@ class BasePlugin:
 			     	'Accept-Encoding': 'gzip, deflate, br', \
 				'Accept-Language': 'en-NL,en;q=0.9,nl-NL;q=0.8,nl;q=0.7,en-US;q=0.6', \
 				'Cookie': 'unifises=IxGj1zWySk63GJdKZ7YWm40ZrUJN33iA; csrf_token=KzPRVxhtrGMQups5gLXeP5kudV2Ds7aN', \
-                    		'Host': Parameters["Address"]+":"+Parameters["Port"]
+                    		'Host': Parameters["Address"]+":"+Parameters["Port"], \
+			    	'Content-Length' : "%d"%(len(payload))
                     		#'Cookie': 'unifises='+self.unifises+'; csrf_token='+self.csrftoken
-		    },
+		    		},
+		    'Data' : json.dumps(payload)
                     }
         Domoticz.Log("RequestDetails sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
