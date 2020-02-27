@@ -97,7 +97,7 @@ class BasePlugin:
         #    self.Authenticate()
         if (Status == 0):
             Domoticz.Log("onConnect - Unifi Controller connected successfully.")
-            #self.Authenticate()
+            self.Authenticate()
         else:
             Domoticz.Log("onConnect - Failed to connect ("+str(Status)+") to: https://"+Parameters["Address"]+":"+Parameters["Port"]+" with error: "+Description)
 
@@ -168,13 +168,11 @@ class BasePlugin:
         Domoticz.Log("SetupConnection called")
         self.unifiConn = Domoticz.Connection(Name='UnifiPresenceConn', Transport="TCP/IP", Protocol="HTTPS", Address=Parameters["Address"], Port=Parameters["Port"])
         self.unifiConn.Connect()
-        #self.Authenticate()
         
     def RequestDetails(self):
         Domoticz.Log("RequestDetails called")
         Domoticz.Log("URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
-        payload = { "password" : Parameters["Password"] , 
-                   "username" : Parameters["Username"]}
+        payload = { }
         sendData = {'Verb' : 'GET',
                     #'URL': '/api/s/default/self',
                     'URL'  : '/api/s/default/stat/sta/',
