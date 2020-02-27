@@ -175,9 +175,6 @@ class BasePlugin:
         payload = { }
         sendData = {'Verb' : 'GET',
                     'URL'  : '/api/s/default/stat/sta/',
-		    'HTTP/1.1': {
-			    	'Authorization': 'Basic'
-		    		},
                     'Headers' : { 
                     		'Connection': 'keep-alive', \
 				'Cache-Control': 'max-age=0', \
