@@ -72,7 +72,7 @@ class BasePlugin:
 
     def onStart(self):
         Domoticz.Debug("onStart called")
-        if Parameters["Mode2"] == 'Debug':
+        if Parameters["Mode6"] == 'Debug':
             Domoticz.Debugging(1)
             DumpConfigToLog()
         else:
@@ -85,18 +85,19 @@ class BasePlugin:
         Domoticz.Heartbeat(10)
 
     def onStop(self):
-        Domoticz.Log("onStop called")
+        Domoticz.Log("onStop - Pluggin is stopping.")
 
     def onConnect(self, Connection, Status, Description):
-        Domoticz.Log("onConnect called")
-        Domoticz.Log("onConnect Connection = "+str(Connection))
-        Domoticz.Log("onConnect Status = "+str(Status))
-        Domoticz.Log("onConnect Description = "+str(Description))
-        if (self.hostAuth == False):
-            Domoticz.Log("OnConnect Start Authentication process")
-            self.Authenticate()
+        #Domoticz.Log("onConnect called")
+        #Domoticz.Log("onConnect Connection = "+str(Connection))
+        #Domoticz.Log("onConnect Status = "+str(Status))
+        #Domoticz.Log("onConnect Description = "+str(Description))
+        #if (self.hostAuth == False):
+        #    Domoticz.Log("OnConnect Start Authentication process")
+        #    self.Authenticate()
         if (Status == 0):
-            Domoticz.Log("onConnect Unifi Controller connected successfully.")
+            Domoticz.Log("onConnect - Unifi Controller connected successfully.")
+            self.Authenticate()
         else:
             Domoticz.Log("onConnect Failed to connect ("+str(Status)+") to: https://"+Parameters["Address"]+":"+Parameters["Port"]+" with error: "+Description)
 
@@ -209,7 +210,7 @@ class BasePlugin:
                          },
                      'Data' : json.dumps(payload)
                    }
-        Domoticz.Log("sendData = "+str(sendData))
+        Domoticz.Log("self.Authenticate - sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
         
     
