@@ -34,6 +34,7 @@
 import Domoticz
 import socket
 import json
+import re
 
 class BasePlugin:
     hostAuth = False
