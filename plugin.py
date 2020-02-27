@@ -43,6 +43,9 @@ class BasePlugin:
     #PHONE_ON_IMG = 'PhoneOn'
     #PHONE_OFF_IMG = 'PhoneOff'
     setCookie = None
+    cookieAvailable = False
+    unifises = ""
+    csrftoken = ""
     
     #if (self.PHONE_ON_IMG not in Images):
     #    Domoticz.Log('Loading Phone ON images')
@@ -97,17 +100,21 @@ class BasePlugin:
             Domoticz.Log("onConnect Failed to connect ("+str(Status)+") to: https://"+Parameters["Address"]+":"+Parameters["Port"]+" with error: "+Description)
 
     def onMessage(self, Connection, Data):
-        Domoticz.Log("onMessage called")
-        Domoticz.Log("onMessage Data = "+str(Data))
-        status = int(Data["Status"])
-        strHeaders = str(Data['Headers'])
-        Domoticz.Log("onMessage strHeaders = "+strHeaders)
+        DumpHTTPResponseToLog(Data)
+        strData = Data["Data"].decode("utf-8", "ignore")
+        Status = int(Data["Status"])
+        LogMessage(strData)
+        #Domoticz.Log("onMessage called")
+        #Domoticz.Log("onMessage Data = "+str(Data))
+        #status = int(Data["Status"])
+        #strHeaders = str(Data['Headers'])
+        #Domoticz.Log("onMessage strHeaders = "+strHeaders)
         #for strHeader in strHeaders:
             #Domoticz.Log("strHeader = "+strHeader)
             
         #unifiResponseHeaders = strHeaders
         #Domoticz.Log("onMessage unifiResponseHeaders = "+str(unifiResponseHeaders))
-        self.ProcessCookie(Data)   
+        
         #if ('Set-Cookie' in strHeaders):
             #self.setCookie = str(Data['Headers']).split("'")[19]
             #self.setCookie = setCookie.split(";")[0]
@@ -127,11 +134,14 @@ class BasePlugin:
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
             Domoticz.Debug("onMessage Unifi Controller connection is alive.")
             
-        if (status == 200):            
-            strData = Data["Data"].decode("utf-8", "ignore")
+        if (status == 200):
+            apiResponse = json.loads(strData)
+            Domoticz.Debug("Retrieved following json: "+json.dumps(apiResponse))
+            #strData = Data["Data"].decode("utf-8", "ignore")
             Domoticz.Log('onMessage Unifi Controller response: '+strData)
             unifiResponse = json.loads(strData)
             Domoticz.Log("onMessage unifiResponse = "+str(unifiResponse))
+            self.ProcessCookie(Data)   
             if (('meta' in unifiResponse)):
                 self.hostAuth = True
                 Domoticz.Log("onMessage hostAuth = True")
