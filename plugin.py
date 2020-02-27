@@ -321,6 +321,13 @@ def onHeartbeat():
     global _plugin
     _plugin.onHeartbeat()
 
+def LogMessage(Message):
+    if Parameters["Mode6"] == "File":
+        f = open(Parameters["HomeFolder"]+"http.html","w")
+        f.write(Message)
+        f.close()
+        Domoticz.Log("File written")
+
 def DumpHTTPResponseToLog(httpResp, level=0):
     if (level==0): Domoticz.Debug("HTTP Details ("+str(len(httpResp))+"):")
     indentStr = ""
