@@ -106,20 +106,21 @@ class BasePlugin:
             
         #unifiResponseHeaders = strHeaders
         #Domoticz.Log("onMessage unifiResponseHeaders = "+str(unifiResponseHeaders))
-        if ('Set-Cookie' in strHeaders):
+        self.ProcessCookie(Data)   
+        #if ('Set-Cookie' in strHeaders):
             #self.setCookie = str(Data['Headers']).split("'")[19]
             #self.setCookie = setCookie.split(";")[0]
-            setCookie = str(Data['Headers']).split("[")[1]
-            setCookie = setCookie.split("]")[0]
-            setCookie1 = setCookie.split("'")[1]
-            setCookie1 = setCookie1.split(";")[0]
-            setCookie2 = setCookie.split("'")[3]
-            setCookie2 = setCookie2.split(";")[0]
-            self.setCookie = setCookie1 + "; " + setCookie2
-            Domoticz.Log("onMessage Found setCookie ("+str(setCookie)+")")
-            Domoticz.Log("onMessage Found setCookie1 ("+str(setCookie1)+")")
-            Domoticz.Log("onMessage Found setCookie2 ("+str(setCookie2)+")")
-            Domoticz.Log("onMessage Found self.setCookie ("+str(self.setCookie)+")")
+            #setCookie = str(Data['Headers']).split("[")[1]
+            #setCookie = setCookie.split("]")[0]
+            #setCookie1 = setCookie.split("'")[1]
+            #setCookie1 = setCookie1.split(";")[0]
+            #setCookie2 = setCookie.split("'")[3]
+            #setCookie2 = setCookie2.split(";")[0]
+            #self.setCookie = setCookie1 + "; " + setCookie2
+            #Domoticz.Log("onMessage Found setCookie ("+str(setCookie)+")")
+            #Domoticz.Log("onMessage Found setCookie1 ("+str(setCookie1)+")")
+            #Domoticz.Log("onMessage Found setCookie2 ("+str(setCookie2)+")")
+            #Domoticz.Log("onMessage Found self.setCookie ("+str(self.setCookie)+")")
         
         #['unifises=jafQW8jKmGJOJue8nNOX79d6xpz2TuUl; Path=/; Secure; HttpOnly', 'csrf_token=vLGXCRwNCxgQyEekFetRA3N5JdY6broR; Path=/; Secure']
         if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
@@ -179,7 +180,6 @@ class BasePlugin:
         self.unifiConn.Connect()
         #self.Authenticate()
         
-        
     def RequestDetails(self):
         Domoticz.Log("RequestDetails called")
         Domoticz.Log("URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
@@ -208,13 +208,7 @@ class BasePlugin:
                    }
         Domoticz.Log("RequestDetails sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
-        
-        
-
-        
-        
-        
-        
+    
     def Authenticate(self):
         Domoticz.Log("Authenticate called")
         payload = { "password" : Parameters["Password"] , 
@@ -251,6 +245,34 @@ class BasePlugin:
         else:
             Domoticz.Log("Authenticated NOT succesfull to Unifi Controller")
             hostAuth = False
+
+
+    def ProcessCookie(self, httpDict):
+        if isinstance(httpDict, dict):            
+            Domoticz.Debug("Analyzing Data ("+str(len(httpDict))+"):")
+            for x in httpDict:
+                if isinstance(httpDict[x], dict):
+                    if (x == "Headers"):
+                        Domoticz.Debug("---> Headers found")    
+                        for y in httpDict[x]:
+                            # Domoticz.Debug("------->'" + y + "':'" + str(httpDict[x][y]) + "'")
+                            if (y == "Set-Cookie"):        
+                                Domoticz.Debug("---> Process Cookie Started")
+                                try:
+                                    self.unifises = re.search(r"(?<=JSESSIONID=).*?(?=;)", str(httpDict[x][y])).group(0)
+                                    Domoticz.Debug("---> SessionID found: "+ str(self.unifises)) 
+                                    self.cookieAvailable = True
+                                except AttributeError:
+                                    self.cookieAvailable = False
+                                    Domoticz.Debug("---> SessionID NOT found") 
+
+                                if self.cookieAvailable:
+                                    try:
+                                        self.csrftoken = re.search(r"(?<=SERVERID=).*?(?=;)", str(httpDict[x][y])).group(0)
+                                        Domoticz.Debug("---> ServerID found: "+ str(self.csrftoken)) 
+                                    except AttributeError:
+                                        self.cookieAvailable = False
+                                        Domoticz.Debug("---> ServerID NOT found") 
         
       
 global _plugin
