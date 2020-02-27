@@ -115,7 +115,7 @@ class BasePlugin:
             
         #unifiResponseHeaders = strHeaders
         #Domoticz.Log("onMessage unifiResponseHeaders = "+str(unifiResponseHeaders))
-        
+        self.ProcessCookie(Data)  
         if ('Set-Cookie' in strHeaders):
             #self.setCookie = str(Data['Headers']).split("'")[19]
             #self.setCookie = setCookie.split(";")[0]
