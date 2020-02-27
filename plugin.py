@@ -187,7 +187,7 @@ class BasePlugin:
 				'Sec-Fetch-Mode': 'navigate', \
 			     	'Accept-Encoding': 'gzip, deflate, br', \
 				'Accept-Language': 'en-NL,en;q=0.9,nl-NL;q=0.8,nl;q=0.7,en-US;q=0.6', \
-				'Cookie': ['unifises='+self.unifises+'; csrf_token='+self.csrftoken], \
+				'Cookie': ['unifises='+self.unifises+' csrf_token='+self.csrftoken], \
                     		'Host': Parameters["Address"]+":"+Parameters["Port"], \
 			    	'Content-Length' : "%d"%(len(payload))
                     		#'Cookie': 'unifises='+self.unifises+'; csrf_token='+self.csrftoken
