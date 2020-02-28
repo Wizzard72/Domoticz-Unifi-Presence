@@ -172,13 +172,13 @@ class BasePlugin:
     def RequestDetails(self):
         Domoticz.Log("RequestDetails called")
         Domoticz.Log("URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
-        payload = { }
+        payload = ''
         sendData = {'Verb' : 'GET',
                     'URL'  : '/api/s/default/stat/sta/',
                     'Headers' : { 
                     		'Connection': 'keep-alive', \
 				'Cache-Control': 'max-age=0', \
-				'DNT': 1, \
+				#'DNT': 1, \
 				'Upgrade-Insecure-Requests': 1, \
 				'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36', \
 				'Sec-Fetch-Dest': 'document', \
@@ -189,7 +189,7 @@ class BasePlugin:
 				'Accept-Language': 'en-NL,en;q=0.9,nl-NL;q=0.8,nl;q=0.7,en-US;q=0.6', \
 				'Cookie': ['x-csrf-token:'+self.csrftoken], \
                     		'Host': Parameters["Address"]+":"+Parameters["Port"], \
-			    	'Content-Length' : "%d"%(len(payload))
+			    	#'Content-Length' : "%d"%(len(payload))
                     		#'Cookie': 'unifises='+self.unifises+'; csrf_token='+self.csrftoken
 		    		},
 		    'Data' : ''
