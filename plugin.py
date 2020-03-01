@@ -209,6 +209,8 @@ class BasePlugin:
     
     def Authenticate(self):
         Domoticz.Log("Authenticate called")
+	cookie_jar = FileCookieJar(COOKIE_FILE).load()
+	sesh = requests.Session(cookies=cookie_jar)
         payload = { "password" : Parameters["Password"] , 
                    "username" : Parameters["Username"]}
         sendData = { 'Verb' : 'POST',
