@@ -210,7 +210,7 @@ class BasePlugin:
                      'URL'  : '/api/login',
                      'Headers' : { 
                          'Content-Type': 'application/json; charset=utf-8', \
-                         'Content-Length': len(jsondataasbytes), \
+#                         'Content-Length': len(jsondataasbytes), \
                          'Host': Parameters["Address"]+":"+Parameters["Port"]
                          },
                      'Data' : json.dumps(payload)
@@ -239,22 +239,9 @@ class BasePlugin:
                         for y in httpDict[x]:
                             Domoticz.Log("------->'" + y + "':'" + str(httpDict[x][y]) + "'")
                             if (y == "Set-Cookie"):        
-                                Domoticz.Log("---> Process Cookie Started")
-                                try:
-                                    self.unifises = re.search(r"(?<=unifises=).*?(?=;)", str(httpDict[x][y])).group(0)
-                                    Domoticz.Log("---> unifises found: "+ str(self.unifises)) 
-                                    self.cookieAvailable = True
-                                except AttributeError:
-                                    self.cookieAvailable = False
-                                    #Domoticz.Log("---> SessionID NOT found") 
-
-                                if self.cookieAvailable:
-                                    try:
-                                        self.csrftoken = re.search(r"(?<=csrf_token=).*?(?=;)", str(httpDict[x][y])).group(0)
-                                        Domoticz.Log("---> csrf_token found: "+ str(self.csrftoken)) 
-                                    except AttributeError:
-                                        self.cookieAvailable = False
-                                        Domoticz.Log("---> ServerID NOT found") 
+                                Domoticz.Log("---> Found Cookie")
+                                self.cookie = str(httpDict[x][y])[:-2][2:]
+                                self.cookieAvailable = True 
         
       
 global _plugin
