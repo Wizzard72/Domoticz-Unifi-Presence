@@ -89,9 +89,8 @@ class BasePlugin:
             Domoticz.Debugging(0)
         
         #Domoticz.Debugging(16 | 64)
-        
-        self.SetupConnection()
-        #Domoticz.Heartbeat(int(Parameters["Mode3"]))
+        self.Authenticate()
+	#Domoticz.Heartbeat(int(Parameters["Mode3"]))
         Domoticz.Heartbeat(10)
 
     def onStop(self):
@@ -209,32 +208,43 @@ class BasePlugin:
     
     def Authenticate(self):
         Domoticz.Log("Authenticate called")
-	cookie_jar = FileCookieJar(COOKIE_FILE).load()
-	sesh = requests.Session(cookies=cookie_jar)
         payload = { "password" : Parameters["Password"] , 
                    "username" : Parameters["Username"]}
-        sendData = { 'Verb' : 'POST',
-                     'URL'  : '/api/login',
-                     'Headers' : { 
-                         'Accept': "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", \
-                         'Accept-Encoding': 'gzip, deflate, br', \
-                         'Accept-Language': 'en-US,en;q=0.5', \
-                         'Connection': 'keep-alive', \
-                         #'Content-Length': '62', \
-                         'Content-Type': 'text/plain;charset=UTF-8', \
-                         'Upgrade-Insecure-Requests': '1', \
-                         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0', \
-                         #'User-Agent': 'Mozilla/5.0', \
-                         #'Cookie': self.setCookie, \
-                         #'Connection': 'keep-alive', \
-                         #'User-Agent': 'Mozilla/5.0', \
-                         #'Connection': 'keep-alive', \
-                         'Host': Parameters["Address"]+":"+Parameters["Port"]
-                         },
-                     'Data' : json.dumps(payload)
-                   }
-        Domoticz.Log("self.Authenticate - sendData = "+str(sendData))
-        self.unifiConn.Send(sendData)
+	jsondata = json.dumps(payload)
+	jsondataasbytes = jsondata.encode('utf-8')
+	url_api_login = "/api/login"
+	url = "https://"+Parameters["Address"]+":"+Parameters["Port"]+url_api_login
+    	req = urllib.request.Request(url)
+    	req.add_header('Content-Type', 'application/json; charset=utf-8')
+    	req.add_header('Content-Length', len(jsondataasbytes))
+	response = urllib.request.urlopen(req, jsondataasbytes)
+	cookie = response.getheader('Set-Cookie')
+	Domoticz.Log("Cookie = " +cookie)
+	
+	
+	
+	#sendData = { 'Verb' : 'POST',
+        #             'URL'  : '/api/login',
+        #             'Headers' : { 
+        #                 'Accept': "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", \
+        #                 'Accept-Encoding': 'gzip, deflate, br', \
+        #                 'Accept-Language': 'en-US,en;q=0.5', \
+        #                 'Connection': 'keep-alive', \
+        #                 #'Content-Length': '62', \
+        #                 'Content-Type': 'text/plain;charset=UTF-8', \
+        #                 'Upgrade-Insecure-Requests': '1', \
+        #                 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0', \
+        #                 #'User-Agent': 'Mozilla/5.0', \
+        #                 #'Cookie': self.setCookie, \
+        #                 #'Connection': 'keep-alive', \
+        #                 #'User-Agent': 'Mozilla/5.0', \
+        #                 #'Connection': 'keep-alive', \
+        #                 'Host': Parameters["Address"]+":"+Parameters["Port"]
+        #                 },
+        #             'Data' : json.dumps(payload)
+        #           }
+        #Domoticz.Log("self.Authenticate - sendData = "+str(sendData))
+        #self.unifiConn.Send(sendData)
         
     
     def ProcessDetails(self, response):
