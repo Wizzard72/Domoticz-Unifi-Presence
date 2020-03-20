@@ -214,9 +214,9 @@ class BasePlugin:
 	jsondataasbytes = jsondata.encode('utf-8')
 	url_api_login = "/api/login"
 	url = "https://"+Parameters["Address"]+":"+Parameters["Port"]+url_api_login
-    	req = urllib.request.Request(url)
-    	req.add_header('Content-Type', 'application/json; charset=utf-8')
-    	req.add_header('Content-Length', len(jsondataasbytes))
+	req = urllib.request.Request(url)
+	req.add_header('Content-Type', 'application/json; charset=utf-8')
+	req.add_header('Content-Length', len(jsondataasbytes))
 	response = urllib.request.urlopen(req, jsondataasbytes)
 	cookie = response.getheader('Set-Cookie')
 	Domoticz.Log("Cookie = " +cookie)
