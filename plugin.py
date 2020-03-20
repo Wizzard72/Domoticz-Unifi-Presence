@@ -36,15 +36,11 @@ import socket
 import json
 import re
 import requests
+import urllib.request
+from urllib.parse import quote
+import urllib
+import urllib.parse
 
-try:
-    # Python 2 names
-    from cookielib import FileCookieJar
-    from urlparse import urljoin
-except ImportError:
-    # Must be Python 3
-    from http.cookiejar import FileCookieJar
-    from urllib.parse import urljoin
 
 class BasePlugin:
     hostAuth = False
