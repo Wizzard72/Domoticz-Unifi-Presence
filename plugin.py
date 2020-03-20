@@ -86,8 +86,7 @@ class BasePlugin:
         
         #Domoticz.Debugging(16 | 64)
         self.SetupConnection()
-	#Domoticz.Heartbeat(int(Parameters["Mode3"]))
-        Domoticz.Heartbeat(10)
+        Domoticz.Heartbeat(int(Parameters["Mode3"]))
 
     def onStop(self):
         Domoticz.Log("onStop - Pluggin is stopping.")
@@ -154,20 +153,20 @@ class BasePlugin:
 
     def onHeartbeat(self):
         Domoticz.Log("onHeartbeat called")
-        if (self.unifiConn != None) and (self.unifiConn.Connecting()):
-            return
+        #if (self.unifiConn != None) and (self.unifiConn.Connecting()):
+        #    return
         
-        if (self.unifiConn == None) or (not self.unifiConn.Connected()):
-                Domoticz.Log('onHeartbeat Attempting to reconnect Unifi Controller')
-                self.SetupConnection()
-        else:
-            if self.hostAuth:
-                Domoticz.Log('onHeartbeat Requesting Unifi Controller details')
-                self.RequestDetails()
-            else:
-                Domoticz.Log("onHeartbeat Requesting Unifi Controller authorization.")
-                Domoticz.Log("onHeartbeat hostAuth = "+str(self.hostAuth))
-                #self.Authenticate()
+        #if (self.unifiConn == None) or (not self.unifiConn.Connected()):
+        #        Domoticz.Log('onHeartbeat Attempting to reconnect Unifi Controller')
+        #        self.SetupConnection()
+        #else:
+        #    if self.hostAuth:
+        #        Domoticz.Log('onHeartbeat Requesting Unifi Controller details')
+        #        self.RequestDetails()
+        #    else:
+        #        Domoticz.Log("onHeartbeat Requesting Unifi Controller authorization.")
+        #        Domoticz.Log("onHeartbeat hostAuth = "+str(self.hostAuth))
+        #        #self.Authenticate()
 
     def SetupConnection(self):
         Domoticz.Log("SetupConnection called")
@@ -188,7 +187,7 @@ class BasePlugin:
                     'URL'  : '/api/s/default/stat/sta/',
                     'Headers' : { 
                                 'Cookie': 'X-CSRF-TOKEN:'+self.csrftoken, \
-                                'Host': Parameters["Address"]+":"+Parameters["Port"], 
+                                'Host': Parameters["Address"]+":"+Parameters["Port"]
                                 }
                     }
         Domoticz.Log("RequestDetails sendData = "+str(sendData))
@@ -212,6 +211,7 @@ class BasePlugin:
                      'Headers' : { 
                          'Content-Type': 'application/json; charset=utf-8', \
                          'Content-Length': len(jsondataasbytes), \
+                         'Host': Parameters["Address"]+":"+Parameters["Port"]
                          },
                      'Data' : json.dumps(payload)
                    }
