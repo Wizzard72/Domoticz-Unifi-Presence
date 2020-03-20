@@ -204,7 +204,7 @@ class BasePlugin:
     
     def Authenticate(self):
         Domoticz.Log("Authenticate called")
-	payload = { "password" : Parameters["Password"] , 
+	payload = { "password" : Parameters["Password"] , \
 		   "username" : Parameters["Username"]}
 	jsondata = json.dumps(payload)
 	jsondataasbytes = jsondata.encode('utf-8')
