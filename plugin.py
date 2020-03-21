@@ -24,8 +24,13 @@
         </param>
         <param field="Mode6" label="Debug" width="75px">
             <options>
-                <option label="True" value="Debug"/>
-                <option label="False" value="Normal"  default="True" />
+                <option label="None" value="0"  default="true" />
+                <option label="Python Only" value="2"/>
+                <option label="Basic Debugging" value="62"/>
+                <option label="Basic+Messages" value="126"/>
+                <option label="Connections Only" value="16"/>
+                <option label="Connections+Queue" value="144"/>
+                <option label="All" value="-1"/>
             </options>
         </param>
     </params>
@@ -44,73 +49,75 @@ import urllib.parse
 
 class BasePlugin:
     hostAuth = False
-    ANYONE_UNIT = 1
-    OVERRIDE_UNIT = 2
+    UNIFI_WLAN_COUNTER_UNIT = 1
+    UNIFI_LAN_COUNTER_UNIT = 2
     #PHONE_ON_IMG = 'PhoneOn'
     #PHONE_OFF_IMG = 'PhoneOff'
-    setCookie = None
+    cookie = None
     cookieAvailable = False
     unifises = ""
     csrftoken = ""
-    
-    #if (self.PHONE_ON_IMG not in Images):
-    #    Domoticz.Log('Loading Phone ON images')
-    #    Domoticz.Image('Smartphone48_On.zip').Create()
-            
-    #if (self.PHONE_OFF_IMG not in Images):
-    #    Domoticz.Log('Loading Phone OFF images')
-    #    Domoticz.Image('Smartphone48_Off.zip').Create()
-    
-    #for image in Images:
-    #    Domoticz.Debug("Icon " + str(Images[image].ID) + " " + Images[image].Name)
-    
-    #if (self.ANYONE_UNIT not in Devices):
-    #        Domoticz.Device(Name=" - Anyone",  Unit=self.ANYONE_UNIT, Type=242, Subtype=1, Image=Images[self.FLAME_OFF_IMG].ID).Create()
-    #        UpdateDevice(self.TARGET_TEMP_UNIT, 0, "0.0")
-    
-    #if (self.ANYONE_UNIT not in Devices):
-        #Domoticz.Device(Name="AnyOne", Unit=self.ANYONE_UNIT, TypeName='Selector Switch').Create()
-        #UpdateDevice(self.ANYONE_UNIT, 0, "")
     
     def __init__(self):
         #self.var = 123
         return
 
     def onStart(self):
-        Domoticz.Debug("onStart called")
-        if Parameters["Mode6"] == 'Debug':
-            Domoticz.Debugging(1)
-            DumpConfigToLog()
+        strName = "onStart: "
+        Domoticz.Debug(strName+"called")
+        if (Parameters["Mode6"] != "0"):
+            Domoticz.Debugging(int(Parameters["Mode6"]))
         else:
             Domoticz.Debugging(0)
         
-        #Domoticz.Debugging(16 | 64)
+        if (self.UNIFI_WLAN_COUNTER_UNIT not in Devices):
+            Domoticz.Device(Name="WLAN Counter",  Unit=self.UNIFI_WLAN_COUNTER_UNIT, Type=243, Subtype=31).Create()
+            UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, 0, "0.0")
+
+        if (self.UNIFI_LAN_COUNTER_UNIT not in Devices):
+            Domoticz.Device(Name="LAN Counter",  Unit=self.UNIFI_LAN_COUNTER_UNIT, Type=243, Subtype=31).Create()
+            UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, 0, "0.0")
+
         self.SetupConnection()
         Domoticz.Heartbeat(int(Parameters["Mode3"]))
 
     def onStop(self):
-        Domoticz.Log("onStop - Pluggin is stopping.")
+        strName = "onStop: "
+        Domoticz.Log(strNmae+"Pluggin is stopping.")
+        sendData = {'Verb' : 'GET',
+                    'URL'  : '/api/logout',
+                    'Headers' : {
+                                'Cookie': self.cookie, \
+                                'Content-Type': 'application/json; charset=utf-8', \
+                                'Host': "https://"+Parameters["Address"]+":"+Parameters["Port"]
+                                }
+                    }
+        #Domoticz.Log("RequestDetails: sendData = "+str(sendData))
+        #self.unifiConn.Send(sendData)
 
     def onConnect(self, Connection, Status, Description):
-        #Domoticz.Log("onConnect called")
-        #Domoticz.Log("onConnect Connection = "+str(Connection))
-        #Domoticz.Log("onConnect Status = "+str(Status))
-        #Domoticz.Log("onConnect Description = "+str(Description))
-        #if (self.hostAuth == False):
-        #    Domoticz.Log("OnConnect Start Authentication process")
-        #    self.Authenticate()
+        strName = "onConnect: "
+        Domoticz.Log(strName+"called")
+        Domoticz.Log(strName+"Connection = "+str(Connection))
+        Domoticz.Log(strName+"Status = "+str(Status))
+        Domoticz.Log(strName+"Description = "+str(Description))
+        if (self.hostAuth == False):
+            Domoticz.Log(strName+"Start Authentication process")
+            self.Authenticate()
         if (Status == 0):
-            Domoticz.Log("onConnect - Unifi Controller connected successfully.")
+            Domoticz.Log(strName+"Unifi Controller connected successfully.")
             self.Authenticate()
         else:
-            Domoticz.Log("onConnect - Failed to connect ("+str(Status)+") to: https://"+Parameters["Address"]+":"+Parameters["Port"]+" with error: "+Description)
+            Domoticz.Log(strName+"Failed to connect ("+str(Status)+") to: https://"+Parameters["Address"]+":"+Parameters["Port"]+" with error: "+Description)
 
     def onMessage(self, Connection, Data):
+        strName = "onMessage: "
+        Domoticz.Log(strName+"called")
         DumpHTTPResponseToLog(Data)
-        
+        Domoticz.Log(strName+"Data = " +str(Data))
         strData = Data["Data"].decode("utf-8", "ignore")
         status = int(Data["Status"])
-        LogMessage(strData)
+        #LogMessage(strData)
 
         #strHeaders = str(Data['Headers'])
         #self.ProcessCookie(Data)  
@@ -122,37 +129,42 @@ class BasePlugin:
             
         if (status == 200):
             unifiResponse = json.loads(strData)
-            Domoticz.Log("Retrieved following json: "+json.dumps(unifiResponse))
+            Domoticz.Log(strName+"Retrieved following json: "+json.dumps(unifiResponse))
             
-            self.ProcessCookie(Data)   
+            self.ProcessCookie(Data)
+            self.RequestDetails()
             if (('meta' in unifiResponse)):
                 self.hostAuth = True
-                Domoticz.Log("onMessage hostAuth = True")
+                Domoticz.Log(strName+"hostAuth = True")
                 self.countDown = self.ProcessDetails(unifiResponse['meta'])
                 return
             else:
-                Domoticz.Log("onMessage Error: HostAuth = False")
+                Domoticz.Log(strName+"Error: HostAuth = False")
         elif status == 302:
-            Domoticz.Error("Unifi Controller returned a Page Moved Error.")
+            Domoticz.Error(strName+"Unifi Controller returned a Page Moved Error.")
         elif status == 400:
-            Domoticz.Error("Unifi Controller returned a Bad Request Error.")
+            Domoticz.Error(strName+"Unifi Controller returned a Bad Request Error.")
         elif (status == 500):
-            Domoticz.Error("Unifi Controller returned a Server Error.")
+            Domoticz.Error(strName+"Unifi Controller returned a Server Error.")
         else:
-            Domoticz.Error('Unifi Controller returned status='+Data['Status'])
+            Domoticz.Error(strName+'Unifi Controller returned status='+Data['Status'])
 
     def onCommand(self, Unit, Command, Level, Hue):
-        Domoticz.Log("onCommand called for Unit " + str(Unit) + ": Parameter '" + str(Command) + "', Level: " + str(Level))
+        strName = "onCommand: "
+        Domoticz.Log(strName+"called for Unit " + str(Unit) + ": Parameter '" + str(Command) + "', Level: " + str(Level))
 
     def onNotification(self, Name, Subject, Text, Status, Priority, Sound, ImageFile):
-        Domoticz.Log("onNotification called")
-        Domoticz.Log("Notification: " + Name + "," + Subject + "," + Text + "," + Status + "," + str(Priority) + "," + Sound + "," + ImageFile)
+        strName = "onNotification: "
+        Domoticz.Log(strName+"called")
+        Domoticz.Log(strName+"Notification: " + Name + "," + Subject + "," + Text + "," + Status + "," + str(Priority) + "," + Sound + "," + ImageFile)
 
     def onDisconnect(self, Connection):
-        Domoticz.Log("onDisconnect called")
+        strName = "onDisconnect: "
+        Domoticz.Log(strName+"called")
 
     def onHeartbeat(self):
-        Domoticz.Log("onHeartbeat called")
+        strName = "onHeartbeat: "
+        Domoticz.Log(strName+"called")
         #if (self.unifiConn != None) and (self.unifiConn.Connecting()):
         #    return
         
@@ -169,32 +181,72 @@ class BasePlugin:
         #        #self.Authenticate()
 
     def SetupConnection(self):
-        Domoticz.Log("SetupConnection called")
+        strName = "SetupConnection: "
+        Domoticz.Log(strName+"called")
         self.unifiConn = Domoticz.Connection(Name='UnifiPresenceConn', Transport="TCP/IP", Protocol="HTTPS", Address=Parameters["Address"], Port=Parameters["Port"])
         self.unifiConn.Connect()
         
     def RequestDetails(self):
-        Domoticz.Log("RequestDetails called")
-        #Domoticz.Log("URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
-        #url = "https://"+Parameters["Address"]+":"+Parameters["Port"]
-        #url_api_s_default_stat_sta = "/api/s/default/stat/sta/"
-        #reqapi = urllib.request.Request(url+url_api_s_default_stat_sta,headers={'Cookie':self.cookie})
-        #responseapi = urllib.request.urlopen(reqapi)
-        #test = responseapi.read().decode('utf-8', 'ignore')
-        #Domoticz.Log("API Response = " +test)
-        Domoticz.Log("URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
+        strName = "RequestDetails: "
+        Domoticz.Log(strName+"called")
+        Domoticz.Log(strName+"URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
+        url = "https://"+Parameters["Address"]+":"+Parameters["Port"]
+        url_api_s_default_stat_sta = "/api/s/default/stat/health"
+        reqapi = urllib.request.Request(url+url_api_s_default_stat_sta,headers={'Cookie':self.cookie})
+        responseapi = urllib.request.urlopen(reqapi)
+        test = responseapi.read().decode('utf-8', 'ignore')
+        testjson = json.loads(test)
+        Domoticz.Log(strName+"API Response (test) = " +test)
+        Domoticz.Log(strName+"URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
+        url = "/api/s/"+str(Parameters["Mode1"])+"/stat/sta"
         sendData = {'Verb' : 'GET',
-                    'URL'  : '/api/s/default/stat/sta/',
-                    'Headers' : { 
-                                'Cookie': 'X-CSRF-TOKEN:'+self.csrftoken, \
-                                'Host': Parameters["Address"]+":"+Parameters["Port"]
+                    'URL'  : '/api/s/default/stat/health',
+                    'Headers' : {
+                                'Cookie': self.cookie, \
+                                'Connection': 'keep-alive', \
+                                'Content-Encoding': 'gzip', \
+                                'Content-Type': 'application/json; charset=utf-8', \
+                                'Host': "https://"+Parameters["Address"]+":"+Parameters["Port"]
                                 }
                     }
-        Domoticz.Log("RequestDetails sendData = "+str(sendData))
-        self.unifiConn.Send(sendData)
-    
+#        Domoticz.Log("RequestDetails: sendData = "+str(sendData))
+#        self.unifiConn.Send(sendData)
+#        if ('meta' in testjson):
+#            data = testjson['data']
+#            if ('subsystem' in data):
+#                Domoticz.Log("Found DATA")
+        if ('meta' in testjson):
+            meta = testjson['meta']
+            if (meta['rc'] == "ok"):
+                Domoticz.Log(strName+"AUTHENTICATED: " +meta['rc'])
+        if ('data' in testjson):
+            data = testjson['data']
+#            Domoticz.Log("RequestDetails: data = " +str(data))
+#            data1 = testjson['data'][1]
+#            Domoticz.Log("RequestDetails: data = " +str(data1))
+            for item in data:
+#                Domoticz.Log("RequestDetails: items = " +str(item))
+                if item['subsystem'] == "wlan":
+                    wlan = item
+                    wlan_user_count = wlan['num_user']
+                    Domoticz.Log(strName+"WLAN User_Count = " +str(wlan_user_count))
+                    UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, int(wlan_user_count), str(wlan_user_count))
+                if item['subsystem'] == "lan":
+                    lan = item
+                    lan_user_count = lan['num_user']
+                    Domoticz.Log(strName+"LAN User_Count = " +str(lan_user_count))
+                    UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, int(lan_user_count), str(lan_user_count))
+#            if ('subsystem' in data):
+#                Domoticz.Log("RequestDetails: data[subsystem] = " +int(data['subsystem']))
+#                subsystem = data[5]
+#                Domoticz.Log("RequestDetails: subsystem: " +subsystem)
+#            for item in data:
+#                if data['subsystem'] == "wlan":
+#                    Domoticz.Log("RequestDetails: item (WLAN) = " +item)
+   
     def Authenticate(self):
-        Domoticz.Log("Authenticate called")
+        strName = "Authenticate: "
+        Domoticz.Log(strName+"called")
         payload = { "password" : Parameters["Password"],"username" : Parameters["Username"] }
         jsondata = json.dumps(payload)
         jsondataasbytes = jsondata.encode('utf-8')
@@ -210,39 +262,39 @@ class BasePlugin:
                      'URL'  : '/api/login',
                      'Headers' : { 
                          'Content-Type': 'application/json; charset=utf-8', \
-#                         'Content-Length': len(jsondataasbytes), \
                          'Host': Parameters["Address"]+":"+Parameters["Port"]
                          },
                      'Data' : json.dumps(payload)
                    }
-        Domoticz.Log("self.Authenticate - sendData = "+str(sendData))
+        Domoticz.Log(strName+"sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
         
     
     def ProcessDetails(self, response):
-        Domoticz.Log("ProcessDetails called")
+        strName = "ProcessDetails: "
+        Domoticz.Log(strName+"called")
         if (('rc' in response) and (str(response['rc']) == "ok")):
-            Domoticz.Log("Authenticated succesfull to Unifi Controller")
+            Domoticz.Log(strName+"Authenticated succesfull to Unifi Controller")
             hostAuth = True
         else:
-            Domoticz.Log("Authenticated NOT succesfull to Unifi Controller")
+            Domoticz.Log(strName+"Authenticated NOT succesfull to Unifi Controller")
             hostAuth = False
 
 
     def ProcessCookie(self, httpDict):
-        if isinstance(httpDict, dict):            
-            Domoticz.Log("Analyzing Data ("+str(len(httpDict))+"):")
+        strName = "ProcessCookie: "
+        if isinstance(httpDict, dict):
+            Domoticz.Log(strName+"Analyzing Data ("+str(len(httpDict))+"):")
             for x in httpDict:
                 if isinstance(httpDict[x], dict):
                     if (x == "Headers"):
-                        Domoticz.Log("---> Headers found")    
+                        Domoticz.Log(strName+"---> Headers found")
                         for y in httpDict[x]:
-                            Domoticz.Log("------->'" + y + "':'" + str(httpDict[x][y]) + "'")
-                            if (y == "Set-Cookie"):        
-                                Domoticz.Log("---> Found Cookie")
+                            Domoticz.Log(strName+"------->'" + y + "':'" + str(httpDict[x][y]) + "'")
+                            if (y == "Set-Cookie"):
+                                Domoticz.Log(strName+"---> Found Cookie")
                                 self.cookie = str(httpDict[x][y])[:-2][2:]
-                                self.cookieAvailable = True 
-        
+                                self.cookieAvailable = True
       
 global _plugin
 _plugin = BasePlugin()
@@ -280,52 +332,56 @@ def onHeartbeat():
     _plugin.onHeartbeat()
 
 def LogMessage(Message):
+    strName = "LogMessage: "
     if Parameters["Mode6"] == "File":
         f = open(Parameters["HomeFolder"]+"http.html","w")
         f.write(Message)
         f.close()
-        Domoticz.Log("File written")
+        Domoticz.Log(strName+"File written")
 
 def DumpHTTPResponseToLog(httpResp, level=0):
-    if (level==0): Domoticz.Debug("HTTP Details ("+str(len(httpResp))+"):")
+    strName = "DumpHTTPResponseToLog: "
+    if (level==0): Domoticz.Debug(strName+"HTTP Details ("+str(len(httpResp))+"):")
     indentStr = ""
     for x in range(level):
         indentStr += "----"
     if isinstance(httpResp, dict):
         for x in httpResp:
             if not isinstance(httpResp[x], dict) and not isinstance(httpResp[x], list):
-                Domoticz.Debug(indentStr + ">'" + x + "':'" + str(httpResp[x]) + "'")
+                Domoticz.Debug(strName+indentStr + ">'" + x + "':'" + str(httpResp[x]) + "'")
             else:
-                Domoticz.Debug(indentStr + ">'" + x + "':")
+                Domoticz.Debug(strName+indentStr + ">'" + x + "':")
                 DumpHTTPResponseToLog(httpResp[x], level+1)
     elif isinstance(httpResp, list):
         for x in httpResp:
-            Domoticz.Debug(indentStr + "['" + x + "']")
+            Domoticz.Debug(strName+indentStr + "['" + x + "']")
     else:
-        Domoticz.Debug(indentStr + ">'" + x + "':'" + str(httpResp[x]) + "'")
+        Domoticz.Debug(strName+indentStr + ">'" + x + "':'" + str(httpResp[x]) + "'")
 
 def UpdateDevice(Unit, nValue, sValue, Image=None):
+    strName = "UpdateDevice: "
     # Make sure that the Domoticz device still exists (they can be deleted) before updating it 
     if (Unit in Devices):
         if (Devices[Unit].nValue != nValue) or (Devices[Unit].sValue != sValue) or ((Image != None) and (Image != Devices[Unit].Image)):
             if (Image != None) and (Image != Devices[Unit].Image):
                 Devices[Unit].Update(nValue=nValue, sValue=str(sValue), Image=Image)
-                Domoticz.Log("Update "+str(nValue)+":'"+str(sValue)+"' ("+Devices[Unit].Name+") Image="+str(Image))
+                Domoticz.Log(strName+"Update "+str(nValue)+":'"+str(sValue)+"' ("+Devices[Unit].Name+") Image="+str(Image))
             else:
                 Devices[Unit].Update(nValue=nValue, sValue=str(sValue))
-                Domoticz.Log("Update "+str(nValue)+":'"+str(sValue)+"' ("+Devices[Unit].Name+")")
+                Domoticz.Log(strName+"Update "+str(nValue)+":'"+str(sValue)+"' ("+Devices[Unit].Name+")")
 
     # Generic helper functions
 def DumpConfigToLog():
+    strName = "DumpConfigToLog: "
     for x in Parameters:
         if Parameters[x] != "":
-            Domoticz.Debug( "'" + x + "':'" + str(Parameters[x]) + "'")
+            Domoticz.Debug(strName+"'" + x + "':'" + str(Parameters[x]) + "'")
     Domoticz.Debug("Device count: " + str(len(Devices)))
     for x in Devices:
-        Domoticz.Debug("Device:           " + str(x) + " - " + str(Devices[x]))
-        Domoticz.Debug("Device ID:       '" + str(Devices[x].ID) + "'")
-        Domoticz.Debug("Device Name:     '" + Devices[x].Name + "'")
-        Domoticz.Debug("Device nValue:    " + str(Devices[x].nValue))
-        Domoticz.Debug("Device sValue:   '" + Devices[x].sValue + "'")
-        Domoticz.Debug("Device LastLevel: " + str(Devices[x].LastLevel))
+        Domoticz.Debug(strName+"Device:           " + str(x) + " - " + str(Devices[x]))
+        Domoticz.Debug(strName+"Device ID:       '" + str(Devices[x].ID) + "'")
+        Domoticz.Debug(strName+"Device Name:     '" + Devices[x].Name + "'")
+        Domoticz.Debug(strName+"Device nValue:    " + str(Devices[x].nValue))
+        Domoticz.Debug(strName+"Device sValue:   '" + Devices[x].sValue + "'")
+        Domoticz.Debug(strName+"Device LastLevel: " + str(Devices[x].LastLevel))
     return
