@@ -97,10 +97,11 @@ class BasePlugin:
                 phone_name, mac_id = device.split("=")
                 phone_name = phone_name.strip()
                 mac_id = mac_id.strip().lower()
+                Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
+                #Domoticz.Status(strName+"Created device for "+phone_name+" with unit id " + str(new_unit))
             except:
                 Domoticz.Error("Invalid phone settings.")
-            Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
-	    #Domoticz.Status(strName+"Created device for "+phone_name+" with unit id " + str(new_unit))
+	    
 
         self.SetupConnection()
         Domoticz.Heartbeat(int(Parameters["Mode3"]))
