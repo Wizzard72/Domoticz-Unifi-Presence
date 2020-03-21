@@ -168,17 +168,17 @@ class BasePlugin:
         #if (self.unifiConn != None) and (self.unifiConn.Connecting()):
         #    return
         
-        #if (self.unifiConn == None) or (not self.unifiConn.Connected()):
-        #        Domoticz.Log('onHeartbeat Attempting to reconnect Unifi Controller')
-        #        self.SetupConnection()
-        #else:
-        #    if self.hostAuth:
-        #        Domoticz.Log('onHeartbeat Requesting Unifi Controller details')
-        #        self.RequestDetails()
-        #    else:
-        #        Domoticz.Log("onHeartbeat Requesting Unifi Controller authorization.")
-        #        Domoticz.Log("onHeartbeat hostAuth = "+str(self.hostAuth))
-        #        #self.Authenticate()
+        if (self.unifiConn == None) or (not self.unifiConn.Connected()):
+                Domoticz.Log(strName+'Attempting to reconnect Unifi Controller')
+                self.SetupConnection()
+        else:
+            if self.hostAuth:
+                Domoticz.Log(strName+'Requesting Unifi Controller details')
+                self.RequestDetails()
+            else:
+                Domoticz.Log(strName+"Requesting Unifi Controller authorization.")
+                Domoticz.Log(strName+"hostAuth = "+str(self.hostAuth))
+                self.Authenticate()
 
     def SetupConnection(self):
         strName = "SetupConnection: "
