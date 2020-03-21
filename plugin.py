@@ -97,8 +97,6 @@ class BasePlugin:
             UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, 0, "0.0")
 
         device_mac=Parameters["Mode2"].split(",")
-	device_count = 50
-	count = 1
         for device in device_mac:
             device = device.strip()
             new_unit = find_available_unit()
