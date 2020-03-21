@@ -88,7 +88,7 @@ class BasePlugin:
             Domoticz.Device(Name="LAN Counter",  Unit=self.UNIFI_LAN_COUNTER_UNIT, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, 0, "0.0")
 
-        device_mac=Parameters["Mode1"].split(",")
+        device_mac=Parameters["Mode2"].split(",")
         for device in device_mac:
             Domoticz.Log(strName+"device = " +device)
 		
