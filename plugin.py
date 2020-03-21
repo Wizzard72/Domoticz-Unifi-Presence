@@ -59,6 +59,7 @@ class BasePlugin:
     cookieAvailable = False
     unifises = ""
     csrftoken = ""
+    phone_name = ""
     
     def __init__(self):
         #self.var = 123
