@@ -51,6 +51,8 @@ class BasePlugin:
     hostAuth = False
     UNIFI_WLAN_COUNTER_UNIT = 1
     UNIFI_LAN_COUNTER_UNIT = 2
+    UNIFI_ANYONE_HOME_UNIT = 50
+    UNIFI_OVERRIDE_UNIT = 255
     #PHONE_ON_IMG = 'PhoneOn'
     #PHONE_OFF_IMG = 'PhoneOff'
     cookie = None
@@ -69,6 +71,14 @@ class BasePlugin:
             Domoticz.Debugging(int(Parameters["Mode6"]))
         else:
             Domoticz.Debugging(0)
+        
+        #Create "Anyone home" device
+        if self.UNIFI_ANYONE_HOME_UNIT not in Devices:
+			get_or_create_unit('Anyone', unit=self.UNIFI_ANYONE_HOME_UNIT, icon='idetect-home')
+        
+        #Create "Override" device
+		if self.UNIFI_OVERRIDE_UNIT not in Devices:
+			get_or_create_unit('Override', unit=self.UNIFI_OVERRIDE_UNIT, icon='idetect-override')
         
         if (self.UNIFI_WLAN_COUNTER_UNIT not in Devices):
             Domoticz.Device(Name="WLAN Counter",  Unit=self.UNIFI_WLAN_COUNTER_UNIT, Type=243, Subtype=31).Create()
