@@ -89,7 +89,7 @@ class BasePlugin:
             UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, 0, "0.0")
 
         device_mac=Parameters["Mode1"].split(",")
-        for devices in device_mac:
+        for device in device_mac:
             Domoticz.Log(strName+"device = " +device)
 		
         self.SetupConnection()
