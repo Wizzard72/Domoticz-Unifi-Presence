@@ -46,13 +46,14 @@ from urllib.parse import quote
 import urllib
 import urllib.parse
 
-class domoFunctions
+class domoFunctions:
 
-def find_available_unit():
+    def find_available_unit():
 	for num in range(51,200):
 		if num not in Devices:
 			return num
 	return None
+
 
 class BasePlugin:
     hostAuth = False
