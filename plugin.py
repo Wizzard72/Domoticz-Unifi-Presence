@@ -189,8 +189,8 @@ class BasePlugin:
         responseapi = urllib.request.urlopen(reqapi)
         test = responseapi.read().decode('utf-8', 'ignore')
         testjson = json.loads(test)
-        Domoticz.Log(strName+"API Response (test) = " +test)
-        Domoticz.Log(strName+"URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
+        #Domoticz.Log(strName+"API Response (test) = " +test)
+        #Domoticz.Log(strName+"URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
         url = "/api/s/"+str(Parameters["Mode1"])+"/stat/health"
         sendData = {'Verb' : 'GET',
                     'URL'  : '/api/s/default/stat/health',
@@ -229,8 +229,22 @@ class BasePlugin:
         responseapi = urllib.request.urlopen(reqapi)
         test = responseapi.read().decode('utf-8', 'ignore')
         testjson = json.loads(test)
-        Domoticz.Log(strName+"API Response (test) = " +test)
-        Domoticz.Log(strName+"URL = "+str(url_api_s_default_stat_sta))
+        #Domoticz.Log(strName+"API Response (test) = " +test)
+        #Domoticz.Log(strName+"URL = "+str(url_api_s_default_stat_sta))
+        
+        if ('meta' in testjson):
+            meta = testjson['meta']
+            if (meta['rc'] == "ok"):
+                Domoticz.Log(strName+"AUTHENTICATED: " +meta['rc'])
+        if ('data' in testjson):
+            data = testjson['data']
+            for item in data:
+                Domoticz.Log(strName+"items = " +str(item))
+                if item['mac'] == "08:c5:e1:9c:dc:9c":
+                    mac = item
+                    Domoticz.Log(strName+"Found device")
+                    #UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, int(wlan_user_count), str(wlan_user_count))
+
    
     def Authenticate(self):
         strName = "Authenticate: "
