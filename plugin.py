@@ -46,14 +46,6 @@ from urllib.parse import quote
 import urllib
 import urllib.parse
 
-class domoFunctions:
-
-    def find_available_unit():
-        for num in range(51,200):
-            if num not in Devices:
-                return num
-        return None
-
 
 class BasePlugin:
     hostAuth = False
@@ -328,7 +320,9 @@ class BasePlugin:
                                 Domoticz.Log(strName+"---> Found Cookie")
                                 self.cookie = str(httpDict[x][y])[:-2][2:]
                                 self.cookieAvailable = True
-      
+
+
+				
 global _plugin
 _plugin = BasePlugin()
 
@@ -418,3 +412,9 @@ def DumpConfigToLog():
         Domoticz.Debug(strName+"Device sValue:   '" + Devices[x].sValue + "'")
         Domoticz.Debug(strName+"Device LastLevel: " + str(Devices[x].LastLevel))
     return
+
+def find_available_unit():
+    for num in range(51,200):
+        if num not in Devices:
+        return num
+    return None
