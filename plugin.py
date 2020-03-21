@@ -239,7 +239,7 @@ class BasePlugin:
         if ('data' in testjson):
             data = testjson['data']
             for item in data:
-                Domoticz.Log(strName+"items = " +str(item))
+                #Domoticz.Log(strName+"items = " +str(item))
                 if item['mac'] == "08:c5:e1:9c:dc:9c":
                     mac = item
                     Domoticz.Log(strName+"Found device")
