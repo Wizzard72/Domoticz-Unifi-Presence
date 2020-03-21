@@ -117,15 +117,9 @@ class BasePlugin:
         Domoticz.Log(strName+"Data = " +str(Data))
         strData = Data["Data"].decode("utf-8", "ignore")
         status = int(Data["Status"])
-        #LogMessage(strData)
 
-        #strHeaders = str(Data['Headers'])
-        #self.ProcessCookie(Data)  
-
-        
-        #['unifises=jafQW8jKmGJOJue8nNOX79d6xpz2TuUl; Path=/; Secure; HttpOnly', 'csrf_token=vLGXCRwNCxgQyEekFetRA3N5JdY6broR; Path=/; Secure']
-        #if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
-            #Domoticz.Debug("onMessage Unifi Controller connection is alive.")
+        if (self.unifiConn.Connecting() or self.unifiConn.Connected()):
+            Domoticz.Debug(strName+"Unifi Controller connection is alive.")
             
         if (status == 200):
             unifiResponse = json.loads(strData)
@@ -189,16 +183,15 @@ class BasePlugin:
     def RequestDetails(self):
         strName = "RequestDetails: "
         Domoticz.Log(strName+"called")
-        Domoticz.Log(strName+"URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
-        url = "https://"+Parameters["Address"]+":"+Parameters["Port"]
-        url_api_s_default_stat_sta = "/api/s/default/stat/health"
-        reqapi = urllib.request.Request(url+url_api_s_default_stat_sta,headers={'Cookie':self.cookie})
+        host = "https://"+Parameters["Address"]+":"+Parameters["Port"]
+        url_api_s_default_stat_health = "/api/s/"+Parameters["Mode1"]+"/stat/health"
+        reqapi = urllib.request.Request(host+url_api_s_default_stat_health,headers={'Cookie':self.cookie})
         responseapi = urllib.request.urlopen(reqapi)
         test = responseapi.read().decode('utf-8', 'ignore')
         testjson = json.loads(test)
         Domoticz.Log(strName+"API Response (test) = " +test)
         Domoticz.Log(strName+"URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
-        url = "/api/s/"+str(Parameters["Mode1"])+"/stat/sta"
+        url = "/api/s/"+str(Parameters["Mode1"])+"/stat/health"
         sendData = {'Verb' : 'GET',
                     'URL'  : '/api/s/default/stat/health',
                     'Headers' : {
@@ -211,21 +204,14 @@ class BasePlugin:
                     }
 #        Domoticz.Log("RequestDetails: sendData = "+str(sendData))
 #        self.unifiConn.Send(sendData)
-#        if ('meta' in testjson):
-#            data = testjson['data']
-#            if ('subsystem' in data):
-#                Domoticz.Log("Found DATA")
         if ('meta' in testjson):
             meta = testjson['meta']
             if (meta['rc'] == "ok"):
                 Domoticz.Log(strName+"AUTHENTICATED: " +meta['rc'])
         if ('data' in testjson):
             data = testjson['data']
-#            Domoticz.Log("RequestDetails: data = " +str(data))
-#            data1 = testjson['data'][1]
-#            Domoticz.Log("RequestDetails: data = " +str(data1))
             for item in data:
-#                Domoticz.Log("RequestDetails: items = " +str(item))
+#                Domoticz.Log(strName+"items = " +str(item))
                 if item['subsystem'] == "wlan":
                     wlan = item
                     wlan_user_count = wlan['num_user']
@@ -236,13 +222,15 @@ class BasePlugin:
                     lan_user_count = lan['num_user']
                     Domoticz.Log(strName+"LAN User_Count = " +str(lan_user_count))
                     UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, int(lan_user_count), str(lan_user_count))
-#            if ('subsystem' in data):
-#                Domoticz.Log("RequestDetails: data[subsystem] = " +int(data['subsystem']))
-#                subsystem = data[5]
-#                Domoticz.Log("RequestDetails: subsystem: " +subsystem)
-#            for item in data:
-#                if data['subsystem'] == "wlan":
-#                    Domoticz.Log("RequestDetails: item (WLAN) = " +item)
+
+        url = "/api/s/"+str(Parameters["Mode1"])+"/stat/sta"  
+        url_api_s_default_stat_sta = "/api/s/"+Parameters["Mode1"]+"/stat/sta"
+        reqapi = urllib.request.Request(host+url_api_s_default_stat_sta,headers={'Cookie':self.cookie})
+        responseapi = urllib.request.urlopen(reqapi)
+        test = responseapi.read().decode('utf-8', 'ignore')
+        testjson = json.loads(test)
+        Domoticz.Log(strName+"API Response (test) = " +test)
+        Domoticz.Log(strName+"URL = "+str(url_api_s_default_stat_sta))
    
     def Authenticate(self):
         strName = "Authenticate: "
