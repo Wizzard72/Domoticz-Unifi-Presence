@@ -46,6 +46,13 @@ from urllib.parse import quote
 import urllib
 import urllib.parse
 
+class domoFunctions
+
+def find_available_unit():
+	for num in range(51,200):
+		if num not in Devices:
+			return num
+	return None
 
 class BasePlugin:
     hostAuth = False
@@ -89,8 +96,19 @@ class BasePlugin:
             UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, 0, "0.0")
 
         device_mac=Parameters["Mode2"].split(",")
+	device_count = 50
+	count = 1
         for device in device_mac:
-            Domoticz.Log(strName+"device = " +device)
+            device = device.strip()
+            new_unit = find_available_unit()
+            try:
+                phone_name, mac_id = device.split("=")
+                phone_name = phone_name.strip()
+                mac_id = mac_id.strip().lower()
+            except:
+                Domoticz.Error("Invalid phone settings.")
+            Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).create()
+	    Domoticz.Status(strName+"Created device for " + phone_name + " with unit id " + str(new_unit))
 		
         self.SetupConnection()
         Domoticz.Heartbeat(int(Parameters["Mode3"]))
