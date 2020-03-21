@@ -49,10 +49,10 @@ import urllib.parse
 class domoFunctions:
 
     def find_available_unit():
-	for num in range(51,200):
-		if num not in Devices:
-			return num
-	return None
+        for num in range(51,200):
+            if num not in Devices:
+                return num
+        return None
 
 
 class BasePlugin:
