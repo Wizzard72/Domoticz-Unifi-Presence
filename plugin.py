@@ -83,7 +83,7 @@ class BasePlugin:
 
     def onStop(self):
         strName = "onStop: "
-        Domoticz.Log(strNmae+"Pluggin is stopping.")
+        Domoticz.Log(strName+"Pluggin is stopping.")
         sendData = {'Verb' : 'GET',
                     'URL'  : '/api/logout',
                     'Headers' : {
