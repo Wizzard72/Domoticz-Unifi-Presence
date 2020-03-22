@@ -359,10 +359,10 @@ class BasePlugin:
                         found_mac_address = str(item['mac'])
                     for dv in Devices:
                         # Find the unit number
-                        Domoticz.Log(strName+"Phone Name = "+phone_name)
-                        Domoticz.Log(strName+"Devices[dv].Name[8:] = "+Devices[dv].Name[8:])
                         if phone_name == Devices[dv].Name[8:]:
                             #Domoticz.Log(strName+"Found phone Unit = "+str(Devices[dv].Unit)+" / Name = "+Devices[dv].Name+" / Phone Name = "+phone_name)
+                            Domoticz.Log(strName+"Phone Name = "+phone_name)
+                            Domoticz.Log(strName+"Devices[dv].Name[8:] = "+Devices[dv].Name[8:])
                             Domoticz.Log(strName+"Check "+phone_name+" = "+Devices[dv].Name[8:])
                             device_unit = Devices[dv].Unit
                             break
