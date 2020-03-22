@@ -346,9 +346,9 @@ class BasePlugin:
                 device_mac=Parameters["Mode2"].split(",")
                 #device_unit = None
                 found_mac = 0
+                found_mac_address = None
                 for device in device_mac:
                     device_unit = None
-                    found_mac_address = None
                     device = device.strip()
                     phone_name, mac_id = device.split("=")
                     phone_name = phone_name.strip()
