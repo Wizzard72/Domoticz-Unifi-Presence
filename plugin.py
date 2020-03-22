@@ -100,6 +100,7 @@ class BasePlugin:
             try:
                 Domoticz.Log(strName+"TRY")
                 for item in Devices:
+                    Domoticz.Log(strName+"Device.item = " +Devices[item].name)
                     if Devices[item].name == phone_name:
                         Domoticz.Log(strName+"Found phone = "+device)
                         found_phone = True
