@@ -305,7 +305,7 @@ class BasePlugin:
                 else:
                     svalue = "Off"
                     nvalue = 0
-                #UpdateDevice(device_unit, nvalue, svalue)
+                UpdateDevice(device_unit, nvalue, svalue)
                 #Devices[device_unit].Update(nValue=nvalue, sValue=str(svalue))
 
    
