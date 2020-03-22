@@ -51,6 +51,13 @@ class BasePlugin:
     hostAuth = False
     UNIFI_WLAN_COUNTER_UNIT = 1
     UNIFI_LAN_COUNTER_UNIT = 2
+    UNIFI_CPU_PERC_UNIT = 3
+    UNIFI_MEM_PERC_UNIT = 4
+    UNIFI_BOARD_CPU_UNIT = 5
+    UNIFI_BOARD_PHY_UNIT = 6
+    UNIFI_CPU_UNIT = 7
+    UNIFI_PHY_UNIT = 8
+    UNIFI_UPTIME_UNIT = 9
     UNIFI_ANYONE_HOME_UNIT = 50
     UNIFI_OVERRIDE_UNIT = 255
     #PHONE_ON_IMG = 'PhoneOn'
@@ -96,6 +103,30 @@ class BasePlugin:
         if (self.UNIFI_OVERRIDE_UNIT not in Devices):
             Domoticz.Device(Name="OverRide",  Unit=self.UNIFI_OVERRIDE_UNIT, Used=1, TypeName="Switch").Create()
             UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 0, "Off")
+        
+        if (self.UNIFI_CPU_PERC_UNIT not in Devices):
+            Domoticz.Device(Name="OverRide",  Unit=self.UNIFI_CPU_PERC_UNIT, Used=1, TypeName="Percentage").Create()
+            UpdateDevice(self.UNIFI_CPU_PERC_UNIT, 0, "0")
+        
+        if (self.UNIFI_MEM_PERC_UNIT not in Devices):
+            Domoticz.Device(Name="OverRide",  Unit=self.UNIFI_MEM_PERC_UNIT, Used=1, TypeName="Percentage").Create()
+            UpdateDevice(self.UNIFI_MEM_PERC_UNIT, 0, "0")
+        
+        if (self.UNIFI_BOARD_CPU_UNIT not in Devices):
+            Domoticz.Device(Name="OverRide",  Unit=self.UNIFI_BOARD_CPU_UNIT, Used=1, TypeName="Temperature").Create()
+            UpdateDevice(self.UNIFI_BOARD_CPU_UNIT, 0, "0")
+        
+        if (self.UNIFI_BOARD_PHY_UNIT not in Devices):
+            Domoticz.Device(Name="OverRide",  Unit=self.UNIFI_BOARD_PHY_UNIT, Used=1, TypeName="Temperature").Create()
+            UpdateDevice(self.UNIFI_BOARD_PHY_UNIT, 0, "0")
+        
+        if (self.UNIFI_CPU_UNIT not in Devices):
+            Domoticz.Device(Name="OverRide",  Unit=self.UNIFI_CPU_UNIT, Used=1, TypeName="Temperature").Create()
+            UpdateDevice(self.UNIFI_CPU_UNIT, 0, "0")
+        
+        if (self.UNIFI_PHY_UNIT not in Devices):
+            Domoticz.Device(Name="OverRide",  Unit=self.UNIFI_PHY_UNIT, Used=1, TypeName="Temperature").Create()
+            UpdateDevice(self.UNIFI_PHY_UNIT, 0, "0")
             
         for item in Devices:
             Domoticz.Log(strName+"item in devices = " +Devices[item].Name)
@@ -284,6 +315,15 @@ class BasePlugin:
                     lan_user_count = lan['num_user']
                     Domoticz.Log(strName+"LAN User_Count = " +str(lan_user_count))
                     UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, int(lan_user_count), str(lan_user_count))
+                if item['subsystem'] == "wan":
+                    wan = item
+                    cpu_pers = wan['gw_system-stats']['cpu']
+                    mem_pers = wan['gw_system-stats']['mem']
+                    board_cpu = wan['gw_system-stats']['temps']['Board (CPU)']
+                    board_phy = wan['gw_system-stats']['temps']['Board (PHY)'] 
+                    cpu = wan['gw_system-stats']['temps']['CPU']
+                    phy = wan['gw_system-stats']['temps']['PHY']
+                    uptime = wan['gw_system-stats']['uptime']
 
         url = "/api/s/"+str(Parameters["Mode1"])+"/stat/sta"  
         url_api_s_default_stat_sta = "/api/s/"+Parameters["Mode1"]+"/stat/sta"
