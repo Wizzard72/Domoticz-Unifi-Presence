@@ -282,8 +282,8 @@ class BasePlugin:
                 device_mac=Parameters["Mode2"].split(",")
                 device_unit = None
                 count = 0
+                Domoticz.Log(strName+"--------------------------")
                 for device in device_mac:
-                    Domoticz.Log(strName+"--------------------------")
                     device = device.strip()
                     phone_name, mac_id = device.split("=")
                     phone_name = phone_name.strip()
