@@ -321,13 +321,13 @@ class BasePlugin:
                     UpdateDevice(self.UNIFI_CPU_PERC_UNIT, int(cpu_pers), str(cpu_pers))
                     mem_pers = wan['gw_system-stats']['mem']
                     UpdateDevice(self.UNIFI_MEM_PERC_UNIT, int(mem_pers), str(mem_pers))
-                    board_cpu = wan['gw_system-stats']['temps']['Board (CPU)']
+                    board_cpu = wan['gw_system-stats']['temps']['Board (CPU)'][:-2]
                     UpdateDevice(self.UNIFI_BOARD_CPU_UNIT, int(board_cpu), str(board_cpu))
-                    board_phy = wan['gw_system-stats']['temps']['Board (PHY)']
+                    board_phy = wan['gw_system-stats']['temps']['Board (PHY)'][:-2]
                     UpdateDevice(self.UNIFI_BOARD_PHY_UNIT, int(board_phy), str(board_phy))
-                    cpu = wan['gw_system-stats']['temps']['CPU']
+                    cpu = wan['gw_system-stats']['temps']['CPU'][:-2]
                     UpdateDevice(self.UNIFI_CPU_UNIT, int(cpu), str(cpu))
-                    phy = wan['gw_system-stats']['temps']['PHY']
+                    phy = wan['gw_system-stats']['temps']['PHY'][:-2]
                     UpdateDevice(self.UNIFI_PHY_UNIT, int(phy), str(phy))
                     uptime = wan['gw_system-stats']['uptime']
 
