@@ -296,7 +296,7 @@ class BasePlugin:
                         count = 1
                     for dv in Devices:
                         Domoticz.Log(strName+"Devices Name = "+Devices[dv].Name[8:]+" = "+phone_name)
-			if Devices[dv].Name[8:] == "Paul":
+                        if Devices[dv].Name[8:] == "Paul":
                             Domoticz.Log(strName+"Found phone Unit = "+str(Devices[dv].Unit)+" / Name = "+Devices[dv].Name+" / Phone Name = "+phone_name)
                             device_unit = Devices[dv].Unit
                 if count == 1:
