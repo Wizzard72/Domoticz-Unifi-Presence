@@ -151,21 +151,6 @@ class BasePlugin:
             except:
                 Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
             
-        for dv in Devices:
-            #Domoticz.Log(strName+"Devices Name = "+Devices[dv].Name[8:]+" = "+phone_name)
-            if Devices[dv].Name[8:] == "Paul":
-                device_unit = Devices[dv].Unit
-                Domoticz.Log(strName+"Paul Phone Unit = "+str(device_unit))
-            elif Devices[dv].Name[8:] == "Sarah":
-                device_unit = Devices[dv].Unit
-                Domoticz.Log(strName+"Paul Phone Unit = "+str(device_unit))
-            elif Devices[dv].Name[8:] == "Peter":
-                device_unit = Devices[dv].Unit
-                Domoticz.Log(strName+"Paul Phone Unit = "+str(device_unit))
-            elif Devices[dv].Name[8:] == "Leni":
-                device_unit = Devices[dv].Unit
-                Domoticz.Log(strName+"Paul Phone Unit = "+str(device_unit))
-                
 
         self.SetupConnection()
         Domoticz.Heartbeat(int(Parameters["Mode3"]))
