@@ -280,9 +280,10 @@ class BasePlugin:
             data = testjson['data']
             for item in data:
                 device_mac=Parameters["Mode2"].split(",")
-                device_unit = None
+                #device_unit = None
                 count = 0
                 for device in device_mac:
+                    device_unit = None
                     device = device.strip()
                     phone_name, mac_id = device.split("=")
                     phone_name = phone_name.strip()
@@ -309,9 +310,10 @@ class BasePlugin:
                 else:
                     svalue = "Off"
                     nvalue = 0
-                Domoticz.Log(strName+"Phone found with mac = "+str(item['mac'])+" / Unit ="+str(device_unit)+" / sValue = "+svalue)
-                UpdateDevice(device_unit, nvalue, svalue)
-                #Devices[device_unit].Update(nValue=nvalue, sValue=str(svalue))
+                if device_unit != None:
+                    Domoticz.Log(strName+"Phone found with mac = "+str(item['mac'])+" / Unit ="+str(device_unit)+" / sValue = "+svalue)
+                    UpdateDevice(device_unit, nvalue, svalue)
+                    #Devices[device_unit].Update(nValue=nvalue, sValue=str(svalue))
 
    
     def Authenticate(self):
