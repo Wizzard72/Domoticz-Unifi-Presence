@@ -93,6 +93,7 @@ class BasePlugin:
             Domoticz.Log(strName+"item in devices = " +Devices[item].Name)
             Domoticz.Log(strName+"item in devices = " +Devices[item].DeviceID)
             Domoticz.Log(strName+"item in devices = " +str(Devices[item].ID))
+	    Domoticz.Log(strName+"item in devices = " +str(Devices[item].Unit))
 
         device_mac=Parameters["Mode2"].split(",")
         found_phone = False
