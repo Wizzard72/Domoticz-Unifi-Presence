@@ -129,7 +129,7 @@ class BasePlugin:
             UpdateDevice(self.UNIFI_PHY_UNIT, 0, "0")
             
         if (self.UNIFI_UPTIME_UNIT not in Devices):
-            Domoticz.Device(Name="Uptime (hours)", Unit=self.UNIFI_UPTIME_UNIT, TypeName="Counter Incremental").Create()
+            Domoticz.Device(Name="Uptime (hours)", Unit=self.UNIFI_UPTIME_UNIT, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_UPTIME_UNIT, 0, "0.0")
             
         for item in Devices:
