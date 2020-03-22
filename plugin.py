@@ -283,9 +283,11 @@ class BasePlugin:
                 device_unit = None
                 count = 0
                 for device in device_mac:
+                    Domoticz.Log(strName+"--------------------------")
                     device = device.strip()
                     phone_name, mac_id = device.split("=")
                     phone_name = phone_name.strip()
+                    Domoticz.Log(strName+"Phone Name = "+phone_name)
                     mac_id = mac_id.strip().lower()
                     #Domoticz.Log(strName+"MAC = " +str(item['mac'])+" = "+mac_id)
                     if str(item['mac']) == mac_id:
