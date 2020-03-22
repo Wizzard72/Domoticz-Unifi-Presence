@@ -343,7 +343,7 @@ class BasePlugin:
                         # Found MAC address in API output
                         found_mac = 1
                         found_mac_address = str(item['mac'])
-			found_user = phone_name
+                        found_user = phone_name
                     for dv in Devices:
                         # Find the unit number
                         search_phone = Devices[dv].Name[8:]
