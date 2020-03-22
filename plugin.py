@@ -83,12 +83,20 @@ class BasePlugin:
         
         if (self.UNIFI_WLAN_COUNTER_UNIT not in Devices):
             Domoticz.Device(Name="WLAN Counter",  Unit=self.UNIFI_WLAN_COUNTER_UNIT, Type=243, Subtype=31).Create()
-            UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, 0, "0.0")
+            UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, 0, "0")
 
         if (self.UNIFI_LAN_COUNTER_UNIT not in Devices):
             Domoticz.Device(Name="LAN Counter",  Unit=self.UNIFI_LAN_COUNTER_UNIT, Type=243, Subtype=31).Create()
-            UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, 0, "0.0")
+            UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, 0, "0")
 
+        if (self.UNIFI_ANYONE_HOME_UNIT not in Devices):
+            Domoticz.Device(Name="AnyOne",  Unit=self.UNIFI_ANYONE_HOME_UNIT, Used=1, TypeName="Switch").Create()
+            UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 0, "Off")
+            
+        if (self.UNIFI_OVERRIDE_UNIT not in Devices):
+            Domoticz.Device(Name="OverRide",  Unit=self.UNIFI_OVERRIDE_UNIT, Used=1, TypeName="Switch").Create()
+            UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 0, "Off")
+            
         for item in Devices:
             Domoticz.Log(strName+"item in devices = " +Devices[item].Name)
             Domoticz.Log(strName+"item in devices = " +Devices[item].DeviceID)
