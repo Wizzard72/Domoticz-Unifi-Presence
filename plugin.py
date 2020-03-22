@@ -356,7 +356,7 @@ class BasePlugin:
                     if str(item['mac']) == mac_id and item['is_wired']:
                         # Found MAC address in API output
                         found_mac = 1
-			found_mac_address = str(item['mac'])
+                        found_mac_address = str(item['mac'])
                     for dv in Devices:
                         # Find the unit number
                         if phone_name == Devices[dv].Name[8:]:
