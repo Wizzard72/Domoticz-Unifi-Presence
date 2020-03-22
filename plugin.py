@@ -367,7 +367,7 @@ class BasePlugin:
                             Domoticz.Log(strName+"Devices[dv].Name[8:] = "+Devices[dv].Name[8:])
                             Domoticz.Log(strName+"Check "+phone_name+" = "+Devices[dv].Name[8:])
                             device_unit = Devices[dv].Unit
-                            break
+                            continue
                 if found_mac == 1:
                     svalue = "On"
                     nvalue = 1
