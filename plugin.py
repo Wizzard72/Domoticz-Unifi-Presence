@@ -91,7 +91,7 @@ class BasePlugin:
         for item in Devices:
             Domoticz.Log(strName+"item in devices = " +Devices[item].Name)
         device_mac=Parameters["Mode2"].split(",")
-	found_phone = False
+        found_phone = False
         for device in device_mac:
             device = device.strip()
             new_unit = find_available_unit()
