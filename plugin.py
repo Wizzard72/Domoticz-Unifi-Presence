@@ -95,6 +95,7 @@ class BasePlugin:
             Domoticz.Log(strName+"item in devices = " +str(Devices[item].ID))
             Domoticz.Log(strName+"item in devices = " +str(Devices[item].Unit))
 
+        device_mac=Parameters["Mode2"].split(",")
         phone_name, mac_id = device.split("=")
         phone_name = phone_name.strip()
         mac_id = mac_id.strip().lower()
