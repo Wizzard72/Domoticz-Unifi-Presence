@@ -285,12 +285,12 @@ class BasePlugin:
                     phone_name = phone_name.strip()
                     mac_id = mac_id.strip().lower()
                     Domoticz.Log(strName+"MAC = " +str(item['mac'])+" = "+mac_id)
-                    #if str(item['mac']) == str(mac_id):
-                    #    svalue = "On"
-                    #    nvalue = 1
-                    #else:
-                    #    svalue = "Off"
-                    #    nvalue = 0
+                    if str(item['mac']) == mac_id:
+                        svalue = "On"
+                        nvalue = 1
+                    else:
+                        svalue = "Off"
+                        nvalue = 0
                     #for item in Devices:
                     #    Domoticz.Log(strName+"Device.item = " +Devices[item].Name[8:])
                     #    if Devices[item].Name[8:] == "Unifi - "+phone_name:
