@@ -104,7 +104,6 @@ class BasePlugin:
             phone_name = phone_name.strip()
             mac_id = mac_id.strip().lower()
             try:
-                Domoticz.Log(strName+"TRY")
                 for item in Devices:
                     #Domoticz.Log(strName+"Device.item = " +Devices[item].Name[8:])
                     if Devices[item].Name[8:] == phone_name:
@@ -310,7 +309,7 @@ class BasePlugin:
                 else:
                     svalue = "Off"
                     nvalue = 0
-                Domoticz.Log(strName+"Phone found with mac = "+str(item['mac'])+" / Unit ="+device_unit+" / Status = "+svalue)
+                Domoticz.Log(strName+"Phone found with mac = "+str(item['mac'])+" / Unit ="+str(device_unit)+" / sValue = "+svalue)
                 UpdateDevice(device_unit, nvalue, svalue)
                 #Devices[device_unit].Update(nValue=nvalue, sValue=str(svalue))
 
