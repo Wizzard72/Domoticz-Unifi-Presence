@@ -118,7 +118,7 @@ class BasePlugin:
             
         for dv in Devices:
             #Domoticz.Log(strName+"Devices Name = "+Devices[dv].Name[8:]+" = "+phone_name)
-            if "Paul" == Devices[dv].Name[8:]:
+            if Devices[dv].Name[8:] == "Paul":
                 device_unit = Devices[dv].Unit
                 Domoticz.Log(strName+"Paul Phone Unit = "+str(device_unit))
                 #Domoticz.Log(strName+"Found phone Unit = "+str(Devices[dv].Unit)+" / Name = "+Devices[dv].Name+" / Phone Name = "+phone_name)
