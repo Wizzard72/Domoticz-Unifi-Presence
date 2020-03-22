@@ -348,6 +348,7 @@ class BasePlugin:
                 found_mac = 0
                 for device in device_mac:
                     device_unit = None
+                    found_mac_address = None
                     device = device.strip()
                     phone_name, mac_id = device.split("=")
                     phone_name = phone_name.strip()
@@ -355,6 +356,7 @@ class BasePlugin:
                     if str(item['mac']) == mac_id and item['is_wired']:
                         # Found MAC address in API output
                         found_mac = 1
+			found_mac_address = str(item['mac'])
                     for dv in Devices:
                         # Find the unit number
                         if phone_name == Devices[dv].Name[8:]:
@@ -366,8 +368,9 @@ class BasePlugin:
                 else:
                     svalue = "Off"
                     nvalue = 0
-                Domoticz.Log(strName+"Phone found with mac = "+str(item['mac'])+" / Unit = "+str(device_unit)+" / sValue = "+svalue)
-                #UpdateDevice(device_unit, nvalue, svalue)
+                if found_mac_address != None:
+                    Domoticz.Log(strName+"Phone found with mac = "+found_mac_address+" / Unit = "+str(device_unit)+" / sValue = "+svalue)
+                    #UpdateDevice(device_unit, nvalue, svalue)
 
    
     def Authenticate(self):
