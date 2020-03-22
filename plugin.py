@@ -296,7 +296,7 @@ class BasePlugin:
                         if Devices[dv].Name[8:] == phone_name:
                             Domoticz.Log(strName+"Found phone idx = "+str(Devices[dv].ID))
                             device_unit = Devices[dv].Unit
-                if count = 1:
+                if count == 1:
                     svalue = "On"
                     nvalue = 1
                     #UpdateDevice(device_unit, nvalue, svalue)
