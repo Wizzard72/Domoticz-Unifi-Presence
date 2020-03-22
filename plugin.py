@@ -362,10 +362,8 @@ class BasePlugin:
                         # Find the unit number
                         search_phone = Devices[dv].Name[8:]
                         if phone_name == search_phone.strip():
-                            #Domoticz.Log(strName+"Found phone Unit = "+str(Devices[dv].Unit)+" / Name = "+Devices[dv].Name+" / Phone Name = "+phone_name)
-                            #Domoticz.Log(strName+"Check "+phone_name+" = "+Devices[dv].Name[8:])
                             device_unit = Devices[dv].Unit
-                            Domoticz.Log(strName+"Device Unit ("+phone_name+" = "+search_phone+") = "+str(device_unit))
+                            Domoticz.Log(strName+"Device Unit ("+phone_name+" = "+search_phone+") = "+str(device_unit)+"/"str(found_mac_address))
                             continue
                 if found_mac == 1:
                     svalue = "On"
