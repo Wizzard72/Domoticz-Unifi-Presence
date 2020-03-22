@@ -286,9 +286,9 @@ class BasePlugin:
                     #Domoticz.Log(strName+"items = " +str(item))
                     if item['mac'] == mac_id:
                         Domoticz.Log(strName+"Found device " +phone_name)
-                        UpdateDevice("UNIFI - "+phone_name, int(255), str(255))
+                        UpdateDevice("Unifi - "+phone_name, "On", str(255))
                     else:
-                        UpdateDevice("UNIFI - "+phone_name, int(0), str(0))
+                        UpdateDevice("Unifi - "+phone_name, "Off", str(0))
 
    
     def Authenticate(self):
