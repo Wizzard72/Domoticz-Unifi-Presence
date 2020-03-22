@@ -96,15 +96,16 @@ class BasePlugin:
             Domoticz.Log(strName+"item in devices = " +str(Devices[item].Unit))
 
         device_mac=Parameters["Mode2"].split(",")
-        phone_name, mac_id = device.split("=")
-        phone_name = phone_name.strip()
-        mac_id = mac_id.strip().lower()
-        for dv in Devices:
-            Domoticz.Log(strName+"<++++++++++++++++++++++++++>")
-            Domoticz.Log(strName+"Devices Name = "+Devices[dv].Name[8:]+" = "+phone_name)
-            #if Devices[dv].Name[8:] == "Paul":
-            #    Domoticz.Log(strName+"Found phone Unit = "+str(Devices[dv].Unit)+" / Name = "+Devices[dv].Name+" / Phone Name = "+phone_name)
-        Domoticz.Log(strName+"<++++++++++++++++++++++++++>")    
+        for device in device_mac:
+            phone_name, mac_id = device.split("=")
+            phone_name = phone_name.strip()
+            mac_id = mac_id.strip().lower()
+            for dv in Devices:
+                Domoticz.Log(strName+"<++++++++++++++++++++++++++>")
+                Domoticz.Log(strName+"Devices Name = "+Devices[dv].Name[8:]+" = "+phone_name)
+                #if Devices[dv].Name[8:] == "Paul":
+                #    Domoticz.Log(strName+"Found phone Unit = "+str(Devices[dv].Unit)+" / Name = "+Devices[dv].Name+" / Phone Name = "+phone_name)
+            Domoticz.Log(strName+"<++++++++++++++++++++++++++>")    
 		
 		
         device_mac=Parameters["Mode2"].split(",")
