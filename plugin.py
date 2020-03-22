@@ -128,6 +128,10 @@ class BasePlugin:
             Domoticz.Device(Name="Gateway PHY Temperature",  Unit=self.UNIFI_PHY_UNIT, Used=1, TypeName="Temperature").Create()
             UpdateDevice(self.UNIFI_PHY_UNIT, 0, "0")
             
+        if (self.UNIFI_UPTIME_UNIT not in Devices):
+            Domoticz.Device(Name="Uptime (hours)", Unit=self.UNIFI_UPTIME_UNIT, Type=243, Subtype=31).Create()
+            UpdateDevice(self.UNIFI_UPTIME_UNIT, 0, "0.0")
+            
         for item in Devices:
             Domoticz.Log(strName+"item in devices = " +Devices[item].Name)
             Domoticz.Log(strName+"item in devices = " +Devices[item].DeviceID)
@@ -329,7 +333,9 @@ class BasePlugin:
                     UpdateDevice(self.UNIFI_CPU_UNIT, int(cpu), str(cpu))
                     phy = wan['gw_system-stats']['temps']['PHY'][:-2]
                     UpdateDevice(self.UNIFI_PHY_UNIT, int(phy), str(phy))
-                    uptime = wan['gw_system-stats']['uptime']
+                    uptime = wan['gw_system-stats']['uptime']/3600
+                    UpdateDevice(self.UNIFI_UPTIME_UNIT, int(uptime), str(uptime))
+                    
 
         url = "/api/s/"+str(Parameters["Mode1"])+"/stat/sta"  
         url_api_s_default_stat_sta = "/api/s/"+Parameters["Mode1"]+"/stat/sta"
