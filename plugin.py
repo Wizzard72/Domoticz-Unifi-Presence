@@ -105,27 +105,27 @@ class BasePlugin:
             UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 0, "Off")
         
         if (self.UNIFI_CPU_PERC_UNIT not in Devices):
-            Domoticz.Device(Name="CPU Percentage",  Unit=self.UNIFI_CPU_PERC_UNIT, Used=1, TypeName="Percentage").Create()
+            Domoticz.Device(Name="Gateway CPU Percentage",  Unit=self.UNIFI_CPU_PERC_UNIT, Used=1, TypeName="Percentage").Create()
             UpdateDevice(self.UNIFI_CPU_PERC_UNIT, 0, "0")
         
         if (self.UNIFI_MEM_PERC_UNIT not in Devices):
-            Domoticz.Device(Name="Mem Percentage",  Unit=self.UNIFI_MEM_PERC_UNIT, Used=1, TypeName="Percentage").Create()
+            Domoticz.Device(Name="Gateway Mem Percentage",  Unit=self.UNIFI_MEM_PERC_UNIT, Used=1, TypeName="Percentage").Create()
             UpdateDevice(self.UNIFI_MEM_PERC_UNIT, 0, "0")
         
         if (self.UNIFI_BOARD_CPU_UNIT not in Devices):
-            Domoticz.Device(Name="Board (CPU) Temperature",  Unit=self.UNIFI_BOARD_CPU_UNIT, Used=1, TypeName="Temperature").Create()
+            Domoticz.Device(Name="Gateway Board (CPU) Temperature",  Unit=self.UNIFI_BOARD_CPU_UNIT, Used=1, TypeName="Temperature").Create()
             UpdateDevice(self.UNIFI_BOARD_CPU_UNIT, 0, "0")
         
         if (self.UNIFI_BOARD_PHY_UNIT not in Devices):
-            Domoticz.Device(Name="Board (PHY) Temperature",  Unit=self.UNIFI_BOARD_PHY_UNIT, Used=1, TypeName="Temperature").Create()
+            Domoticz.Device(Name="Gateway Board (PHY) Temperature",  Unit=self.UNIFI_BOARD_PHY_UNIT, Used=1, TypeName="Temperature").Create()
             UpdateDevice(self.UNIFI_BOARD_PHY_UNIT, 0, "0")
         
         if (self.UNIFI_CPU_UNIT not in Devices):
-            Domoticz.Device(Name="CPU Temperature",  Unit=self.UNIFI_CPU_UNIT, Used=1, TypeName="Temperature").Create()
+            Domoticz.Device(Name="Gateway CPU Temperature",  Unit=self.UNIFI_CPU_UNIT, Used=1, TypeName="Temperature").Create()
             UpdateDevice(self.UNIFI_CPU_UNIT, 0, "0")
         
         if (self.UNIFI_PHY_UNIT not in Devices):
-            Domoticz.Device(Name="PHY Temperature",  Unit=self.UNIFI_PHY_UNIT, Used=1, TypeName="Temperature").Create()
+            Domoticz.Device(Name="Gateway PHY Temperature",  Unit=self.UNIFI_PHY_UNIT, Used=1, TypeName="Temperature").Create()
             UpdateDevice(self.UNIFI_PHY_UNIT, 0, "0")
             
         for item in Devices:
