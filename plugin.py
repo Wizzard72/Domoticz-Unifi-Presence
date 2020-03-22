@@ -278,7 +278,7 @@ class BasePlugin:
             data = testjson['data']
             for item in data:
                 device_mac=Parameters["Mode2"].split(",")
-		device_unit = None
+                device_unit = None
                 for device in device_mac:
                     device = device.strip()
                     phone_name, mac_id = device.split("=")
