@@ -304,7 +304,7 @@ class BasePlugin:
         if ('meta' in testjson):
             meta = testjson['meta']
             if (meta['rc'] == "ok"):
-                Domoticz.Log(strName+"AUTHENTICATED: " +meta['rc'])
+                Domoticz.Debug(strName+"AUTHENTICATED: " +meta['rc'])
         if ('data' in testjson):
             data = testjson['data']
             for item in data:
@@ -312,12 +312,10 @@ class BasePlugin:
                 if item['subsystem'] == "wlan":
                     wlan = item
                     wlan_user_count = wlan['num_user']
-                    Domoticz.Log(strName+"WLAN User_Count = " +str(wlan_user_count))
                     UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, int(wlan_user_count), str(wlan_user_count))
                 if item['subsystem'] == "lan":
                     lan = item
                     lan_user_count = lan['num_user']
-                    Domoticz.Log(strName+"LAN User_Count = " +str(lan_user_count))
                     UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, int(lan_user_count), str(lan_user_count))
                 if item['subsystem'] == "wan":
                     wan = item
