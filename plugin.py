@@ -121,7 +121,15 @@ class BasePlugin:
             if Devices[dv].Name[8:] == "Paul":
                 device_unit = Devices[dv].Unit
                 Domoticz.Log(strName+"Paul Phone Unit = "+str(device_unit))
-                #Domoticz.Log(strName+"Found phone Unit = "+str(Devices[dv].Unit)+" / Name = "+Devices[dv].Name+" / Phone Name = "+phone_name)
+            elif Devices[dv].Name[8:] == "Sarah":
+                device_unit = Devices[dv].Unit
+                Domoticz.Log(strName+"Paul Phone Unit = "+str(device_unit))
+            leif Devices[dv].Name[8:] == "Peter":
+                device_unit = Devices[dv].Unit
+                Domoticz.Log(strName+"Paul Phone Unit = "+str(device_unit))
+            leif Devices[dv].Name[8:] == "Leni":
+                device_unit = Devices[dv].Unit
+                Domoticz.Log(strName+"Paul Phone Unit = "+str(device_unit))
                 
 
         self.SetupConnection()
