@@ -98,6 +98,7 @@ class BasePlugin:
             phone_name = phone_name.strip()
             mac_id = mac_id.strip().lower()
             try:
+                Domoticz.Log(strName+"TRY")
                 for item in Devices:
                     if Devices[item].name == phone_name:
                         Domoticz.Log(strName+"Found phone = "+device)
