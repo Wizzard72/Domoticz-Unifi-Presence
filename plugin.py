@@ -281,6 +281,7 @@ class BasePlugin:
             for item in data:
                 device_mac=Parameters["Mode2"].split(",")
                 device_unit = None
+                count = 0
                 for device in device_mac:
                     device = device.strip()
                     phone_name, mac_id = device.split("=")
@@ -289,18 +290,22 @@ class BasePlugin:
                     #Domoticz.Log(strName+"MAC = " +str(item['mac'])+" = "+mac_id)
                     if str(item['mac']) == mac_id:
                         Domoticz.Log(strName+"Found a matching MAC pair! ("+str(item['mac'])+"="+mac_id+" = "+phone_name)
-                        svalue = "On"
-                        nvalue = 1
-                    else:
-                        svalue = "Off"
-                        nvalue = 0
+                        count = 1
 			
                     for dv in Devices:
                         if Devices[dv].Name[8:] == phone_name:
                             Domoticz.Log(strName+"Found phone idx = "+str(Devices[dv].ID))
                             device_unit = Devices[dv].Unit
-                    UpdateDevice(device_unit, nvalue, svalue)
+                if count = 1:
+                    svalue = "On"
+                    nvalue = 1
+                    #UpdateDevice(device_unit, nvalue, svalue)
                     #Devices[device_unit].Update(nValue=nvalue, sValue=str(svalue))
+                elif:
+                    svalue = "Off"
+                    nvalue = 0
+                UpdateDevice(device_unit, nvalue, svalue)
+                #Devices[device_unit].Update(nValue=nvalue, sValue=str(svalue))
 
    
     def Authenticate(self):
