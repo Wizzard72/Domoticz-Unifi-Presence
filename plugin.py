@@ -100,7 +100,7 @@ class BasePlugin:
             phone_name = phone_name.strip()
             mac_id = mac_id.strip().lower()
             for item in Devices:
-                Domoticz.Log(strName+"Device.item = " +Devices[item].name)
+                Domoticz.Log(strName+"Device.item = " +Devices[item].Name)
 
 
         self.SetupConnection()
