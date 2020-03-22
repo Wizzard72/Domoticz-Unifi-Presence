@@ -293,8 +293,8 @@ class BasePlugin:
                         svalue = "Off"
                         nvalue = 0
 			
-                    for item in Devices:
-                        Domoticz.Log(strName+"Device.item = ")
+                    for dv in Devices:
+                        Domoticz.Log(strName+"Device.item = " +Devices[dv].Name)
                     #    if Devices[item].Name[8:] == "Unifi - "+phone_name:
                     #        Domoticz.Log(strName+"Found phone = "+device)
                     #        device_unit = Devices[item].ID
