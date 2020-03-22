@@ -294,7 +294,7 @@ class BasePlugin:
 			
                     for dv in Devices:
                         if Devices[dv].Name[8:] == phone_name:
-                            Domoticz.Log(strName+"Found phone idx = "+str(Devices[dv].ID))
+                            Domoticz.Log(strName+"Found phone idx = "+str(Devices[dv].ID)+" / Name = "+Devices[dv].Name+" / Phone Name = "+phone_name)
                             device_unit = Devices[dv].Unit
                 if count == 1:
                     svalue = "On"
@@ -304,7 +304,7 @@ class BasePlugin:
                 else:
                     svalue = "Off"
                     nvalue = 0
-                UpdateDevice(device_unit, nvalue, svalue)
+                #UpdateDevice(device_unit, nvalue, svalue)
                 #Devices[device_unit].Update(nValue=nvalue, sValue=str(svalue))
 
    
