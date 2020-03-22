@@ -289,11 +289,7 @@ class BasePlugin:
                     mac_id = mac_id.strip().lower()
                     #Domoticz.Log(strName+"MAC = " +str(item['mac'])+" = "+mac_id)
                     #Domoticz.Log(strName+"is wired = "+str(item['is_wired']))
-                    if item['is_wired']:
-                        Domoticz.Log(strName+"Is Wired = True")
-                    else:
-                        Domoticz.Log(strName+"Is Wired = False")
-                    if str(item['mac']) == mac_id and item['is_wired'] == False:
+                    if str(item['mac']) == mac_id and item['is_wired']:
                         Domoticz.Log(strName+"--------------------------")
                         Domoticz.Log(strName+"Phone Name = "+phone_name)
                         Domoticz.Log(strName+"Found a matching MAC pair! ("+str(item['mac'])+"="+mac_id+" = "+phone_name)
