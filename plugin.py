@@ -295,8 +295,8 @@ class BasePlugin:
                         Domoticz.Log(strName+"Phone Name = "+phone_name)
                         Domoticz.Log(strName+"Found a matching MAC pair! ("+str(item['mac'])+"="+mac_id+" = "+phone_name)
                         count = 1
+                    Domoticz.Log(strName+"<++++++++++++++++++++++++++>")
                     for dv in Devices:
-                        Domoticz.Log(strName+"<++++++++++++++++++++++++++>")
                         Domoticz.Log(strName+"Devices Name = "+Devices[dv].Name[8:]+" = "+phone_name)
                         if phone_name == Devices[dv].Name[8:]:
                             Domoticz.Log(strName+"Found phone Unit = "+str(Devices[dv].Unit)+" / Name = "+Devices[dv].Name+" / Phone Name = "+phone_name)
