@@ -124,10 +124,10 @@ class BasePlugin:
             elif Devices[dv].Name[8:] == "Sarah":
                 device_unit = Devices[dv].Unit
                 Domoticz.Log(strName+"Paul Phone Unit = "+str(device_unit))
-            leif Devices[dv].Name[8:] == "Peter":
+            elif Devices[dv].Name[8:] == "Peter":
                 device_unit = Devices[dv].Unit
                 Domoticz.Log(strName+"Paul Phone Unit = "+str(device_unit))
-            leif Devices[dv].Name[8:] == "Leni":
+            elif Devices[dv].Name[8:] == "Leni":
                 device_unit = Devices[dv].Unit
                 Domoticz.Log(strName+"Paul Phone Unit = "+str(device_unit))
                 
