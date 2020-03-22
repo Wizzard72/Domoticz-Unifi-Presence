@@ -99,16 +99,9 @@ class BasePlugin:
             phone_name, mac_id = device.split("=")
             phone_name = phone_name.strip()
             mac_id = mac_id.strip().lower()
-            try:
-                Domoticz.Log(strName+"TRY")
-                
-                for item in Devices:
-                    Domoticz.Log(strName+"Device.item = " +Devices[item].name)
+            for item in Devices:
+                Domoticz.Log(strName+"Device.item = " +Devices[item].name)
 
-                Domoticz.Log(strName+"TRY2")
-            except:
-                Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
-	    
 
         self.SetupConnection()
         Domoticz.Heartbeat(int(Parameters["Mode3"]))
