@@ -94,16 +94,16 @@ class BasePlugin:
         found_phone = False
         for device in device_mac:
             device = device.strip()
-            new_unit = find_available_unit()
+            phone_name, mac_id = device.split("=")
+            phone_name = phone_name.strip()
+            mac_id = mac_id.strip().lower()
             try:
-                phone_name, mac_id = device.split("=")
-                phone_name = phone_name.strip()
-                mac_id = mac_id.strip().lower()
                 for item in Devices:
                     if Devices[item].name == phone_name:
                         Domoticz.Log(strName+"Found phone = "+device)
                         found_phone = True
                 if found_phone == False:
+                    new_unit = find_available_unit()
                     Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
                     #Domoticz.Status(strName+"Created device for "+phone_name+" with unit id " + str(new_unit))
             except:
