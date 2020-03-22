@@ -88,7 +88,8 @@ class BasePlugin:
         if (self.UNIFI_LAN_COUNTER_UNIT not in Devices):
             Domoticz.Device(Name="LAN Counter",  Unit=self.UNIFI_LAN_COUNTER_UNIT, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, 0, "0.0")
-
+        for item in Devices;
+            Domoticz.Log(strName+"item in devices = " +item)
         device_mac=Parameters["Mode2"].split(",")
         for device in device_mac:
             device = device.strip()
@@ -97,7 +98,7 @@ class BasePlugin:
                 phone_name, mac_id = device.split("=")
                 phone_name = phone_name.strip()
                 mac_id = mac_id.strip().lower()
-                Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
+                #Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
                 #Domoticz.Status(strName+"Created device for "+phone_name+" with unit id " + str(new_unit))
             except:
                 Domoticz.Error("Invalid phone settings.")
