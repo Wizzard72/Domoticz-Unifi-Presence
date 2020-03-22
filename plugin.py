@@ -110,6 +110,7 @@ class BasePlugin:
                     #new_unit = find_available_unit()
                     #Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
                     #Domoticz.Status(strName+"Created device for "+phone_name+" with unit id " + str(new_unit))
+                Domoticz.Log(strName+"TRY")
             except:
                 Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
 	    
