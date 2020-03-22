@@ -125,10 +125,10 @@ class BasePlugin:
             UpdateDevice(self.UNIFI_UPTIME_UNIT, 0, "0.0")
             
         for item in Devices:
-            Domoticz.Log(strName+"item in devices = " +Devices[item].Name)
-            Domoticz.Log(strName+"item in devices = " +Devices[item].DeviceID)
-            Domoticz.Log(strName+"item in devices = " +str(Devices[item].ID))
-            Domoticz.Log(strName+"item in devices = " +str(Devices[item].Unit))
+            Domoticz.Log(strName+"item in devices = " +Devices[item].Name+" / "+Devices[item].DeviceID+" / "+str(Devices[item].ID)+" / "+str(Devices[item].Unit))
+            #Domoticz.Log(strName+"item in devices = " +Devices[item].DeviceID)
+            #Domoticz.Log(strName+"item in devices = " +str(Devices[item].ID))
+            #Domoticz.Log(strName+"item in devices = " +str(Devices[item].Unit))
 		
 		
         device_mac=Parameters["Mode2"].split(",")
