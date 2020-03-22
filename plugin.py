@@ -80,14 +80,6 @@ class BasePlugin:
         else:
             Domoticz.Debugging(0)
         
-        #Create "Anyone home" device
-        #if self.UNIFI_ANYONE_HOME_UNIT not in Devices:
-        #    get_or_create_unit('Anyone', unit=self.UNIFI_ANYONE_HOME_UNIT, icon='idetect-home')
-        
-        #Create "Override" device
-        #if self.UNIFI_OVERRIDE_UNIT not in Devices:
-        #    get_or_create_unit('Override', unit=self.UNIFI_OVERRIDE_UNIT, icon='idetect-override')
-        
         if (self.UNIFI_WLAN_COUNTER_UNIT not in Devices):
             Domoticz.Device(Name="WLAN Counter",  Unit=self.UNIFI_WLAN_COUNTER_UNIT, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, 0, "0")
