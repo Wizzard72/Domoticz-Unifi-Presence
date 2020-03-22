@@ -292,6 +292,7 @@ class BasePlugin:
                     else:
                         svalue = "Off"
                         nvalue = 0
+			
                     for item in Devices:
                         Domoticz.Log(strName+"Device.item = ")
                     #    if Devices[item].Name[8:] == "Unifi - "+phone_name:
