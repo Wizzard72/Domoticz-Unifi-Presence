@@ -99,8 +99,20 @@ class BasePlugin:
             phone_name, mac_id = device.split("=")
             phone_name = phone_name.strip()
             mac_id = mac_id.strip().lower()
-            for item in Devices:
-                Domoticz.Log(strName+"Device.item = " +Devices[item].Name)
+            try:
+                Domoticz.Log(strName+"TRY")
+                for item in Devices:
+                    Domoticz.Log(strName+"Device.item = " +Devices[item].Name)
+                    if Devices[item].Name == phone_name:
+                        Domoticz.Log(strName+"Found phone = "+device)
+                        found_phone = True
+                    if found_phone == False:
+                        new_unit = find_available_unit()
+                        Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
+                        #Domoticz.Status(strName+"Created device for "+phone_name+" with unit id " + str(new_unit))
+            except:
+                Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
+            
 
 
         self.SetupConnection()
