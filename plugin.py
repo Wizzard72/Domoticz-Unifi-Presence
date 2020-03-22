@@ -324,7 +324,7 @@ class BasePlugin:
                 else:
                     svalue = "Off"
                     nvalue = 0
-                if device_unit != None:
+                if count == 1:
                     Domoticz.Log(strName+"Phone found with mac = "+str(item['mac'])+" / Unit = "+str(device_unit)+" / sValue = "+svalue)
                     UpdateDevice(device_unit, nvalue, svalue)
                     #Devices[device_unit].Update(nValue=nvalue, sValue=str(svalue))
