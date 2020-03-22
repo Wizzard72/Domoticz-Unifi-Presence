@@ -368,7 +368,7 @@ class BasePlugin:
                 else:
                     svalue = "Off"
                     nvalue = 0
-                if found_mac_address != None:
+                if found_mac == 1:
                     Domoticz.Log(strName+"Phone found with mac = "+found_mac_address+" / Unit = "+str(device_unit)+" / sValue = "+svalue)
                     #UpdateDevice(device_unit, nvalue, svalue)
 
