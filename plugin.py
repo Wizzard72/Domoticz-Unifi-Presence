@@ -295,7 +295,7 @@ class BasePlugin:
 			
                     for dv in Devices:
                         Domoticz.Log(strName+"Device.item = " +Devices[dv].Name[8:])
-                        if Devices[item].Name[8:] == phone_name:
+                        if Devices[dv].Name[8:] == phone_name:
                             Domoticz.Log(strName+"Found phone = "+device+""+Devices[dv].ID)
                             device_unit = Devices[dv].ID
                     #UpdateDevice(device_unit, nvalue, svalue)
