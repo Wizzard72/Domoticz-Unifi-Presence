@@ -343,12 +343,13 @@ class BasePlugin:
                         # Found MAC address in API output
                         found_mac = 1
                         found_mac_address = str(item['mac'])
+			found_user = phone_name
                     for dv in Devices:
                         # Find the unit number
                         search_phone = Devices[dv].Name[8:]
-                        if Devices[dv].Name[8:] == "Leni":
+                        if Devices[dv].Name[8:] == found_user:
                             device_unit = Devices[dv].Unit
-                            Domoticz.Debug(strName+"Device Unit ("+phone_name+" = "+search_phone+") = "+str(device_unit)+"/"+str(found_mac_address))
+                            Domoticz.Debug(strName+"Device Unit ("+found_user+" = "+search_phone+") = "+str(device_unit)+"/"+str(found_mac_address))
                             continue
                 if found_mac == 1:
                     svalue = "On"
