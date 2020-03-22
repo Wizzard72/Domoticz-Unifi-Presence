@@ -277,11 +277,16 @@ class BasePlugin:
         if ('data' in testjson):
             data = testjson['data']
             for item in data:
-                #Domoticz.Log(strName+"items = " +str(item))
-                if item['mac'] == "08:c5:e1:9c:dc:9c":
-                    mac = item
-                    Domoticz.Log(strName+"Found device")
-                    #UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, int(wlan_user_count), str(wlan_user_count))
+                device_mac=Parameters["Mode2"].split(",")
+                for device in device_mac:
+                    device = device.strip()
+                    phone_name, mac_id = device.split("=")
+                    phone_name = phone_name.strip()
+                    mac_id = mac_id.strip().lower()
+                    #Domoticz.Log(strName+"items = " +str(item))
+                    if item['mac'] == mac_id:
+                        Domoticz.Log(strName+"Found device " +phone_name)
+                        #UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, int(wlan_user_count), str(wlan_user_count))
 
    
     def Authenticate(self):
