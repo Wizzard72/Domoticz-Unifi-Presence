@@ -333,7 +333,7 @@ class BasePlugin:
                     UpdateDevice(self.UNIFI_CPU_UNIT, int(cpu), str(cpu))
                     phy = wan['gw_system-stats']['temps']['PHY'][:-2]
                     UpdateDevice(self.UNIFI_PHY_UNIT, int(phy), str(phy))
-                    uptime = wan['gw_system-stats']['uptime']/3600
+                    uptime = int(wan['gw_system-stats']['uptime'])/3600
                     UpdateDevice(self.UNIFI_UPTIME_UNIT, int(uptime), str(uptime))
                     
 
