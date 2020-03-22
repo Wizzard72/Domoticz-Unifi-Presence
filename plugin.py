@@ -284,7 +284,7 @@ class BasePlugin:
                     phone_name, mac_id = device.split("=")
                     phone_name = phone_name.strip()
                     mac_id = mac_id.strip().lower()
-                    #Domoticz.Log(strName+"items = " +str(item))
+                    Domoticz.Log(strName+"MAC = " +str(item['mac')+" = "+mac_id)
                     if str(item['mac']) == str(mac_id):
                         svalue = "On"
                         nvalue = 1
