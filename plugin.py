@@ -284,9 +284,9 @@ class BasePlugin:
                     phone_name, mac_id = device.split("=")
                     phone_name = phone_name.strip()
                     mac_id = mac_id.strip().lower()
-                    Domoticz.Log(strName+"MAC = " +str(item['mac'])+" = "+mac_id)
+                    #Domoticz.Log(strName+"MAC = " +str(item['mac'])+" = "+mac_id)
                     if str(item['mac']) == mac_id:
-                        Domoticz.Log(strName+"Found a matching MAC pair! ("+str(item['mac'])+"="+mac_id)
+                        Domoticz.Log(strName+"Found a matching MAC pair! ("+str(item['mac'])+"="+mac_id+" = "+phone_name)
                         svalue = "On"
                         nvalue = 1
                     else:
