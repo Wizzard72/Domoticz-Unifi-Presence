@@ -345,39 +345,29 @@ class BasePlugin:
             for item in data:
                 device_mac=Parameters["Mode2"].split(",")
                 #device_unit = None
-                count = 0
+                found_mac = 0
                 for device in device_mac:
                     device_unit = None
                     device = device.strip()
                     phone_name, mac_id = device.split("=")
                     phone_name = phone_name.strip()
                     mac_id = mac_id.strip().lower()
-                    #Domoticz.Log(strName+"MAC = " +str(item['mac'])+" = "+mac_id)
-                    #Domoticz.Log(strName+"is wired = "+str(item['is_wired']))
                     if str(item['mac']) == mac_id and item['is_wired']:
-                        #Domoticz.Log(strName+"--------------------------")
-                        #Domoticz.Log(strName+"Phone Name = "+phone_name)
-                        #Domoticz.Log(strName+"Found a matching MAC pair! ("+str(item['mac'])+"="+mac_id+" = "+phone_name)
-                        count = 1
-                    #Domoticz.Log(strName+"<++++++++++++++++++++++++++>")
+                        # Found MAC address in API output
+                        found_mac = 1
                     for dv in Devices:
-                        #Domoticz.Log(strName+"Devices Name = "+Devices[dv].Name[8:]+" = "+phone_name)
+                        # Find the unit number
                         if phone_name == Devices[dv].Name[8:]:
                             #Domoticz.Log(strName+"Found phone Unit = "+str(Devices[dv].Unit)+" / Name = "+Devices[dv].Name+" / Phone Name = "+phone_name)
                             device_unit = Devices[dv].Unit
-                    #Domoticz.Log(strName+"<++++++++++++++++++++++++++>")
-                if count == 1:
+                if found_mac == 1:
                     svalue = "On"
                     nvalue = 1
-                    #UpdateDevice(device_unit, nvalue, svalue)
-                    #Devices[device_unit].Update(nValue=nvalue, sValue=str(svalue))
                 else:
                     svalue = "Off"
                     nvalue = 0
-                if count == 1:
-                    Domoticz.Log(strName+"Phone found with mac = "+str(item['mac'])+" / Unit = "+str(device_unit)+" / sValue = "+svalue)
-                    UpdateDevice(device_unit, nvalue, svalue)
-                    #Devices[device_unit].Update(nValue=nvalue, sValue=str(svalue))
+                Domoticz.Log(strName+"Phone found with mac = "+str(item['mac'])+" / Unit = "+str(device_unit)+" / sValue = "+svalue)
+                #UpdateDevice(device_unit, nvalue, svalue)
 
    
     def Authenticate(self):
