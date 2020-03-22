@@ -125,7 +125,7 @@ class BasePlugin:
             UpdateDevice(self.UNIFI_UPTIME_UNIT, 0, "0.0")
             
         for item in Devices:
-            Domoticz.Log(strName+"item in devices = " +Devices[item].Name+" / "+Devices[item].DeviceID+" / "+str(Devices[item].ID)+" / "+str(Devices[item].Unit))
+            Domoticz.Debug(strName+"item in devices = " +Devices[item].Name+" / "+Devices[item].DeviceID+" / "+str(Devices[item].ID)+" / "+str(Devices[item].Unit))
             #Domoticz.Log(strName+"item in devices = " +Devices[item].DeviceID)
             #Domoticz.Log(strName+"item in devices = " +str(Devices[item].ID))
             #Domoticz.Log(strName+"item in devices = " +str(Devices[item].Unit))
@@ -157,7 +157,7 @@ class BasePlugin:
 
     def onStop(self):
         strName = "onStop: "
-        Domoticz.Log(strName+"Pluggin is stopping.")
+        Domoticz.Debug(strName+"Pluggin is stopping.")
         sendData = {'Verb' : 'GET',
                     'URL'  : '/api/logout',
                     'Headers' : {
@@ -171,10 +171,10 @@ class BasePlugin:
 
     def onConnect(self, Connection, Status, Description):
         strName = "onConnect: "
-        Domoticz.Log(strName+"called")
-        Domoticz.Log(strName+"Connection = "+str(Connection))
-        Domoticz.Log(strName+"Status = "+str(Status))
-        Domoticz.Log(strName+"Description = "+str(Description))
+        Domoticz.Debug(strName+"called")
+        Domoticz.Debug(strName+"Connection = "+str(Connection))
+        Domoticz.Debug(strName+"Status = "+str(Status))
+        Domoticz.Debug(strName+"Description = "+str(Description))
         if (self.hostAuth == False):
             Domoticz.Log(strName+"Start Authentication process")
             self.Authenticate()
@@ -182,13 +182,13 @@ class BasePlugin:
             Domoticz.Log(strName+"Unifi Controller connected successfully.")
             self.Authenticate()
         else:
-            Domoticz.Log(strName+"Failed to connect ("+str(Status)+") to: https://"+Parameters["Address"]+":"+Parameters["Port"]+" with error: "+Description)
+            Domoticz.Error(strName+"Failed to connect ("+str(Status)+") to: https://"+Parameters["Address"]+":"+Parameters["Port"]+" with error: "+Description)
 
     def onMessage(self, Connection, Data):
         strName = "onMessage: "
-        Domoticz.Log(strName+"called")
+        Domoticz.Debug(strName+"called")
         DumpHTTPResponseToLog(Data)
-        Domoticz.Log(strName+"Data = " +str(Data))
+        Domoticz.Debug(strName+"Data = " +str(Data))
         strData = Data["Data"].decode("utf-8", "ignore")
         status = int(Data["Status"])
 
@@ -197,17 +197,17 @@ class BasePlugin:
             
         if (status == 200):
             unifiResponse = json.loads(strData)
-            Domoticz.Log(strName+"Retrieved following json: "+json.dumps(unifiResponse))
+            Domoticz.Debug(strName+"Retrieved following json: "+json.dumps(unifiResponse))
             
             self.ProcessCookie(Data)
             self.RequestDetails()
             if (('meta' in unifiResponse)):
                 self.hostAuth = True
-                Domoticz.Log(strName+"hostAuth = True")
+                Domoticz.Debug(strName+"hostAuth = True")
                 self.countDown = self.ProcessDetails(unifiResponse['meta'])
                 return
             else:
-                Domoticz.Log(strName+"Error: HostAuth = False")
+                Domoticz.Error(strName+"Error: HostAuth = False")
         elif status == 302:
             Domoticz.Error(strName+"Unifi Controller returned a Page Moved Error.")
         elif status == 400:
@@ -219,20 +219,20 @@ class BasePlugin:
 
     def onCommand(self, Unit, Command, Level, Hue):
         strName = "onCommand: "
-        Domoticz.Log(strName+"called for Unit " + str(Unit) + ": Parameter '" + str(Command) + "', Level: " + str(Level))
+        Domoticz.Debug(strName+"called for Unit " + str(Unit) + ": Parameter '" + str(Command) + "', Level: " + str(Level))
 
     def onNotification(self, Name, Subject, Text, Status, Priority, Sound, ImageFile):
         strName = "onNotification: "
-        Domoticz.Log(strName+"called")
+        Domoticz.Debug(strName+"called")
         Domoticz.Log(strName+"Notification: " + Name + "," + Subject + "," + Text + "," + Status + "," + str(Priority) + "," + Sound + "," + ImageFile)
 
     def onDisconnect(self, Connection):
         strName = "onDisconnect: "
-        Domoticz.Log(strName+"called")
+        Domoticz.Debug(strName+"called")
 
     def onHeartbeat(self):
         strName = "onHeartbeat: "
-        Domoticz.Log(strName+"called")
+        Domoticz.Debug(strName+"called")
         #if (self.unifiConn != None) and (self.unifiConn.Connecting()):
         #    return
         
@@ -245,18 +245,18 @@ class BasePlugin:
                 self.RequestDetails()
             else:
                 Domoticz.Log(strName+"Requesting Unifi Controller authorization.")
-                Domoticz.Log(strName+"hostAuth = "+str(self.hostAuth))
+                Domoticz.Debug(strName+"hostAuth = "+str(self.hostAuth))
                 self.Authenticate()
 
     def SetupConnection(self):
         strName = "SetupConnection: "
-        Domoticz.Log(strName+"called")
+        Domoticz.Debug(strName+"called")
         self.unifiConn = Domoticz.Connection(Name='UnifiPresenceConn', Transport="TCP/IP", Protocol="HTTPS", Address=Parameters["Address"], Port=Parameters["Port"])
         self.unifiConn.Connect()
         
     def RequestDetails(self):
         strName = "RequestDetails: "
-        Domoticz.Log(strName+"called")
+        Domoticz.Debug(strName+"called")
         host = "https://"+Parameters["Address"]+":"+Parameters["Port"]
         url_api_s_default_stat_health = "/api/s/"+Parameters["Mode1"]+"/stat/health"
         reqapi = urllib.request.Request(host+url_api_s_default_stat_health,headers={'Cookie':self.cookie})
@@ -324,7 +324,7 @@ class BasePlugin:
         if ('meta' in testjson):
             meta = testjson['meta']
             if (meta['rc'] == "ok"):
-                Domoticz.Log(strName+"AUTHENTICATED: " +meta['rc'])
+                Domoticz.Debug(strName+"AUTHENTICATED: " +meta['rc'])
         if ('data' in testjson):
             data = testjson['data']
             for item in data:
@@ -332,7 +332,7 @@ class BasePlugin:
                 #device_unit = None
                 found_mac = 0
                 found_mac_address = None
-                Domoticz.Log(strName+"==============================")
+                Domoticz.Debug(strName+"==============================")
                 for device in device_mac:
                     device_unit = None
                     device = device.strip()
@@ -348,7 +348,7 @@ class BasePlugin:
                         search_phone = Devices[dv].Name[8:]
                         if Devices[dv].Name[8:] == "Leni":
                             device_unit = Devices[dv].Unit
-                            Domoticz.Log(strName+"Device Unit ("+phone_name+" = "+search_phone+") = "+str(device_unit)+"/"+str(found_mac_address))
+                            Domoticz.Debug(strName+"Device Unit ("+phone_name+" = "+search_phone+") = "+str(device_unit)+"/"+str(found_mac_address))
                             continue
                 if found_mac == 1:
                     svalue = "On"
@@ -360,12 +360,12 @@ class BasePlugin:
                     Domoticz.Log(strName+"Phone found with mac = "+str(found_mac_address)+" / Unit = "+str(device_unit)+" / sValue = "+str(svalue))
                     break
                     #UpdateDevice(device_unit, nvalue, svalue)
-        Domoticz.Log(strName+"==============================")
+        Domoticz.Debug(strName+"==============================")
 
    
     def Authenticate(self):
         strName = "Authenticate: "
-        Domoticz.Log(strName+"called")
+        Domoticz.Debug(strName+"called")
         payload = { "password" : Parameters["Password"],"username" : Parameters["Username"] }
         jsondata = json.dumps(payload)
         jsondataasbytes = jsondata.encode('utf-8')
@@ -385,13 +385,13 @@ class BasePlugin:
                          },
                      'Data' : json.dumps(payload)
                    }
-        Domoticz.Log(strName+"sendData = "+str(sendData))
+        Domoticz.Debug(strName+"sendData = "+str(sendData))
         self.unifiConn.Send(sendData)
         
     
     def ProcessDetails(self, response):
         strName = "ProcessDetails: "
-        Domoticz.Log(strName+"called")
+        Domoticz.Debug(strName+"called")
         if (('rc' in response) and (str(response['rc']) == "ok")):
             Domoticz.Log(strName+"Authenticated succesfull to Unifi Controller")
             hostAuth = True
@@ -403,15 +403,15 @@ class BasePlugin:
     def ProcessCookie(self, httpDict):
         strName = "ProcessCookie: "
         if isinstance(httpDict, dict):
-            Domoticz.Log(strName+"Analyzing Data ("+str(len(httpDict))+"):")
+            Domoticz.Debug(strName+"Analyzing Data ("+str(len(httpDict))+"):")
             for x in httpDict:
                 if isinstance(httpDict[x], dict):
                     if (x == "Headers"):
-                        Domoticz.Log(strName+"---> Headers found")
+                        Domoticz.Debug(strName+"---> Headers found")
                         for y in httpDict[x]:
-                            Domoticz.Log(strName+"------->'" + y + "':'" + str(httpDict[x][y]) + "'")
+                            Domoticz.Debug(strName+"------->'" + y + "':'" + str(httpDict[x][y]) + "'")
                             if (y == "Set-Cookie"):
-                                Domoticz.Log(strName+"---> Found Cookie")
+                                Domoticz.Debug(strName+"---> Found Cookie")
                                 self.cookie = str(httpDict[x][y])[:-2][2:]
                                 self.cookieAvailable = True
 
@@ -458,7 +458,7 @@ def LogMessage(Message):
         f = open(Parameters["HomeFolder"]+"http.html","w")
         f.write(Message)
         f.close()
-        Domoticz.Log(strName+"File written")
+        Domoticz.Debug(strName+"File written")
 
 def DumpHTTPResponseToLog(httpResp, level=0):
     strName = "DumpHTTPResponseToLog: "
