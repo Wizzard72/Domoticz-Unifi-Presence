@@ -101,12 +101,12 @@ class BasePlugin:
                 Domoticz.Log(strName+"TRY")
                 for item in Devices:
                     Domoticz.Log(strName+"Device.item = " +Devices[item].name)
-                    if Devices[item].name == phone_name:
-                        Domoticz.Log(strName+"Found phone = "+device)
-                        found_phone = True
-                if found_phone == False:
-                    new_unit = find_available_unit()
-                    Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
+                    #if Devices[item].name == phone_name:
+                        #Domoticz.Log(strName+"Found phone = "+device)
+                        #found_phone = True
+                #if found_phone == False:
+                    #new_unit = find_available_unit()
+                    #Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
                     #Domoticz.Status(strName+"Created device for "+phone_name+" with unit id " + str(new_unit))
             except:
                 Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
