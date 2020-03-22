@@ -332,7 +332,7 @@ class BasePlugin:
                 #device_unit = None
                 found_mac = 0
                 found_mac_address = None
-		found_user = None
+                found_user = None
                 Domoticz.Debug(strName+"==============================")
                 for device in device_mac:
                     device_unit = None
