@@ -294,11 +294,11 @@ class BasePlugin:
                         nvalue = 0
 			
                     for dv in Devices:
-                        Domoticz.Log(strName+"Device.item = " +Devices[dv].Name[8:])
                         if Devices[dv].Name[8:] == phone_name:
                             Domoticz.Log(strName+"Found phone idx = "+str(Devices[dv].ID))
                             device_unit = Devices[dv].ID
-                    UpdateDevice(device_unit, nvalue, svalue)
+                    #UpdateDevice(device_unit, nvalue, svalue)
+                    Devices[device_unit].Update(nValue=nvalue, sValue=str(svalue))
 
    
     def Authenticate(self):
