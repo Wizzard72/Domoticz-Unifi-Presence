@@ -106,7 +106,7 @@ class BasePlugin:
             try:
                 Domoticz.Log(strName+"TRY")
                 for item in Devices:
-                    Domoticz.Log(strName+"Device.item = " +Devices[item].Name[8:])
+                    #Domoticz.Log(strName+"Device.item = " +Devices[item].Name[8:])
                     if Devices[item].Name[8:] == phone_name:
                         Domoticz.Log(strName+"Found phone = "+device)
                         found_phone = True
@@ -291,17 +291,17 @@ class BasePlugin:
                     #Domoticz.Log(strName+"MAC = " +str(item['mac'])+" = "+mac_id)
                     #Domoticz.Log(strName+"is wired = "+str(item['is_wired']))
                     if str(item['mac']) == mac_id and item['is_wired']:
-                        Domoticz.Log(strName+"--------------------------")
-                        Domoticz.Log(strName+"Phone Name = "+phone_name)
-                        Domoticz.Log(strName+"Found a matching MAC pair! ("+str(item['mac'])+"="+mac_id+" = "+phone_name)
+                        #Domoticz.Log(strName+"--------------------------")
+                        #Domoticz.Log(strName+"Phone Name = "+phone_name)
+                        #Domoticz.Log(strName+"Found a matching MAC pair! ("+str(item['mac'])+"="+mac_id+" = "+phone_name)
                         count = 1
-                    Domoticz.Log(strName+"<++++++++++++++++++++++++++>")
+                    #Domoticz.Log(strName+"<++++++++++++++++++++++++++>")
                     for dv in Devices:
                         #Domoticz.Log(strName+"Devices Name = "+Devices[dv].Name[8:]+" = "+phone_name)
                         if phone_name == Devices[dv].Name[8:]:
-                            Domoticz.Log(strName+"Found phone Unit = "+str(Devices[dv].Unit)+" / Name = "+Devices[dv].Name+" / Phone Name = "+phone_name)
+                            #Domoticz.Log(strName+"Found phone Unit = "+str(Devices[dv].Unit)+" / Name = "+Devices[dv].Name+" / Phone Name = "+phone_name)
                             device_unit = Devices[dv].Unit
-                    Domoticz.Log(strName+"<++++++++++++++++++++++++++>")
+                    #Domoticz.Log(strName+"<++++++++++++++++++++++++++>")
                 if count == 1:
                     svalue = "On"
                     nvalue = 1
@@ -310,6 +310,7 @@ class BasePlugin:
                 else:
                     svalue = "Off"
                     nvalue = 0
+                Domoticz.Log(strName+"Phone found with mac = "+str(item['mac'])+" / Unit ="+device_unit+" / Status = "+svalue)
                 UpdateDevice(device_unit, nvalue, svalue)
                 #Devices[device_unit].Update(nValue=nvalue, sValue=str(svalue))
 
