@@ -372,7 +372,7 @@ class BasePlugin:
                     phone_name, mac_id = device.split("=")
                     phone_name = phone_name.strip()
                     mac_id = mac_id.strip().lower()
-                    if str(item['mac']) == mac_id and item['is_wired']:
+                    if str(item['mac']) == mac_id and is not item['is_wired']:
                         # Found MAC address in API output
                         #found_mac = 1
                         #found_mac_address = str(item['mac'])
