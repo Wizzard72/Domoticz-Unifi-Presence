@@ -264,7 +264,6 @@ class BasePlugin:
     def onHeartbeat(self):
         strName = "onHeartbeat: "
         Domoticz.Debug(strName+"called")
-        Domoticz.Log(strName+"Matrix = "+self.Matrix[0][1])
         #if (self.unifiConn != None) and (self.unifiConn.Connecting()):
         #    return
         
@@ -357,32 +356,27 @@ class BasePlugin:
             meta = testjson['meta']
             if (meta['rc'] == "ok"):
                 Domoticz.Debug(strName+"AUTHENTICATED: " +meta['rc'])
-        if ('data' in testjson):
-            data = testjson['data']
-            for item in data:
-                device_mac=Parameters["Mode2"].split(",")
-                #device_unit = None
-                found_mac = 0
-                found_mac_address = None
-                found_user = None
-                Domoticz.Debug(strName+"==============================")
-                for device in device_mac:
-                    device_unit = None
-                    device = device.strip()
-                    phone_name, mac_id = device.split("=")
-                    phone_name = phone_name.strip()
-                    mac_id = mac_id.strip().lower()
-                    if str(item['mac']) == mac_id and not item['is_wired']:
-                        # Found MAC address in API output
-                        #found_mac = 1
-                        #found_mac_address = str(item['mac'])
-                        #found_user = phone_name
-                        #count = 0
-                        for x in range(self.total_devices_count):
-                            if self.Matrix[x][1] == mac_id:
-                                Domoticz.Log(strName+"Found phone ON "+self.Matrix[x][0])
-                                self.Matrix[x][3] = "On"
-                                self.Matrix[x][4] = "Yes"
+                if ('data' in testjson):
+                    data = testjson['data']
+                    for item in data:
+                        device_mac=Parameters["Mode2"].split(",")
+                        #device_unit = None
+                        found_mac = 0
+                        found_mac_address = None
+                        found_user = None
+                        for device in device_mac:
+                            device_unit = None
+                            device = device.strip()
+                            phone_name, mac_id = device.split("=")
+                            phone_name = phone_name.strip()
+                            mac_id = mac_id.strip().lower()
+                            if str(item['mac']) == mac_id and not item['is_wired']:
+                                # Found MAC address in API output
+                                for x in range(self.total_devices_count):
+                                    if self.Matrix[x][1] == mac_id:
+                                        Domoticz.Log(strName+"Found phone ON "+self.Matrix[x][0])
+                                        self.Matrix[x][3] = "On"
+                                        self.Matrix[x][4] = "Yes"
         
         for x in range(self.total_devices_count):
             Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
