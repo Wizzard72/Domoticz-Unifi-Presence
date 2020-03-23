@@ -266,6 +266,7 @@ class BasePlugin:
     def onHeartbeat(self):
         strName = "onHeartbeat: "
         Domoticz.Debug(strName+"called")
+        Domoticz.Log(strName+"Matrix = "+Matrix[0][1])
         #if (self.unifiConn != None) and (self.unifiConn.Connecting()):
         #    return
         
