@@ -378,7 +378,8 @@ class BasePlugin:
                         found_user = phone_name
                         count = 0
                         for dev in self.Matrix:
-                            Domoticz.Log(strName+"DEV = "+dev)
+                            Domoticz.Log(strName+"DEV = "+dev[count][0])
+                            count = count + 1
 				
                     #for dv in Devices:
                         # Find the unit number
