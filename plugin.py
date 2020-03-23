@@ -141,7 +141,7 @@ class BasePlugin:
         for device in device_mac:
             device = device.strip()
             Device_Name, Device_Mac = device.split("=")
-            Device_Unit = 0
+            Device_Unit = None
             Device_State = "Off"
             found_user = Device_Name
             for dv in Devices:
@@ -149,7 +149,7 @@ class BasePlugin:
                 search_phone = Devices[dv].Name[8:]
                 if Devices[dv].Name[8:] == found_user:
                     Device_Unit = Devices[dv].Unit
-                    Domoticz.Log(strName+"Device Unit ("+found_user+" = "+Device_Name") = "+str(Device_Unit)+"/"+str(Device_Mac))
+                    #Domoticz.Log(strName+"Device Unit ("+found_user+" = "+Device_Name") = "+str(Device_Unit)+"/"+str(Device_Mac))
                     continue
             table_devices.append({"Phone_name":Device_Name, "MAC_ID":Device_Mac, "Unit_Number":Device_Unit, "State":Device_State})
             Domoticz.Log(strName+"table_devices[0] = "+table_devices[0]+" | "+table_devices[1]+" | "+table_devices[2]+" | "+table_devices[3])
