@@ -379,7 +379,7 @@ class BasePlugin:
                         #found_user = phone_name
                         #count = 0
                         for x in range(4):
-                            if self.Matrix[x][0] == found_user:
+                            if self.Matrix[x][1] == mac_id:
                                 Domoticz.Log(strName+"Found phone ON"+self.Matrix[x][0])
                                 self.Matrix[x][3] = "On"
         
