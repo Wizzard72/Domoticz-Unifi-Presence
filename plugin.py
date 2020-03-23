@@ -371,6 +371,7 @@ class BasePlugin:
                     phone_name, mac_id = device.split("=")
                     phone_name = phone_name.strip()
                     mac_id = mac_id.strip().lower()
+                    Domoticz.LOG(strName+"HELPPP")
                     if str(item['mac']) == mac_id:
                         # Found MAC address in API output
                         #found_mac = 1
