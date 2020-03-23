@@ -141,7 +141,7 @@ class BasePlugin:
         w, h = 4, count;
         self.Matrix = [[0 for x in range(w)] for y in range(h)] 
         # table:
-        # Phone_Name | MAC_ID | Unit_Number | State |
+        # Phone_Name | MAC_ID | Unit_Number | State | Changed
         # Matrix[0][0] = 1
         count = 0
         found_user = None
@@ -152,6 +152,7 @@ class BasePlugin:
             self.Matrix[count][1] = Device_Mac
             Device_Unit = None
             self.Matrix[count][3] = "Off"
+            self.Matrix[count][4] = "No"
             found_user = Device_Name
             for dv in Devices:
                 # Find the unit number
@@ -159,7 +160,7 @@ class BasePlugin:
                 if Devices[dv].Name[8:] == found_user:
                     self.Matrix[count][2] = Devices[dv].Unit
                     continue
-            Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3])
+            Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3]+" | "+self.Matrix[count][4])
             count = count + 1
         
         found_phone = False
@@ -382,13 +383,16 @@ class BasePlugin:
                             if self.Matrix[x][1] == mac_id:
                                 Domoticz.Log(strName+"Found phone ON"+self.Matrix[x][0])
                                 self.Matrix[x][3] = "On"
+                                self.Matrix[x][4] = "Yes"
         
         for x in range(4):
             Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3])
-            if self.Matrix[x][3] == "On":
-                svalue = "On"
-                nvalue = 1
-                UpdateDevice(self.Matrix[x][2], nvalue, svalue)
+            if self.Matrix[x][4] == "Yes":
+                if self.Matrix[x][3] == "On":
+                    svalue = "On"
+                    nvalue = 1
+                    UpdateDevice(self.Matrix[x][2], nvalue, svalue)
+                    self.Matrix[x][4] = "No"
             else:
                 svalue = "Off"
                 nvalue = 0
