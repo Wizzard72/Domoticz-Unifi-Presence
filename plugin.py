@@ -152,7 +152,7 @@ class BasePlugin:
                     #Domoticz.Log(strName+"Device Unit ("+found_user+" = "+Device_Name") = "+str(Device_Unit)+"/"+str(Device_Mac))
                     continue
             table_devices.append({"Phone_name":Device_Name, "MAC_ID":Device_Mac, "Unit_Number":Device_Unit, "State":Device_State})
-            Domoticz.Log(strName+"table_devices[0] = "+table_devices[1.0])
+            Domoticz.Log(strName+"table_devices[0] = "+table_devices)
                          #+" | "+table_devices[1]+" | "+table_devices[2]+" | "+table_devices[3])
         
         found_phone = False
