@@ -373,13 +373,23 @@ class BasePlugin:
                     mac_id = mac_id.strip().lower()
                     if str(item['mac']) == mac_id:
                         # Found MAC address in API output
-                        found_mac = 1
-                        found_mac_address = str(item['mac'])
-                        found_user = phone_name
-                        count = 0
-                        for dev in self.Matrix:
-                            Domoticz.Log(strName+"DEV = "+dev[count])
-                            count = count + 1
+                        #found_mac = 1
+                        #found_mac_address = str(item['mac'])
+                        #found_user = phone_name
+                        #count = 0
+                        for x in range(4):
+                            if self.Matrix[x][0] == found_user:
+                                self.Matrix[x][3] = "On"
+        for x in range(4):
+            if self.Matrix[x][3] == "On":
+                svalue = "On"
+                nvalue = 1
+                UpdateDevice(self.Matrix[x][2], nvalue, svalue)
+            else:
+                svalue = "Off"
+                nvalue = 0
+                UpdateDevice(self.Matrix[x][2], nvalue, svalue)
+                        #    count = count + 1
 				
                     #for dv in Devices:
                         # Find the unit number
@@ -388,16 +398,16 @@ class BasePlugin:
                     #        device_unit = Devices[dv].Unit
                     #        Domoticz.Debug(strName+"Device Unit ("+found_user+" = "+search_phone+") = "+str(device_unit)+"/"+str(found_mac_address))
                     #        continue
-                if found_mac == 1:
-                    svalue = "On"
-                    nvalue = 1
-                else:
-                    svalue = "Off"
-                    nvalue = 0
-                if found_mac == 1:
-                    Domoticz.Log(strName+"Phone found with mac = "+str(found_mac_address)+" / Unit = "+str(device_unit)+" / sValue = "+str(svalue))
-                    UpdateDevice(device_unit, nvalue, svalue)
-                    break
+                #if found_mac == 1:
+                #    svalue = "On"
+                #    nvalue = 1
+                #else:
+                #    svalue = "Off"
+                #    nvalue = 0
+                #if found_mac == 1:
+                #    Domoticz.Log(strName+"Phone found with mac = "+str(found_mac_address)+" / Unit = "+str(device_unit)+" / sValue = "+str(svalue))
+                #    UpdateDevice(device_unit, nvalue, svalue)
+                #    break
         Domoticz.Debug(strName+"==============================")
 
    
