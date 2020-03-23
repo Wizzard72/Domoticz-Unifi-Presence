@@ -390,26 +390,15 @@ class BasePlugin:
                 svalue = "Off"
                 nvalue = 0
                 UpdateDevice(self.Matrix[x][2], nvalue, svalue)
-                        #    count = count + 1
-				
-                    #for dv in Devices:
-                        # Find the unit number
-                    #    search_phone = Devices[dv].Name[8:]
-                    #    if Devices[dv].Name[8:] == found_user:
-                    #        device_unit = Devices[dv].Unit
-                    #        Domoticz.Debug(strName+"Device Unit ("+found_user+" = "+search_phone+") = "+str(device_unit)+"/"+str(found_mac_address))
-                    #        continue
-                #if found_mac == 1:
-                #    svalue = "On"
-                #    nvalue = 1
-                #else:
-                #    svalue = "Off"
-                #    nvalue = 0
-                #if found_mac == 1:
-                #    Domoticz.Log(strName+"Phone found with mac = "+str(found_mac_address)+" / Unit = "+str(device_unit)+" / sValue = "+str(svalue))
-                #    UpdateDevice(device_unit, nvalue, svalue)
-                #    break
-        Domoticz.Debug(strName+"==============================")
+        
+        count = 0
+        for x in range(self.total_devices_count):
+            if self.Matrix[x][3] == "On":
+                count = count + 1
+        if count > 0:
+            UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 1, "On")
+        else:
+            UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 0, "Off")
 
    
     def Authenticate(self):
