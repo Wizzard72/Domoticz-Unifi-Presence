@@ -136,7 +136,7 @@ class BasePlugin:
         count = 0
         for device in device_mac:
             count = count + 1
-        Domoticz.Log(strName+"Count = "+count)
+        Domoticz.Log(strName+"Count = "+str(count))
         w, h = 4, count;
         Matrix = [[0 for x in range(w)] for y in range(h)] 
         # table:
@@ -160,7 +160,7 @@ class BasePlugin:
                     #Domoticz.Log(strName+"Device Unit ("+found_user+" = "+Device_Name") = "+str(Device_Unit)+"/"+str(Device_Mac))
                     continue
             #table_devices.append({"Phone_name":Device_Name, "MAC_ID":Device_Mac, "Unit_Number":Device_Unit, "State":Device_State})
-            Domoticz.Log(strName+"Phone Naam = "+Matrix[count][0]+" | "+Matrix[count][1]+" | "+Matrix[count][2]+" | "+Matrix[count][3])
+            Domoticz.Log(strName+"Phone Naam = "+Matrix[count][0]+" | "+str(Matrix[count][1])+" | "+str(Matrix[count][2])+" | "+Matrix[count][3])
             count = count + 1
         
         found_phone = False
