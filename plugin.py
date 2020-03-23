@@ -67,6 +67,7 @@ class BasePlugin:
     unifises = ""
     csrftoken = ""
     phone_name = ""
+    Matrix = ""
     
     def __init__(self):
         #self.var = 123
@@ -138,7 +139,7 @@ class BasePlugin:
             count = count + 1
         Domoticz.Log(strName+"Count = "+str(count))
         w, h = 4, count;
-        Matrix = [[0 for x in range(w)] for y in range(h)] 
+        self.Matrix = [[0 for x in range(w)] for y in range(h)] 
         # table:
         # Phone_Name | MAC_ID | Unit_Number | State |
         # Matrix[0][0] = 1
@@ -147,20 +148,20 @@ class BasePlugin:
         for device in device_mac:
             device = device.strip()
             Device_Name, Device_Mac = device.split("=")
-            Matrix[count][0] = Device_Name
-            Matrix[count][1] = Device_Mac
+            self.Matrix[count][0] = Device_Name
+            self.Matrix[count][1] = Device_Mac
             Device_Unit = None
-            Matrix[count][3] = "Off"
+            self.Matrix[count][3] = "Off"
             found_user = Device_Name
             for dv in Devices:
                 # Find the unit number
                 search_phone = Devices[dv].Name[8:]
                 if Devices[dv].Name[8:] == found_user:
-                    Matrix[count][2] = Devices[dv].Unit
+                    self.Matrix[count][2] = Devices[dv].Unit
                     #Domoticz.Log(strName+"Device Unit ("+found_user+" = "+Device_Name") = "+str(Device_Unit)+"/"+str(Device_Mac))
                     continue
             #table_devices.append({"Phone_name":Device_Name, "MAC_ID":Device_Mac, "Unit_Number":Device_Unit, "State":Device_State})
-            Domoticz.Log(strName+"Phone Naam = "+Matrix[count][0]+" | "+str(Matrix[count][1])+" | "+str(Matrix[count][2])+" | "+Matrix[count][3])
+            Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3])
             count = count + 1
         
         found_phone = False
@@ -266,7 +267,7 @@ class BasePlugin:
     def onHeartbeat(self):
         strName = "onHeartbeat: "
         Domoticz.Debug(strName+"called")
-        Domoticz.Log(strName+"Matrix = "+Matrix[0][1])
+        Domoticz.Log(strName+"Matrix = "+self.Matrix[0][1])
         #if (self.unifiConn != None) and (self.unifiConn.Connecting()):
         #    return
         
