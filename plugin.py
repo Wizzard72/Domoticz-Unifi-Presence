@@ -382,7 +382,7 @@ class BasePlugin:
                                 self.Matrix[x][3] = "On"
         
         for x in range(4):
-            Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3])
+            Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3])
             if self.Matrix[x][3] == "On":
                 svalue = "On"
                 nvalue = 1
