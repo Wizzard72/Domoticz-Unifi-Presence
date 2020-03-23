@@ -140,7 +140,7 @@ class BasePlugin:
             device = device.strip()
             device = device+"=0=Off"
             table_devices = device.split("=")
-            Domoticz.Log(strName+"table_devices[0] = "+table_devices[0]+" | "+table_devices[1]+" | "+table_devices[3]+" | "+table_devices[4])
+            Domoticz.Log(strName+"table_devices[0] = "+table_devices[0]+" | "+table_devices[1]+" | "+table_devices[2]+" | "+table_devices[3])
         
         found_phone = False
         for device in device_mac:
