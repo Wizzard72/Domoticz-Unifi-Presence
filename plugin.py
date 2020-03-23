@@ -132,15 +132,26 @@ class BasePlugin:
 		
 		
         # Create table
-        table_devices = {}
+        table_devices = []
+	    # rows.append({"ID":"1", "name":"Cat", "year":"1998", "priority":"1"})
         # table:
         # Phone_Name | MAC_ID | Unit_Number | State |
         device_mac=Parameters["Mode2"].split(",")
+        found_user = None
         for device in device_mac:
             device = device.strip()
-            device = device+"=0=Off"
-            table_devices = device.split("=")
-            #table_devices[0][1][2][3] = "On"
+            Device_Name, Device_Mac = device.split("=")
+            Device_Unit = 0
+            Device_State = "Off"
+            found_user = Device_Name
+            for dv in Devices:
+                # Find the unit number
+                search_phone = Devices[dv].Name[8:]
+                if Devices[dv].Name[8:] == found_user:
+                    Device_Unit = Devices[dv].Unit
+                    Domoticz.Log(strName+"Device Unit ("+found_user+" = "+Device_Name") = "+str(Device_Unit)+"/"+str(Device_Mac))
+                    continue
+            table_devices.append({"Phone_name":Device_Name, "MAC_ID":Device_Mac, "Unit_Number":Device_Unit, "State":Device_State})
             Domoticz.Log(strName+"table_devices[0] = "+table_devices[0]+" | "+table_devices[1]+" | "+table_devices[2]+" | "+table_devices[3])
         
         found_phone = False
