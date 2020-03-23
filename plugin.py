@@ -379,7 +379,7 @@ class BasePlugin:
                                         self.Matrix[x][4] = "Yes"
         
         for x in range(self.total_devices_count):
-            Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
+            Domoticz.Debug(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
             if self.Matrix[x][4] == "Yes":
                 if self.Matrix[x][3] == "On":
                     svalue = "On"
