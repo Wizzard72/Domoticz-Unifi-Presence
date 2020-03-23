@@ -134,11 +134,11 @@ class BasePlugin:
 		
         # Create table
         device_mac=Parameters["Mode2"].split(",")
-        count = 0
+        self.total_devices_count = 0
         for device in device_mac:
-            count = count + 1
-        Domoticz.Log(strName+"Count = "+str(count))
-        w, h = 4, count;
+            self.total_devices_count = self.total_devices_count + 1
+        Domoticz.Log(strName+"Count = "+str(self.total_devices_count))
+        w, h = 5, self.total_devices_count;
         self.Matrix = [[0 for x in range(w)] for y in range(h)] 
         # table:
         # Phone_Name | MAC_ID | Unit_Number | State | Changed
@@ -378,13 +378,13 @@ class BasePlugin:
                         #found_mac_address = str(item['mac'])
                         #found_user = phone_name
                         #count = 0
-                        for x in range(4):
+                        for x in range(self.total_devices_count):
                             if self.Matrix[x][1] == mac_id:
                                 Domoticz.Log(strName+"Found phone ON"+self.Matrix[x][0])
                                 self.Matrix[x][3] = "On"
                                 self.Matrix[x][4] = "Yes"
         
-        for x in range(4):
+        for x in range(self.total_devices_count):
             Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
             if self.Matrix[x][4] == "Yes":
                 if self.Matrix[x][3] == "On":
