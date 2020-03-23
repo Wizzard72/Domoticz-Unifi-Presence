@@ -160,7 +160,7 @@ class BasePlugin:
                 if Devices[dv].Name[8:] == found_user:
                     self.Matrix[count][2] = Devices[dv].Unit
                     continue
-            Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3]+" | "+self.Matrix[count][4])
+            Domoticz.Debug(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3]+" | "+self.Matrix[count][4])
             count = count + 1
         
         found_phone = False
@@ -372,7 +372,7 @@ class BasePlugin:
                     phone_name, mac_id = device.split("=")
                     phone_name = phone_name.strip()
                     mac_id = mac_id.strip().lower()
-                    if str(item['mac']) == mac_id:
+                    if str(item['mac']) == mac_id and item['is_wired']:
                         # Found MAC address in API output
                         #found_mac = 1
                         #found_mac_address = str(item['mac'])
@@ -380,7 +380,7 @@ class BasePlugin:
                         #count = 0
                         for x in range(self.total_devices_count):
                             if self.Matrix[x][1] == mac_id:
-                                Domoticz.Log(strName+"Found phone ON"+self.Matrix[x][0])
+                                Domoticz.Log(strName+"Found phone ON "+self.Matrix[x][0])
                                 self.Matrix[x][3] = "On"
                                 self.Matrix[x][4] = "Yes"
         
