@@ -142,7 +142,7 @@ class BasePlugin:
         # table:
         # Phone_Name | MAC_ID | Unit_Number | State |
         # Matrix[0][0] = 1
-        Count = 0
+        count = 0
         found_user = None
         for device in device_mac:
             device = device.strip()
