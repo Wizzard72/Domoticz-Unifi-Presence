@@ -131,7 +131,17 @@ class BasePlugin:
             #Domoticz.Log(strName+"item in devices = " +str(Devices[item].Unit))
 		
 		
+        # Create table
+        table_devices = {}
+        # table:
+        # Phone_Name | MAC_ID | Unit_Number | State |
         device_mac=Parameters["Mode2"].split(",")
+        for device in device_mac:
+            device = device.strip()
+            device = device+"=0=Off"
+            table_devices = device.split("=")+","
+            Domoticz.Log(strName+"table_devices[0] = "+table_devices[0])
+        
         found_phone = False
         for device in device_mac:
             device = device.strip()
@@ -151,6 +161,8 @@ class BasePlugin:
             except:
                 Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
             
+        
+        
 
         self.SetupConnection()
         Domoticz.Heartbeat(int(Parameters["Mode3"]))
