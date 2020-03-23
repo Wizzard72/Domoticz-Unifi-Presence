@@ -132,28 +132,36 @@ class BasePlugin:
 		
 		
         # Create table
-        table_devices = []
-	    # rows.append({"ID":"1", "name":"Cat", "year":"1998", "priority":"1"})
+        device_mac=Parameters["Mode2"].split(",")
+        count = 0
+        for device in device_mac:
+            count = count + 1
+        Domoticz.Log(strName+"Count = "+count)
+        w, h = 4, count;
+        Matrix = [[0 for x in range(w)] for y in range(h)] 
         # table:
         # Phone_Name | MAC_ID | Unit_Number | State |
-        device_mac=Parameters["Mode2"].split(",")
+        # Matrix[0][0] = 1
+        Count = 0
         found_user = None
         for device in device_mac:
             device = device.strip()
             Device_Name, Device_Mac = device.split("=")
+            Matrix[count][0] = Device_Name
+            Matrix[count][1] = Device_Mac
             Device_Unit = None
-            Device_State = "Off"
+            Matrix[count][3] = "Off"
             found_user = Device_Name
             for dv in Devices:
                 # Find the unit number
                 search_phone = Devices[dv].Name[8:]
                 if Devices[dv].Name[8:] == found_user:
-                    Device_Unit = Devices[dv].Unit
+                    Matrix[count][2] = Devices[dv].Unit
                     #Domoticz.Log(strName+"Device Unit ("+found_user+" = "+Device_Name") = "+str(Device_Unit)+"/"+str(Device_Mac))
                     continue
-            table_devices.append({"Phone_name":Device_Name, "MAC_ID":Device_Mac, "Unit_Number":Device_Unit, "State":Device_State})
-            Domoticz.Log(strName+"table_devices[0] = "+table_devices)
-                         #+" | "+table_devices[1]+" | "+table_devices[2]+" | "+table_devices[3])
+            #table_devices.append({"Phone_name":Device_Name, "MAC_ID":Device_Mac, "Unit_Number":Device_Unit, "State":Device_State})
+            Domoticz.Log(strName+"Phone Naam = "+Matrix[count][0]+" | "+Matrix[count][1]+" | "+Matrix[count][2]+" | "+Matrix[count][3])
+            count = count + 1
         
         found_phone = False
         for device in device_mac:
