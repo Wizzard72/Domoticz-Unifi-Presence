@@ -125,8 +125,8 @@ class BasePlugin:
             Domoticz.Device(Name="Uptime (hours)", Unit=self.UNIFI_UPTIME_UNIT, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_UPTIME_UNIT, 0, "0.0")
             
-        for item in Devices:
-            Domoticz.Debug(strName+"item in devices = " +Devices[item].Name+" / "+Devices[item].DeviceID+" / "+str(Devices[item].ID)+" / "+str(Devices[item].Unit))
+        #for item in Devices:
+            #Domoticz.Debug(strName+"item in devices = " +Devices[item].Name+" / "+Devices[item].DeviceID+" / "+str(Devices[item].ID)+" / "+str(Devices[item].Unit))
             #Domoticz.Log(strName+"item in devices = " +Devices[item].DeviceID)
             #Domoticz.Log(strName+"item in devices = " +str(Devices[item].ID))
             #Domoticz.Log(strName+"item in devices = " +str(Devices[item].Unit))
@@ -158,9 +158,7 @@ class BasePlugin:
                 search_phone = Devices[dv].Name[8:]
                 if Devices[dv].Name[8:] == found_user:
                     self.Matrix[count][2] = Devices[dv].Unit
-                    #Domoticz.Log(strName+"Device Unit ("+found_user+" = "+Device_Name") = "+str(Device_Unit)+"/"+str(Device_Mac))
                     continue
-            #table_devices.append({"Phone_name":Device_Name, "MAC_ID":Device_Mac, "Unit_Number":Device_Unit, "State":Device_State})
             Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3])
             count = count + 1
         
@@ -182,9 +180,7 @@ class BasePlugin:
                     #Domoticz.Status(strName+"Created device for "+phone_name+" with unit id " + str(new_unit))
             except:
                 Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
-            
-        
-        
+
 
         self.SetupConnection()
         Domoticz.Heartbeat(int(Parameters["Mode3"]))
@@ -380,13 +376,17 @@ class BasePlugin:
                         found_mac = 1
                         found_mac_address = str(item['mac'])
                         found_user = phone_name
-                    for dv in Devices:
+                        count = 0
+                        for dev in self.Matrix:
+                            Domoticz.Log(strName+"DEV = "+dev)
+				
+                    #for dv in Devices:
                         # Find the unit number
-                        search_phone = Devices[dv].Name[8:]
-                        if Devices[dv].Name[8:] == found_user:
-                            device_unit = Devices[dv].Unit
-                            Domoticz.Debug(strName+"Device Unit ("+found_user+" = "+search_phone+") = "+str(device_unit)+"/"+str(found_mac_address))
-                            continue
+                    #    search_phone = Devices[dv].Name[8:]
+                    #    if Devices[dv].Name[8:] == found_user:
+                    #        device_unit = Devices[dv].Unit
+                    #        Domoticz.Debug(strName+"Device Unit ("+found_user+" = "+search_phone+") = "+str(device_unit)+"/"+str(found_mac_address))
+                    #        continue
                 if found_mac == 1:
                     svalue = "On"
                     nvalue = 1
