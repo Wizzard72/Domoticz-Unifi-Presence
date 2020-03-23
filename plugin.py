@@ -373,7 +373,6 @@ class BasePlugin:
                     phone_name = phone_name.strip()
                     mac_id = mac_id.strip().lower()
                     if str(item['mac']) == mac_id:
-                        Domoticz.Log(strName+"HELPPP")
                         # Found MAC address in API output
                         #found_mac = 1
                         #found_mac_address = str(item['mac'])
@@ -386,7 +385,7 @@ class BasePlugin:
                                 self.Matrix[x][4] = "Yes"
         
         for x in range(4):
-            Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3])
+            Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
             if self.Matrix[x][4] == "Yes":
                 if self.Matrix[x][3] == "On":
                     svalue = "On"
