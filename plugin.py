@@ -395,7 +395,7 @@ class BasePlugin:
         for x in range(self.total_devices_count):
             if self.Matrix[x][3] == "On":
                 count = count + 1
-        Domoticz.Log(strName+"Total Phones connected = "+count)
+        Domoticz.Log(strName+"Total Phones connected = "+str(count))
         if count > 0:
             UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 1, "On")
         else:
