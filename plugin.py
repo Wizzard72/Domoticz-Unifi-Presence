@@ -88,13 +88,17 @@ class BasePlugin:
         # load custom battery images
         if "unifi-home" not in Images:
             Domoticz.Image("uhome.zip").Create()
-        image_u_home = Images["unifi-home"].ID
-        if "unifi-override" not in Images:
-            Domoticz.Image("uoverride.zip").Create()
-        image_u_override = Images["unifi-override"].ID
-        if "unifi-unit" not in Images:
-            Domoticz.Image("uunit.zip").Create()
-        image_u_unit = Images["unifi-unit"].ID
+        
+        for item in Images:
+            Domoticz.Log(strName+"item = "+item)
+	
+	#image_u_home = Images["unifi-home"].ID
+        #if "unifi-override" not in Images:
+        #    Domoticz.Image("uoverride.zip").Create()
+        #image_u_override = Images["unifi-override"].ID
+        #if "unifi-unit" not in Images:
+        #    Domoticz.Image("uunit.zip").Create()
+        #image_u_unit = Images["unifi-unit"].ID
         
         #for key, value in icons.items():
         #    if key not in Images:
