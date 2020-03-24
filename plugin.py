@@ -94,7 +94,12 @@ class BasePlugin:
             UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 0, "Off")
             
         if (self.UNIFI_OVERRIDE_UNIT not in Devices):
-            Domoticz.Device(Name="OverRide",  Unit=self.UNIFI_OVERRIDE_UNIT, Used=1, TypeName="Switch").Create()
+            Options = {"LevelActions": "|| ||",
+                       "LevelNames": "Off|1 hour|2 hours|3 hours|On",
+                       "LevelOffHidden": "false",
+                       "SelectorStyle": "1"}
+            Domoticz.Device(Name="OverRide", Unit=2, TypeName="Selector Switch", Options=Options).Create()
+            #Domoticz.Device(Name="OverRide",  Unit=self.UNIFI_OVERRIDE_UNIT, Used=1, TypeName="Switch").Create()
             UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 0, "Off")
         
         if (self.UNIFI_CPU_PERC_UNIT not in Devices):
