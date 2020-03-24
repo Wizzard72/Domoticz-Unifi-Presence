@@ -46,9 +46,9 @@ from urllib.parse import quote
 import urllib
 import urllib.parse
 
-icons = {"unifi-home": "uhome.zip",
-         "unifi-override": "uoverride.zip",
-         "unifi-unit": "uunit.zip"}
+icons = {"UnifiHome": "uhome.zip",
+         "UnifiOverride": "uoverride.zip",
+         "UnifiUnit": "uunit.zip"}
 
 
 class BasePlugin:
