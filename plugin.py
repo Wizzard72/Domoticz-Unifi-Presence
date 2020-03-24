@@ -90,9 +90,9 @@ class BasePlugin:
             if key not in Images:
                 Domoticz.Image(value).Create()
                 Domoticz.Log("Added icon: " + key + " from file " + value)
-        Domoticz.Debug("Number of icons loaded = " + str(len(Images)))
+        Domoticz.Log("Number of icons loaded = " + str(len(Images)))
         for image in Images:
-            Domoticz.Log("Icon " + str(Images[image].ID) + " " + Images[image].Name)
+            Domoticz.Log("Icon " + str(Images[image].ID) + " Name = " + Images[image].Name)
         
         if (self.UNIFI_WLAN_COUNTER_UNIT not in Devices):
             Domoticz.Device(Name="WLAN Counter",  Unit=self.UNIFI_WLAN_COUNTER_UNIT, Type=243, Subtype=31).Create()
