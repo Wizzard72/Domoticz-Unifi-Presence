@@ -89,6 +89,12 @@ class BasePlugin:
         if "unifi-home" not in Images:
             Domoticz.Image("uhome.zip").Create()
         
+        if "unifi-override" not in Images:
+            Domoticz.Image("uoverride.zip").Create()
+            
+        if "unifi-unit" not in Images:
+            Domoticz.Image("uunit.zip").Create()
+        
         for item in Images:
             Domoticz.Log(strName+"item = "+item)
 	
