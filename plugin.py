@@ -46,6 +46,10 @@ from urllib.parse import quote
 import urllib
 import urllib.parse
 
+icons = {"unifi-home": "uhome.zip",
+         "unifi-override": "uoverride.zip",
+         "unifi-unit": "uunit.zip"}
+
 
 class BasePlugin:
     hostAuth = False
@@ -81,6 +85,14 @@ class BasePlugin:
         else:
             Domoticz.Debugging(0)
         
+        # load custom battery images
+        for key, value in icons.items():
+            if key not in Images:
+                Domoticz.Image(value).Create()
+                Domoticz.Log("Added icon: " + key + " from file " + value)
+        Domoticz.Debug("Number of icons loaded = " + str(len(Images)))
+        for image in Images:
+            Domoticz.Log("Icon " + str(Images[image].ID) + " " + Images[image].Name)
         
         if (self.UNIFI_WLAN_COUNTER_UNIT not in Devices):
             Domoticz.Device(Name="WLAN Counter",  Unit=self.UNIFI_WLAN_COUNTER_UNIT, Type=243, Subtype=31).Create()
@@ -91,7 +103,7 @@ class BasePlugin:
             UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, 0, "0")
 
         if (self.UNIFI_ANYONE_HOME_UNIT not in Devices):
-            Domoticz.Device(Name="AnyOne",  Unit=self.UNIFI_ANYONE_HOME_UNIT, Used=1, TypeName="Switch").Create()
+            Domoticz.Device(Name="AnyOne",  Unit=self.UNIFI_ANYONE_HOME_UNIT, Used=1, TypeName="Switch", Image=unifi-home).Create()
             UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 0, "Off")
             
         if (self.UNIFI_OVERRIDE_UNIT not in Devices):
@@ -99,7 +111,7 @@ class BasePlugin:
                        "LevelNames": "Off|1 hour|2 hours|3 hours|On",
                        "LevelOffHidden": "false",
                        "SelectorStyle": "1"}
-            Domoticz.Device(Name="OverRide", Unit=2, TypeName="Selector Switch", Options=Options).Create()
+            Domoticz.Device(Name="OverRide", Unit=2, TypeName="Selector Switch", Options=Options, Image=unifi-override).Create()
             #Domoticz.Device(Name="OverRide",  Unit=self.UNIFI_OVERRIDE_UNIT, Used=1, TypeName="Switch").Create()
             UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 0, "Off")
         
@@ -183,7 +195,7 @@ class BasePlugin:
                         found_phone = True
                 if found_phone == False:
                     new_unit = find_available_unit()
-                    Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
+                    Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1, Image=unifi-unit).Create()
                     #Domoticz.Status(strName+"Created device for "+phone_name+" with unit id " + str(new_unit))
             except:
                 Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
