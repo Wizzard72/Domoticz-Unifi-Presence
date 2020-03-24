@@ -89,21 +89,21 @@ class BasePlugin:
         if "unifi-home" not in Images:
             Domoticz.Image("uhome.zip").Create()
         for item in Images:
-            Domoticz.Log(strName+"item = "+item)
+            Domoticz.Log(strName+"1.item = "+item)
         #image_u_home = Images["home"].ID
         if "unifi-override" not in Images:
             Domoticz.Image("uoverride.zip").Create()
         for item in Images:
-            Domoticz.Log(strName+"item = "+item)
+            Domoticz.Log(strName+"2.item = "+item)
         #image_u_override = Images["unifi-override"].ID
         if "unifi-unit" not in Images:
             Domoticz.Image("uunit.zip").Create()
         for item in Images:
-            Domoticz.Log(strName+"item = "+item)
+            Domoticz.Log(strName+"3.item = "+item)
         #image_u_unit = Images["unifi-unit"].ID
         
-        for item in Images:
-            Domoticz.Log(strName+"item = "+item)
+        #for item in Images:
+        #    Domoticz.Log(strName+"item = "+item)
 	
 	#image_u_home = Images["unifi-home"].ID
         #if "unifi-override" not in Images:
