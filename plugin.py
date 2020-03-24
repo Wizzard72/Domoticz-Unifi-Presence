@@ -81,6 +81,7 @@ class BasePlugin:
         else:
             Domoticz.Debugging(0)
         
+        
         if (self.UNIFI_WLAN_COUNTER_UNIT not in Devices):
             Domoticz.Device(Name="WLAN Counter",  Unit=self.UNIFI_WLAN_COUNTER_UNIT, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, 0, "0")
