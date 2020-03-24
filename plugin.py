@@ -129,7 +129,7 @@ class BasePlugin:
             Domoticz.Device(Name="LAN Counter",  Unit=self.UNIFI_LAN_COUNTER_UNIT, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, 0, "0")
 
-        Domoticz.Log(strName+"Image nr= "+str(Images["UnifiHome"].ID))
+        #Domoticz.Log(strName+"Image nr= "+str(Images["UnifiHome"].ID))
         if (self.UNIFI_ANYONE_HOME_UNIT not in Devices):
             Domoticz.Device(Name="AnyOne",  Unit=self.UNIFI_ANYONE_HOME_UNIT, Used=1, TypeName="Switch", Image=116).Create()
             UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 0, "Off")
