@@ -52,6 +52,7 @@ icons = {"UnifiHome": "uhome.zip",
 
 
 class BasePlugin:
+    unifiConn = None
     hostAuth = False
     UNIFI_WLAN_COUNTER_UNIT = 1
     UNIFI_LAN_COUNTER_UNIT = 2
@@ -86,18 +87,15 @@ class BasePlugin:
             Domoticz.Debugging(0)
         
         # load custom images
-        #if "unifi-home" not in Images:
-        #    Domoticz.Image("uhome.zip").Create()
+        if "UnifiHome" not in Images: Domoticz.Image("uhome.zip").Create()
         #for item in Images:
         #    Domoticz.Log(strName+"1.item = "+item)
         #image_u_home = Images["home"].ID
-        #if "unifi-override" not in Images:
-        #    Domoticz.Image("uoverride.zip").Create()
+        if "UnifiOverride" not in Images: Domoticz.Image("uoverride.zip").Create()
         #for item in Images:
         #    Domoticz.Log(strName+"2.item = "+item)
         #image_u_override = Images["unifi-override"].ID
-        #if "unifi-unit" not in Images:
-        #    Domoticz.Image("uunit.zip").Create()
+        if "UnifiUnit" not in Images: Domoticz.Image("uunit.zip").Create()
         #for item in Images:
         #    Domoticz.Log(strName+"3.item = "+item)
         #image_u_unit = Images["unifi-unit"].ID
@@ -113,10 +111,10 @@ class BasePlugin:
         #    Domoticz.Image("uunit.zip").Create()
         #image_u_unit = Images["unifi-unit"].ID
         
-        for key, value in icons.items():
-            if key not in Images:
-                Domoticz.Image(value).Create()
-                Domoticz.Log("Added icon: " + key + " from file " + value)
+        #for key, value in icons.items():
+        #    if key not in Images:
+        #        Domoticz.Image(value).Create()
+        #        Domoticz.Log("Added icon: " + key + " from file " + value)
         Domoticz.Log("Number of icons loaded = " + str(len(Images)))
         for item in Images:
             Domoticz.Log("Icon " + str(Images[item].ID) + " Name = " + Images[item].Name)
