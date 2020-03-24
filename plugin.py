@@ -100,8 +100,10 @@ class BasePlugin:
         #    Domoticz.Log(strName+"2.item = "+item)
         #image_u_override = Images["unifi-override"].ID
         if "UnifiUnit" not in Images: Domoticz.Image("uunit.zip").Create()
-        icon_unifi_unit = Images["UnifiUnit"].ID
-        Domoticz.Log(strName+"ID = "+str(icon_unifi_unit))
+        icon_unifi_uni = Images["UnifiUnit"].ID
+        #if "UnifiUnit" not in Images: Domoticz.Image("uunit.zip").Create()
+        #icon_unifi_unit = Images["UnifiUnit"].ID
+        #Domoticz.Log(strName+"ID = "+str(icon_unifi_unit))
         #for item in Images:
         #    Domoticz.Log(strName+"3.item = "+item)
         #image_u_unit = Images["unifi-unit"].ID
