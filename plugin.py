@@ -131,7 +131,7 @@ class BasePlugin:
 
         Domoticz.Log(strName+"Image nr= "+str(Images["UnifiHome"].ID))
         if (self.UNIFI_ANYONE_HOME_UNIT not in Devices):
-            Domoticz.Device(Name="AnyOne",  Unit=self.UNIFI_ANYONE_HOME_UNIT, Used=1, TypeName="Switch").Create()
+            Domoticz.Device(Name="AnyOne",  Unit=self.UNIFI_ANYONE_HOME_UNIT, Used=1, TypeName="Switch", Image=116).Create()
             UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 0, "Off")
             
         if (self.UNIFI_OVERRIDE_UNIT not in Devices):
