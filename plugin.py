@@ -123,8 +123,6 @@ class BasePlugin:
             UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, 0, "0")
 
         if (self.UNIFI_ANYONE_HOME_UNIT not in Devices):
-            icon = Images["unifi-home"].ID
-            Domoticz.Log(strName+"icon ID = "+icon)
             Domoticz.Device(Name="AnyOne",  Unit=self.UNIFI_ANYONE_HOME_UNIT, Used=1, TypeName="Switch", Image=image_u_home).Create()
             UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 0, "Off")
             
