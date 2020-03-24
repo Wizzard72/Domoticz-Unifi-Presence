@@ -88,7 +88,7 @@ class BasePlugin:
         # load custom images
         if "unifi-home" not in Images:
             Domoticz.Image("uhome.zip").Create()
-        image_u_home = Images["unifi-home"].ID
+        image_u_home = Images["home"].ID
         if "unifi-override" not in Images:
             Domoticz.Image("uoverride.zip").Create()
         image_u_override = Images["unifi-override"].ID
