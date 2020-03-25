@@ -53,6 +53,7 @@ icons = {"UnifiHome": "uhome.zip",
 
 class BasePlugin:
     unifiConn = None
+    override_time = 0
     hostAuth = False
     UNIFI_WLAN_COUNTER_UNIT = 1
     UNIFI_LAN_COUNTER_UNIT = 2
@@ -144,7 +145,7 @@ class BasePlugin:
         if (self.UNIFI_OVERRIDE_UNIT not in Devices):
             Options = {"LevelActions": "|| ||",
                        "LevelNames": "Off|1 hour|2 hours|3 hours|On",
-                       "LevelOffHidden": "false",
+                       "LevelOffHidden": "true",
                        "SelectorStyle": "0"}
             Domoticz.Device(Name="OverRide", Unit=self.UNIFI_OVERRIDE_UNIT, TypeName="Selector Switch", Options=Options).Create()
             #Domoticz.Device(Name="OverRide",  Unit=self.UNIFI_OVERRIDE_UNIT, Used=1, TypeName="Switch").Create()
@@ -304,6 +305,23 @@ class BasePlugin:
     def onCommand(self, Unit, Command, Level, Hue):
         strName = "onCommand: "
         Domoticz.Debug(strName+"called for Unit " + str(Unit) + ": Parameter '" + str(Command) + "', Level: " + str(Level))
+        if self.UNIFI_OVERRIDE_UNIT == Unit:
+
+            if Level == 10: # Override 1 hour
+                self.override_time = 3600 #seconds
+                Domoticz.Log(strName+"Override Time = "+str(self.override_time))
+
+            elif Level == 20: # Override 2 hours
+                self.override_time = 7200 #seconds
+                Domoticz.Log(strName+"Override Time = "+str(self.override_time))
+
+            elif Level == 30: # Override 3 hour
+                self.override_time = 10800 #seconds
+                Domoticz.Log(strName+"Override Time = "+str(self.override_time))
+
+            elif Level == 40: # Override On
+                self.override_time = 99999999999 #seconds
+                Domoticz.Log(strName+"Override Time = "+str(self.override_time))
 
     def onNotification(self, Name, Subject, Text, Status, Priority, Sound, ImageFile):
         strName = "onNotification: "
@@ -317,6 +335,7 @@ class BasePlugin:
     def onHeartbeat(self):
         strName = "onHeartbeat: "
         Domoticz.Debug(strName+"called")
+	Devices[self.statusUnit].nValue == 1
         #if (self.unifiConn != None) and (self.unifiConn.Connecting()):
         #    return
         
