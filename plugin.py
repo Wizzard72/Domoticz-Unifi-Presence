@@ -201,7 +201,7 @@ class BasePlugin:
         # Matrix[0][0] = 1
         count = 1
         found_user = None
-        self.Matrix[0][0] = "Unifi-OverRide"
+        self.Matrix[0][0] = "OverRide"
         self.Matrix[0][1] = "00:00:00:00:00:00"
         self.Matrix[0][2] = 255
         self.Matrix[0][3] = "Off"
