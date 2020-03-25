@@ -203,8 +203,9 @@ class BasePlugin:
         found_user = None
         self.Matrix[0][0] = "Unifi-OverRide"
         self.Matrix[0][1] = "00:00:00:00:00:00"
-        self.Matrix[0][2] = "Off"
-        self.Matrix[0][3] = "No"
+        self.Matrix[0][2] = 255
+        self.Matrix[0][3] = "Off"
+        self.Matrix[0][4] = "No"
         for device in device_mac:
             device = device.strip()
             Device_Name, Device_Mac = device.split("=")
