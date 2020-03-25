@@ -347,7 +347,7 @@ class BasePlugin:
                 Domoticz.Log(strName+"Override Time = "+str(self.override_time))
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 1, str(Level))
                 self.Matrix[0][3] = "On"
-                self.Matrix[0][3] = "Yes"
+                self.Matrix[0][4] = "Yes"
 
     def onNotification(self, Name, Subject, Text, Status, Priority, Sound, ImageFile):
         strName = "onNotification: "
