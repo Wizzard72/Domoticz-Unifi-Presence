@@ -307,21 +307,30 @@ class BasePlugin:
         Domoticz.Debug(strName+"called for Unit " + str(Unit) + ": Parameter '" + str(Command) + "', Level: " + str(Level))
         if self.UNIFI_OVERRIDE_UNIT == Unit:
 
-            if Level == 10: # Override 1 hour
+            if Level == 0: # Override Off
+                self.override_time = 0 #seconds
+                Domoticz.Log(strName+"Override Time = "+str(self.override_time))
+                UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 0, "Off")
+            
+            elif Level == 10: # Override 1 hour
                 self.override_time = 3600 #seconds
                 Domoticz.Log(strName+"Override Time = "+str(self.override_time))
+                UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 10, "1 hour")
 
             elif Level == 20: # Override 2 hours
                 self.override_time = 7200 #seconds
                 Domoticz.Log(strName+"Override Time = "+str(self.override_time))
+                UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 20, "2 hours")
 
             elif Level == 30: # Override 3 hour
                 self.override_time = 10800 #seconds
                 Domoticz.Log(strName+"Override Time = "+str(self.override_time))
+                UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 30, "3 hours")
 
             elif Level == 40: # Override On
                 self.override_time = 99999999999 #seconds
                 Domoticz.Log(strName+"Override Time = "+str(self.override_time))
+                UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 40, "On")
 
     def onNotification(self, Name, Subject, Text, Status, Priority, Sound, ImageFile):
         strName = "onNotification: "
