@@ -145,7 +145,7 @@ class BasePlugin:
             Options = {"LevelActions": "|| ||",
                        "LevelNames": "Off|1 hour|2 hours|3 hours|On",
                        "LevelOffHidden": "false",
-                       "SelectorStyle": "1"}
+                       "SelectorStyle": "0"}
             Domoticz.Device(Name="OverRide", Unit=self.UNIFI_OVERRIDE_UNIT, TypeName="Selector Switch", Options=Options).Create()
             #Domoticz.Device(Name="OverRide",  Unit=self.UNIFI_OVERRIDE_UNIT, Used=1, TypeName="Switch").Create()
             UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 0, "Off")
