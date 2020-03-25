@@ -320,17 +320,17 @@ class BasePlugin:
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 0, "Off")
             
             elif Level == 10: # Override 1 hour
-                self.override_time = 3600 #seconds
+                self.override_time = 60 * 60 #seconds
                 Domoticz.Log(strName+"Override Time = "+str(self.override_time))
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 10, "1 hour")
 
             elif Level == 20: # Override 2 hours
-                self.override_time = 7200 #seconds
+                self.override_time = 2 * 60 * 60 #seconds
                 Domoticz.Log(strName+"Override Time = "+str(self.override_time))
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 20, "2 hours")
 
             elif Level == 30: # Override 3 hour
-                self.override_time = 10800 #seconds
+                self.override_time = 3 * 60 * 60 #seconds
                 Domoticz.Log(strName+"Override Time = "+str(self.override_time))
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 30, "3 hours")
 
