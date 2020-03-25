@@ -197,8 +197,12 @@ class BasePlugin:
         # table:
         # Phone_Name | MAC_ID | Unit_Number | State | Changed
         # Matrix[0][0] = 1
-        count = 0
+        count = 1
         found_user = None
+        self.Matrix[0][0] = self.UNIFI_OVERRIDE_UNIT.Name
+        self.Matrix[0][1] = "00:00:00:00:00:00"
+        self.Matrix[0][2] = "Off"
+        self.Matrix[0][3] = "No"
         for device in device_mac:
             device = device.strip()
             Device_Name, Device_Mac = device.split("=")
@@ -306,7 +310,7 @@ class BasePlugin:
         strName = "onCommand: "
         Domoticz.Debug(strName+"called for Unit " + str(Unit) + ": Parameter '" + str(Command) + "', Level: " + str(Level))
         if self.UNIFI_OVERRIDE_UNIT == Unit:
-
+       
             if Level == 0: # Override Off
                 self.override_time = 0 #seconds
                 Domoticz.Log(strName+"Override Time = "+str(self.override_time))
