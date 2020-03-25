@@ -191,8 +191,10 @@ class BasePlugin:
         self.total_devices_count = 0
         for device in device_mac:
             self.total_devices_count = self.total_devices_count + 1
+        extra_devices = 1 # Override device
+        self.total_devices_count = self.total_devices_count + extra_devices
         Domoticz.Log(strName+"Count = "+str(self.total_devices_count))
-        w, h = 5, self.total_devices_count+1;
+        w, h = 5, self.total_devices_count;
         self.Matrix = [[0 for x in range(w)] for y in range(h)] 
         # table:
         # Phone_Name | MAC_ID | Unit_Number | State | Changed
