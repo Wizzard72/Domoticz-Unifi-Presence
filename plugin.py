@@ -335,7 +335,6 @@ class BasePlugin:
     def onHeartbeat(self):
         strName = "onHeartbeat: "
         Domoticz.Debug(strName+"called")
-	Devices[self.statusUnit].nValue == 1
         #if (self.unifiConn != None) and (self.unifiConn.Connecting()):
         #    return
         
