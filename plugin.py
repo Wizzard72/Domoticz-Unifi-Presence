@@ -486,7 +486,7 @@ class BasePlugin:
             else:
                 svalue = "Off"
                 nvalue = 0
-                #UpdateDevice(self.Matrix[x][2], nvalue, svalue)
+                UpdateDevice(self.Matrix[x][2], nvalue, svalue)
                 self.Matrix[x][3] = svalue
         
         count = 0
