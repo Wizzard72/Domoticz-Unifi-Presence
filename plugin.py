@@ -148,7 +148,6 @@ class BasePlugin:
                        "LevelOffHidden": "false",
                        "SelectorStyle": "0"}
             Domoticz.Device(Name="OverRide", Unit=self.UNIFI_OVERRIDE_UNIT, TypeName="Selector Switch", Switchtype=18, Used=1, Options=Options).Create()
-            #Domoticz.Device(Name="OverRide",  Unit=self.UNIFI_OVERRIDE_UNIT, Used=1, TypeName="Switch").Create()
             UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 0, "Off")
         
         if (self.UNIFI_CPU_PERC_UNIT not in Devices):
@@ -318,26 +317,37 @@ class BasePlugin:
                 self.override_time = 0 #seconds
                 Domoticz.Log(strName+"Override Time = "+str(self.override_time))
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 1, str(Level))
+                self.Matrix[0][3] = "On"
+                self.Matrix[0][3] = "Yes"
+		
             
             elif Level == 10: # Override 1 hour
                 self.override_time = 60 * 60 #seconds
                 Domoticz.Log(strName+"Override Time = "+str(self.override_time))
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 1, str(Level))
+                self.Matrix[0][3] = "On"
+                self.Matrix[0][3] = "Yes"
 
             elif Level == 20: # Override 2 hours
                 self.override_time = 2 * 60 * 60 #seconds
                 Domoticz.Log(strName+"Override Time = "+str(self.override_time))
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 1, str(Level))
+                self.Matrix[0][3] = "On"
+                self.Matrix[0][3] = "Yes"
 
             elif Level == 30: # Override 3 hour
                 self.override_time = 3 * 60 * 60 #seconds
                 Domoticz.Log(strName+"Override Time = "+str(self.override_time))
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 1, str(Level))
+                self.Matrix[0][3] = "On"
+                self.Matrix[0][3] = "Yes"
 
             elif Level == 40: # Override On
                 self.override_time = 99999999999 #seconds
                 Domoticz.Log(strName+"Override Time = "+str(self.override_time))
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 1, str(Level))
+                self.Matrix[0][3] = "On"
+                self.Matrix[0][3] = "Yes"
 
     def onNotification(self, Name, Subject, Text, Status, Priority, Sound, ImageFile):
         strName = "onNotification: "
