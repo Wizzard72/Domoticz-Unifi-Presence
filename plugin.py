@@ -375,7 +375,7 @@ class BasePlugin:
             except TypeError:
                 timeDiff = datetime.now() - datetime(*(time.strptime(Devices[255].LastUpdate,'%Y-%m-%d %H:%M:%S')[0:6]))
             timeDiffSeconds = (timeDiff.seconds)%60
-            Domoticz.Log(strName+"OverRide is on for: "+timeDiffSeconds+" seconds")
+            Domoticz.Log(strName+"OverRide is on for: "+str(timeDiffSeconds)+" seconds")
             if timeDiffSeconds >= self.override_time:
                 self.Matrix[0][3] = "Off"
                 self.Matrix[0][4] = "Yes"
