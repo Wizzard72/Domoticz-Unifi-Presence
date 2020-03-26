@@ -45,6 +45,8 @@ import urllib.request
 from urllib.parse import quote
 import urllib
 import urllib.parse
+from datetime import datetime
+import time
 
 icons = {"UnifiHome": "uhome.zip",
          "UnifiOverride": "uoverride.zip",
@@ -366,6 +368,17 @@ class BasePlugin:
         Domoticz.Debug(strName+"called")
         #if (self.unifiConn != None) and (self.unifiConn.Connecting()):
         #    return
+        
+        if self.Matrix[0][3] == "On":
+            try:
+                timeDiff = datetime.now() - datetime.strptime(Devices[255].LastUpdate,'%Y-%m-%d %H:%M:%S')
+            except TypeError:
+                timeDiff = datetime.now() - datetime(*(time.strptime(Devices[255].LastUpdate,'%Y-%m-%d %H:%M:%S')[0:6]))
+            timeDiffSeconds = (timeDiff.seconds)%60
+            Domoticz.Log(strName+"OverRide is on for: "+timeDiffSeconds+" seconds")
+            if timeDiffSeconds >= self.override_time:
+                self.Matrix[0][3] = "Off"
+                self.Matrix[0][4] = "Yes"
         
         if (self.unifiConn == None) or (not self.unifiConn.Connected()):
                 Domoticz.Log(strName+'Attempting to reconnect Unifi Controller')
