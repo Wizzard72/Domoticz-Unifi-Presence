@@ -126,11 +126,11 @@ class BasePlugin:
             Domoticz.Log("Icon " + str(Images[item].ID) + " Name = " + Images[item].Name)
         
         if (self.UNIFI_WLAN_COUNTER_UNIT not in Devices):
-            Domoticz.Device(Name="WLAN Counter",  Unit=self.UNIFI_WLAN_COUNTER_UNIT, Used=1,, Type=243, Subtype=31).Create()
+            Domoticz.Device(Name="WLAN Counter",  Unit=self.UNIFI_WLAN_COUNTER_UNIT, Used=1, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, 0, "0")
 
         if (self.UNIFI_LAN_COUNTER_UNIT not in Devices):
-            Domoticz.Device(Name="LAN Counter",  Unit=self.UNIFI_LAN_COUNTER_UNIT, Used=1,, Type=243, Subtype=31).Create()
+            Domoticz.Device(Name="LAN Counter",  Unit=self.UNIFI_LAN_COUNTER_UNIT, Used=1, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, 0, "0")
         for items in Images:
             Domoticz.Log(strName+"Image nr= "+str(Images[items]))
@@ -172,7 +172,7 @@ class BasePlugin:
             UpdateDevice(self.UNIFI_PHY_UNIT, 0, "0")
             
         if (self.UNIFI_UPTIME_UNIT not in Devices):
-            Domoticz.Device(Name="Uptime (hours)", Unit=self.UNIFI_UPTIME_UNIT, Used=1,, Type=243, Subtype=31).Create()
+            Domoticz.Device(Name="Uptime (hours)", Unit=self.UNIFI_UPTIME_UNIT, Used=1, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_UPTIME_UNIT, 0, "0.0")
 
         # Create table
