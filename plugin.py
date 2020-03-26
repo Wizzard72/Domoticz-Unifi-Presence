@@ -177,8 +177,11 @@ class BasePlugin:
 
         # Create table
         device_mac=Parameters["Mode2"].split(",")
+        device_extra=Parameters["Mode3"].split(",")
         self.total_devices_count = 0
         for device in device_mac:
+            self.total_devices_count = self.total_devices_count + 1
+        for extra in device_extra:
             self.total_devices_count = self.total_devices_count + 1
         extra_devices = 1 # Override device
         self.total_devices_count = self.total_devices_count + extra_devices
@@ -190,15 +193,15 @@ class BasePlugin:
         # Matrix[0][0] = 1
         count = 1
         found_user = None
-        self.Matrix[0][0] = "OverRide"
-        self.Matrix[0][1] = "00:00:00:00:00:00"
-        self.Matrix[0][2] = 255
-        self.Matrix[0][3] = "Off"
-        self.Matrix[0][4] = "No"
+        self.Matrix[0][0] = "OverRide"            # Used for the OverRide Selector Switch
+        self.Matrix[0][1] = "00:00:00:00:00:00"   # Used for the OverRide Selector Switch
+        self.Matrix[0][2] = 255                   # Used for the OverRide Selector Switch
+        self.Matrix[0][3] = "Off"                 # Used for the OverRide Selector Switch
+        self.Matrix[0][4] = "No"                  # Used for the OverRide Selector Switch
         for device in device_mac:
             device = device.strip()
             Device_Name, Device_Mac = device.split("=")
-            self.Matrix[count][0] = Device_Name
+            self.Matrix[count][0] = Device_Name 
             self.Matrix[count][1] = Device_Mac
             Device_Unit = None
             self.Matrix[count][3] = "Off"
@@ -210,7 +213,25 @@ class BasePlugin:
                 if Devices[dv].Name[8:] == found_user:
                     self.Matrix[count][2] = Devices[dv].Unit
                     continue
-            Domoticz.Debug(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3]+" | "+self.Matrix[count][4])
+            Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3]+" | "+self.Matrix[count][4])
+            count = count + 1
+        
+        for extra in device_extra:
+            extra = extra.strip()
+            extra_Device_Name = device.split("=")
+            self.Matrix[count][0] = Device_Name 
+            self.Matrix[count][1] = "11:11:11:11:11:11"
+            Device_Unit = None
+            self.Matrix[count][3] = "Off"
+            self.Matrix[count][4] = "No"
+            found_user = Device_Name
+            for dv in Devices:
+                # Find the unit number
+                search_phone = Devices[dv].Name[8:]
+                if Devices[dv].Name[8:] == found_user:
+                    self.Matrix[count][2] = Devices[dv].Unit
+                    continue
+            Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3]+" | "+self.Matrix[count][4])
             count = count + 1
         
         found_phone = False
