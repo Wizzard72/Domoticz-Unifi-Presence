@@ -225,7 +225,7 @@ class BasePlugin:
             Device_Unit = None
             self.Matrix[count][3] = "Off"
             self.Matrix[count][4] = "No"
-            Domoticz.Log(strName+"extra_Device_Name = "+str(extra_Device_name))
+            Domoticz.Log(strName+"extra_Device_Name = "+str(extra_Device_Name))
             found_user = extra_Device_Name
             for dv in Devices:
                 # Find the unit number
