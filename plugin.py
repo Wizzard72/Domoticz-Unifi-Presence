@@ -181,8 +181,8 @@ class BasePlugin:
         self.total_devices_count = 0
         for device in device_mac:
             self.total_devices_count = self.total_devices_count + 1
-        for extra in device_extra:
-            self.total_devices_count = self.total_devices_count + 1
+        #for extra in device_extra:
+        #    self.total_devices_count = self.total_devices_count + 1
         extra_devices = 1 # Override device
         self.total_devices_count = self.total_devices_count + extra_devices
         Domoticz.Log(strName+"Count = "+str(self.total_devices_count))
