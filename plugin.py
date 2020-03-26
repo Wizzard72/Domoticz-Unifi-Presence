@@ -150,7 +150,7 @@ class BasePlugin:
                        "LevelOffHidden": "false",
                        "SelectorStyle": "0"}
             Domoticz.Device(Name="OverRide", Unit=self.UNIFI_OVERRIDE_UNIT, TypeName="Selector Switch", Switchtype=18, Used=1, Options=Options).Create()
-            UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 0, "Off")
+        UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 0, "0")
         
         if (self.UNIFI_CPU_PERC_UNIT not in Devices):
             Domoticz.Device(Name="Gateway CPU Percentage",  Unit=self.UNIFI_CPU_PERC_UNIT, Used=1, TypeName="Percentage").Create()
