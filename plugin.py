@@ -219,7 +219,7 @@ class BasePlugin:
         for extra in device_extra:
             Domoticz.Log(strName+"Count = "+str(count))
             extra = extra.strip()
-            extra_Device_Name = extra.split("=")
+            extra_Device_Name = extra.split(",")
             self.Matrix[count][0] = extra_Device_Name[:-2][:2]
             self.Matrix[count][1] = "niks"
             Device_Unit = None
