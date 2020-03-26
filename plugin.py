@@ -483,11 +483,11 @@ class BasePlugin:
                     nvalue = 1
                     UpdateDevice(self.Matrix[x][2], nvalue, svalue)
                     self.Matrix[x][4] = "No"
-            else:
-                svalue = "Off"
-                nvalue = 0
-                UpdateDevice(self.Matrix[x][2], nvalue, svalue)
-                self.Matrix[x][3] = svalue
+                else:
+                    svalue = "Off"
+                    nvalue = 0
+                    UpdateDevice(self.Matrix[x][2], nvalue, svalue)
+                    self.Matrix[x][3] = svalue
         
         count = 0
         for x in range(self.total_devices_count):
