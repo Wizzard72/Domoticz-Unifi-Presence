@@ -219,12 +219,12 @@ class BasePlugin:
         for extra in device_extra:
             extra = extra.strip()
             extra_Device_Name = extra.split("=")
-            self.Matrix[count][0] = Device_Name 
+            self.Matrix[count][0] = extra_Device_Name 
             self.Matrix[count][1] = "11:11:11:11:11:11"
             Device_Unit = None
             self.Matrix[count][3] = "Off"
             self.Matrix[count][4] = "No"
-            found_user = Device_Name
+            found_user = extra_Device_Name
             for dv in Devices:
                 # Find the unit number
                 search_phone = Devices[dv].Name[8:]
