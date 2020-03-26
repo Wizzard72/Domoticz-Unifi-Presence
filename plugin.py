@@ -68,12 +68,10 @@ class BasePlugin:
     UNIFI_UPTIME_UNIT = 9
     UNIFI_ANYONE_HOME_UNIT = 50
     UNIFI_OVERRIDE_UNIT = 255
-    #PHONE_ON_IMG = 'PhoneOn'
-    #PHONE_OFF_IMG = 'PhoneOff'
     cookie = None
     cookieAvailable = False
-    unifises = ""
-    csrftoken = ""
+    #unifises = ""
+    #csrftoken = ""
     phone_name = ""
     Matrix = ""
     
@@ -122,10 +120,6 @@ class BasePlugin:
         #    Domoticz.Image("uunit.zip").Create()
         #image_u_unit = Images["unifi-unit"].ID
         
-        #for key, value in icons.items():
-        #    if key not in Images:
-        #        Domoticz.Image(value).Create()
-        #        Domoticz.Log("Added icon: " + key + " from file " + value)
         Domoticz.Log("Number of icons loaded = " + str(len(Images)))
         for item in Images:
             Domoticz.Log("Icon " + str(Images[item].ID) + " Name = " + Images[item].Name)
@@ -179,14 +173,7 @@ class BasePlugin:
         if (self.UNIFI_UPTIME_UNIT not in Devices):
             Domoticz.Device(Name="Uptime (hours)", Unit=self.UNIFI_UPTIME_UNIT, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_UPTIME_UNIT, 0, "0.0")
-            
-        #for item in Devices:
-            #Domoticz.Debug(strName+"item in devices = " +Devices[item].Name+" / "+Devices[item].DeviceID+" / "+str(Devices[item].ID)+" / "+str(Devices[item].Unit))
-            #Domoticz.Log(strName+"item in devices = " +Devices[item].DeviceID)
-            #Domoticz.Log(strName+"item in devices = " +str(Devices[item].ID))
-            #Domoticz.Log(strName+"item in devices = " +str(Devices[item].Unit))
-		
-		
+
         # Create table
         device_mac=Parameters["Mode2"].split(",")
         self.total_devices_count = 0
@@ -194,7 +181,7 @@ class BasePlugin:
             self.total_devices_count = self.total_devices_count + 1
         extra_devices = 1 # Override device
         self.total_devices_count = self.total_devices_count + extra_devices
-        Domoticz.Log(strName+"Count = "+str(self.total_devices_count))
+        Domoticz.Debug(strName+"Count = "+str(self.total_devices_count))
         w, h = 5, self.total_devices_count;
         self.Matrix = [[0 for x in range(w)] for y in range(h)] 
         # table:
@@ -233,17 +220,14 @@ class BasePlugin:
             mac_id = mac_id.strip().lower()
             try:
                 for item in Devices:
-                    #Domoticz.Log(strName+"Device.item = " +Devices[item].Name[8:])
                     if Devices[item].Name[8:] == phone_name:
                         Domoticz.Log(strName+"Found phone from configuration = "+device)
                         found_phone = True
                 if found_phone == False:
                     new_unit = find_available_unit()
                     Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
-                    #Domoticz.Status(strName+"Created device for "+phone_name+" with unit id " + str(new_unit))
             except:
                 Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
-
 
         self.SetupConnection()
         Domoticz.Heartbeat(int(Parameters["Mode3"]))
@@ -407,8 +391,6 @@ class BasePlugin:
         responseapi = urllib.request.urlopen(reqapi)
         test = responseapi.read().decode('utf-8', 'ignore')
         testjson = json.loads(test)
-        #Domoticz.Log(strName+"API Response (test) = " +test)
-        #Domoticz.Log(strName+"URL = "+'/api/s/'+Parameters["Mode1"]+'/stat/sta')
         url = "/api/s/"+str(Parameters["Mode1"])+"/stat/health"
         sendData = {'Verb' : 'GET',
                     'URL'  : '/api/s/default/stat/health',
@@ -429,7 +411,6 @@ class BasePlugin:
         if ('data' in testjson):
             data = testjson['data']
             for item in data:
-#                Domoticz.Log(strName+"items = " +str(item))
                 if item['subsystem'] == "wlan":
                     wlan = item
                     wlan_user_count = wlan['num_user']
@@ -462,8 +443,6 @@ class BasePlugin:
         responseapi = urllib.request.urlopen(reqapi)
         test = responseapi.read().decode('utf-8', 'ignore')
         testjson = json.loads(test)
-        #Domoticz.Log(strName+"API Response (test) = " +test)
-        #Domoticz.Log(strName+"URL = "+str(url_api_s_default_stat_sta))
         
         if ('meta' in testjson):
             meta = testjson['meta']
@@ -473,7 +452,6 @@ class BasePlugin:
                     data = testjson['data']
                     for item in data:
                         device_mac=Parameters["Mode2"].split(",")
-                        #device_unit = None
                         found_mac = 0
                         found_mac_address = None
                         found_user = None
@@ -523,7 +501,7 @@ class BasePlugin:
         
         count = 0
         for x in range(self.total_devices_count):
-            Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
+            Domoticz.Debug(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
             if self.Matrix[x][3] == "On":
                 count = count + 1
         Domoticz.Log(strName+"Total Phones connected = "+str(count))
