@@ -218,7 +218,7 @@ class BasePlugin:
         
         for extra in device_extra:
             extra = extra.strip()
-            extra_Device_Name = device.split("=")
+            extra_Device_Name = extra.split("=")
             self.Matrix[count][0] = Device_Name 
             self.Matrix[count][1] = "11:11:11:11:11:11"
             Device_Unit = None
