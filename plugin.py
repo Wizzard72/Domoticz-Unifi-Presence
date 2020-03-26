@@ -15,6 +15,7 @@
         <param field="Password" label="Password" width="600px" required="true" default="password" password="true"/>
         <param field="Mode1" label="Site Name" width="200px" required="true" default="default"/>
         <param field="Mode2" label="MAC Phone Addresses" width="600px" required="true" default="1A:2B:3C:4D:5E:6F,7A:8B:9C:AD:BE:CF"/>
+        <param field="Mode3" label="Extra devices to monitor" width="600px" required="false" default="phone1,phone2"/>
         <param field="Mode4" label="Interval" width="200px" required="true" default="15"/>
         <param field="Mode5" label="Notifications" width="75px">
             <options>
