@@ -225,7 +225,7 @@ class BasePlugin:
             Device_Unit = None
             self.Matrix[count][3] = "Off"
             self.Matrix[count][4] = "No"
-            Domoticz.Log(strName+"extra_Device_Name = "+self.Matrix[5][0])
+            Domoticz.Log(strName+"extra_Device_Name = "+self.Matrix[4][0])
             Domoticz.Log(strName+"Count 2 = "+str(count))
             Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0])
             #found_user = extra_Device_Name
