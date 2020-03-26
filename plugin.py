@@ -497,13 +497,17 @@ class BasePlugin:
                 if self.Matrix[x][3] == "On":
                     svalue = "On"
                     nvalue = 1
-                    if self.Matrix[x][0] != "OverRide":
+                    if self.Matrix[x][0] == "OverRide":
+                        self.Matrix[x][4] = "No"
+                    else:
                         UpdateDevice(self.Matrix[x][2], nvalue, svalue)
                         self.Matrix[x][4] = "No"
                 else:
                     svalue = "Off"
                     nvalue = 0
-                    if self.Matrix[x][0] != "OverRide":
+                    if self.Matrix[x][0] == "OverRide":
+                        UpdateDevice(self.Matrix[x][2], nvalue, "0")
+                    else:
                         UpdateDevice(self.Matrix[x][2], nvalue, svalue)
                         self.Matrix[x][3] = svalue
         
