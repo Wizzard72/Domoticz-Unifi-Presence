@@ -511,14 +511,14 @@ class BasePlugin:
                         UpdateDevice(self.Matrix[x][2], nvalue, svalue)
                         self.Matrix[x][3] = svalue
             else:
-                if self.Matrix[x][3] == "Off":
-                    svalue = "Off"
-                    nvalue = 0
-                    if self.Matrix[x][0] == "OverRide":
-                        UpdateDevice(self.Matrix[x][2], nvalue, "0")
-                    else:
-                        UpdateDevice(self.Matrix[x][2], nvalue, svalue)
-                        self.Matrix[x][3] = svalue
+                #if self.Matrix[x][3] == "Off":
+                svalue = "Off"
+                nvalue = 0
+                if self.Matrix[x][0] == "OverRide":
+                    UpdateDevice(self.Matrix[x][2], nvalue, "0")
+                else:
+                    UpdateDevice(self.Matrix[x][2], nvalue, svalue)
+                    self.Matrix[x][3] = svalue
             
         
         count = 0
