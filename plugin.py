@@ -560,7 +560,7 @@ class BasePlugin:
                         self.Matrix[x][4] = "Yes"
                     else:
                         UpdateDevice(self.Matrix[x][2], nvalue, svalue)
-                        self.Matrix[x][4] = "Yes"
+                        self.Matrix[x][4] = "No"
                 else:
                     svalue = "Off"
                     nvalue = 0
