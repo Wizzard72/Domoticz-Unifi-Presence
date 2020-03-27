@@ -403,6 +403,10 @@ class BasePlugin:
                 nvalue = 1
                 UpdateDevice(Unit, nvalue, svalue)
                 #Unit 55: Parameter 'On', Level: 0
+            else:
+                svalue = "Off"
+                nvalue = 0
+                UpdateDevice(Unit, nvalue, svalue)
                 
                 
                 
