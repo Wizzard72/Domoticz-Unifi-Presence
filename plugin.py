@@ -93,7 +93,7 @@ class BasePlugin:
         if "UnifiHome" not in Images: 
             Domoticz.Log(strName+"Add UnifiHome icons to Domoticz")
             Domoticz.Image("uhome.zip").Create()
-            Domoticz.Log(strName+"UnifiHome ID = "+Images['UnifiHome'].ID)
+            Domoticz.Log(strName+"UnifiHome ID = "+Images[ 'UnifiHome' ].ID)
         else:
             Domoticz.Log(strName+"Already added UnifiHome icons to Domoticz")
         
