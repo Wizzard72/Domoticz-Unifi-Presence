@@ -352,7 +352,7 @@ class BasePlugin:
                 self.override_time = 0 #seconds
                 Domoticz.Log(strName+"Override Time = "+str(self.override_time))
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 1, str(Level))
-                self.Matrix[0][3] = "On"
+                self.Matrix[0][3] = "Off"
                 self.Matrix[0][4] = "Yes"
                 self.Matrix[0][5] = "Change"
 		
