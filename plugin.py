@@ -355,7 +355,7 @@ class BasePlugin:
 
     def onCommand(self, Unit, Command, Level, Hue):
         strName = "onCommand: "
-        Domoticz.Debug(strName+"called for Unit " + str(Unit) + ": Parameter '" + str(Command) + "', Level: " + str(Level))
+        Domoticz.Log(strName+"called for Unit " + str(Unit) + ": Parameter '" + str(Command) + "', Level: " + str(Level))
         if self.UNIFI_OVERRIDE_UNIT == Unit:
        
             if Level == 0: # Override Off
