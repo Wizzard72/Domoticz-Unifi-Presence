@@ -551,11 +551,9 @@ class BasePlugin:
         
     def ProcessDevices(self, action):
         strName = "ProcessDevices: "
-        Domoticz.Log(strName+"1. ACTION = "+action)
         for x in range(self.total_devices_count):
             Domoticz.Debug(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
             if action == "normal" and self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "Yes":
-                Domoticz.Log(strName+"2. ACTION = "+action)
                 if self.Matrix[x][3] == "On":
                     svalue = "On"
                     nvalue = 1
@@ -573,7 +571,6 @@ class BasePlugin:
                         UpdateDevice(self.Matrix[x][2], nvalue, svalue)
                         self.Matrix[x][3] = svalue
             elif action == "change" and self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "Change":
-                Domoticz.Log(strName+"3. ACTION = "+action)
                 if self.Matrix[x][3] == "On":
                     svalue = "On"
                     nvalue = 1
@@ -595,13 +592,10 @@ class BasePlugin:
                         self.Matrix[x][3] = svalue
             elif action == "change" and self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "No":
                 Domoticz.Log(strName+"Nothing to do")
-                Domoticz.Log(strName+"4. ACTION = "+action)
             elif action == "change" and self.Matrix[x][4] == "No" and self.Matrix[x][5] == "No":
                 Domoticz.Log(strName+"Nothing to do")
-                Domoticz.Log(strName+"5. ACTION = "+action)
             else:
                 if action == "normal" and self.Matrix[x][5] == "Yes":
-                    Domoticz.Log(strName+"6. ACTION = "+action)
                     svalue = "Off"
                     nvalue = 0
                     if self.Matrix[x][0] == "OverRide":
