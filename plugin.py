@@ -279,7 +279,7 @@ class BasePlugin:
             #Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3]+" | "+self.Matrix[count][4])
             count = count + 1
             
-        Domotcz.Log(strName+"COUNT = "+str(count))
+        Domoticz.Log(strName+"COUNT = "+str(count))
         x = range(0, self.total_devices_count, 1)
         Domoticz.Log(strName+"self.total_devices_count = "+str(self.total_devices_count))
         for n in x:
