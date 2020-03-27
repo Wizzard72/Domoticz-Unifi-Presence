@@ -216,6 +216,9 @@ class BasePlugin:
             Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3]+" | "+self.Matrix[count][4])
             count = count + 1
         
+        # Extra devices for Geo Fence for example
+        for ex_device in device_extra:
+            Domoticz.Log(str+"ex_device = "+ex_device)
 
         
         found_phone = False
