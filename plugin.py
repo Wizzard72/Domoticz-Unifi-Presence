@@ -93,6 +93,7 @@ class BasePlugin:
         if "UnifiHome" not in Images: 
             Domoticz.Log(strName+"Add UnifiHome icons to Domoticz")
             Domoticz.Image("uhome.zip").Create()
+            Domoticz.Log(strName+"UnifiHome ID = "+Image["UnifiHome"].ID)
         else:
             Domoticz.Log(strName+"Already added UnifiHome icons to Domoticz")
         
@@ -108,10 +109,6 @@ class BasePlugin:
         else:
             Domoticz.Log(strName+"Already added UnifiOverride icons to Domoticz")
         
-        if "UnifiHome" in Images:
-            Domoticz.Log(strName+"Image ID = "+str(Images.ID))
-        else:
-            Domoticz.Error(strName+"Image ID niet gevonden")
         
         Domoticz.Log("Number of icons loaded = " + str(len(Images)))
         for item in Images:
@@ -209,7 +206,7 @@ class BasePlugin:
         
         extra_devices = 1 # Override device
         self.total_devices_count = count_phone + self.count_ex_device + extra_devices
-        Domoticz.Log(strName+"total_devices = "+str(self.total_devices_count))
+        Domoticz.Debug(strName+"total_devices = "+str(self.total_devices_count))
         # Create table
         device_mac=Parameters["Mode2"].split(",")
         device_extra=Parameters["Mode3"].split(",")
