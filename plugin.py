@@ -75,6 +75,7 @@ class BasePlugin:
     #csrftoken = ""
     phone_name = ""
     Matrix = ""
+    count_ex_device = 0
     
     def __init__(self):
         #self.var = 123
@@ -199,7 +200,7 @@ class BasePlugin:
         
         # Extra devices for Geo Fence for example
         found_phone = False
-        count_ex_device = 0
+        #count_ex_device = 0
         for ex_device in device_extra:
             ex_device = ex_device.strip()
             phone_name = ex_device
@@ -213,10 +214,10 @@ class BasePlugin:
                     Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
             except:
                 Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
-            count_ex_device = count_ex_device + 1
+            self.count_ex_device = self.count_ex_device + 1
         
         extra_devices = 1 # Override device
-        self.total_devices_count = count_phone + count_ex_device + extra_devices
+        self.total_devices_count = count_phone + self.count_ex_device + extra_devices
         Domoticz.Log(strName+"total_devices = "+str(self.total_devices_count))
         # Create table
         device_mac=Parameters["Mode2"].split(",")
@@ -397,16 +398,17 @@ class BasePlugin:
             for x in range(self.total_devices_count):
                 Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
         
-        if 55 == Unit:
-            if str(Command) == "On":
-                svalue = "On"
-                nvalue = 1
-                UpdateDevice(Unit, nvalue, svalue)
-                #Unit 55: Parameter 'On', Level: 0
-            else:
-                svalue = "Off"
-                nvalue = 0
-                UpdateDevice(Unit, nvalue, svalue)
+        for r in range(0, self.count_ex_device):
+            if self.Matrix[r][2] == Unit:
+                if str(Command) == "On":
+                    svalue = "On"
+                    nvalue = 1
+                    UpdateDevice(Unit, nvalue, svalue)
+                    #Unit 55: Parameter 'On', Level: 0
+                else:
+                    svalue = "Off"
+                    nvalue = 0
+                    UpdateDevice(Unit, nvalue, svalue)
                 
                 
                 
