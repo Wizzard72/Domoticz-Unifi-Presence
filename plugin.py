@@ -95,8 +95,18 @@ class BasePlugin:
             Domoticz.Image("uhome.zip").Create()
         else:
             Domoticz.Log(strName+"Already added UnifiHome icons to Domoticz")
-        if "UnifiOverride" not in Images: Domoticz.Image("uoverride.zip").Create()
-        if "UnifiApp" not in Images: Domoticz.Image("uapp.zip").Create()
+        
+        if "UnifiOverride" not in Images: 
+            Domoticz.Log(strName+"Add UnifiOverride icons to Domoticz")
+            Domoticz.Image("uoverride.zip").Create()
+        else:
+            Domoticz.Log(strName+"Already added UnifiOverride icons to Domoticz")
+        
+        if "UnifiApp" not in Images: 
+            Domoticz.Log(strName+"Add UnifiApp icons to Domoticz")
+            Domoticz.Image("uapp.zip").Create()
+        else:
+            Domoticz.Log(strName+"Already added UnifiOverride icons to Domoticz")
         
         if "UnifiHome" in Images:
             Domoticz.Log(strName+"Image ID = "+str(Images.ID))
@@ -588,7 +598,7 @@ class BasePlugin:
         
         count = 0
         for x in range(self.total_devices_count):
-            Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4]+" | "+self.Matrix[x][5])
+            Domoticz.Debug(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4]+" | "+self.Matrix[x][5])
             if self.Matrix[x][3] == "On":
                 count = count + 1
         Domoticz.Log(strName+"Total Phones connected = "+str(count))
