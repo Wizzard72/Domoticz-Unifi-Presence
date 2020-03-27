@@ -414,7 +414,7 @@ class BasePlugin:
         for x in range(self.total_devices_count):
             Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4]+" | "+self.Matrix[x][5])
         
-        self.ProcessDevices()
+        self.ProcessDevices("change")
                 
                 
     def onNotification(self, Name, Subject, Text, Status, Priority, Sound, ImageFile):
@@ -547,13 +547,13 @@ class BasePlugin:
                                         Domoticz.Log(strName+"Found phone ON "+self.Matrix[x][0])
                                         self.Matrix[x][3] = "On"
                                         self.Matrix[x][4] = "Yes"
-        self.ProcessDevices()
+        self.ProcessDevices("normal")
         
-    def ProcessDevices(self):
+    def ProcessDevices(self, action):
         strName = "ProcessDevices: "
         for x in range(self.total_devices_count):
             Domoticz.Debug(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
-            if self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "Yes":
+            if action == "normal" and self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "Yes":
                 if self.Matrix[x][3] == "On":
                     svalue = "On"
                     nvalue = 1
@@ -570,7 +570,7 @@ class BasePlugin:
                     else:
                         UpdateDevice(self.Matrix[x][2], nvalue, svalue)
                         self.Matrix[x][3] = svalue
-            elif self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "Change":
+            elif action == "change" and self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "Change":
                 if self.Matrix[x][3] == "On":
                     svalue = "On"
                     nvalue = 1
@@ -590,9 +590,9 @@ class BasePlugin:
                     else:
                         UpdateDevice(self.Matrix[x][2], nvalue, svalue)
                         self.Matrix[x][3] = svalue
-            elif self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "NO":
+            elif action == "change" and self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "NO":
                 Domoticz.Log(strName+"Nothing to do")
-            elif self.Matrix[x][4] == "No" and self.Matrix[x][5] == "NO":
+            elif action == "change" and self.Matrix[x][4] == "No" and self.Matrix[x][5] == "NO":
                 Domoticz.Log(strName+"Nothing to do")
             else:
                 svalue = "Off"
