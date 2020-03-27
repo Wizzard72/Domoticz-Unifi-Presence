@@ -109,7 +109,7 @@ class BasePlugin:
         else:
             Domoticz.Log(strName+"Already added UnifiApp icons to Domoticz")
         
-        
+        Domoticz.Log(strName+"TEST IMAGE = "+str(Images['UnifiApp'].ID))
         Domoticz.Log("Number of icons loaded = " + str(len(Images)))
         for item in Images:
             Domoticz.Log(strName+"Items = "+str(item))
