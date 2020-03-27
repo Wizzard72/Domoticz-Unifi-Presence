@@ -207,7 +207,7 @@ class BasePlugin:
             try:
                 for item in Devices:
                     if Devices[item].Name[8:] == phone_name:
-                        Domoticz.Log(strName+"Found phone from configuration = "+device)
+                        Domoticz.Log(strName+"Found devices to monitor from configuration = "+device)
                         found_phone = True
                 if found_phone == False:
                     new_unit = find_available_unit()
@@ -222,14 +222,6 @@ class BasePlugin:
         # Create table
         device_mac=Parameters["Mode2"].split(",")
         device_extra=Parameters["Mode3"].split(",")
-        #self.total_devices_count = 0
-        #for device in device_mac:
-        #    self.total_devices_count = self.total_devices_count + 1
-        #for extra in device_extra:
-        #    self.total_devices_count = self.total_devices_count + 1
-        #extra_devices = 1 # Override device
-        #self.total_devices_count = self.total_devices_count + extra_devices
-        Domoticz.Log(strName+"Count = "+str(self.total_devices_count))
         w, h = 5, self.total_devices_count;
         self.Matrix = [[0 for x in range(w)] for y in range(h)] 
         # table:
@@ -272,22 +264,17 @@ class BasePlugin:
             for dv in Devices:
                 # Find the unit number
                 search_phone = Devices[dv].Name[8:]
-                Domoticz.Log(strName+"TESTTTTTTTT --- 1")
                 if Devices[dv].Name[8:] == found_user:
                     self.Matrix[count][2] = Devices[dv].Unit
-                    Domoticz.Log(strName+"TESTTTTTTTT --- 2")
                     continue
             #Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3]+" | "+self.Matrix[count][4])
             count = count + 1
             
-        Domoticz.Log(strName+"COUNT = "+str(count))
         x = range(0, self.total_devices_count, 1)
-        Domoticz.Log(strName+"self.total_devices_count = "+str(self.total_devices_count))
         for n in x:
             Domoticz.Log(strName+"x = "+str(n))
             Domoticz.Log(strName+"Phone Naam = "+self.Matrix[n][0]+" | "+str(self.Matrix[n][1])+" | "+str(self.Matrix[n][2])+" | "+self.Matrix[n][3]+" | "+self.Matrix[n][4])
             
-        
 
         self.SetupConnection()
         Domoticz.Heartbeat(int(Parameters["Mode4"]))
@@ -416,7 +403,8 @@ class BasePlugin:
                     UpdateDevice(Unit, nvalue, svalue)
                     self.Matrix[r][3] = "Off"
                     self.Matrix[r][4] = "Yes"
-                
+        
+        self.ProcessDevices()
                 
                 
     def onNotification(self, Name, Subject, Text, Status, Priority, Sound, ImageFile):
@@ -549,7 +537,9 @@ class BasePlugin:
                                         Domoticz.Log(strName+"Found phone ON "+self.Matrix[x][0])
                                         self.Matrix[x][3] = "On"
                                         self.Matrix[x][4] = "Yes"
+        self.ProcessDevices()
         
+    def ProcessDevices(self):
         for x in range(self.total_devices_count):
             Domoticz.Debug(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
             if self.Matrix[x][4] == "Yes":
@@ -591,7 +581,7 @@ class BasePlugin:
         else:
             UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 0, "Off")
 
-   
+
     def Authenticate(self):
         strName = "Authenticate: "
         Domoticz.Debug(strName+"called")
