@@ -218,7 +218,7 @@ class BasePlugin:
         
         # Extra devices for Geo Fence for example
         for ex_device in device_extra:
-            Domoticz.Log(str+"ex_device = "+ex_device)
+            Domoticz.Log(str+"ex_device = "+str(ex_device))
 
         
         found_phone = False
