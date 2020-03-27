@@ -401,6 +401,7 @@ class BasePlugin:
                     UpdateDevice(Unit, nvalue, svalue)
                     self.Matrix[r][3] = "On"
                     self.Matrix[r][4] = "Yes"
+                    self.Matrix[r][5] = "Change"
                     #Unit 55: Parameter 'On', Level: 0
                 else:
                     svalue = "Off"
@@ -408,6 +409,7 @@ class BasePlugin:
                     UpdateDevice(Unit, nvalue, svalue)
                     self.Matrix[r][3] = "Off"
                     self.Matrix[r][4] = "Yes"
+                    self.Matrix[r][5] = "Change"
         
         for x in range(self.total_devices_count):
             Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
