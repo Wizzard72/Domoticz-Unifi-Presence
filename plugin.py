@@ -398,12 +398,15 @@ class BasePlugin:
             for x in range(self.total_devices_count):
                 Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
         
-        for r in range(0, self.count_ex_device):
+        t = self.total_devices_count - self.count_ex_device
+        for r in range(t, self.count_ex_device):
             if self.Matrix[r][3] == Unit:
                 if str(Command) == "On":
                     svalue = "On"
                     nvalue = 1
                     UpdateDevice(Unit, nvalue, svalue)
+                    self.Matrix[][] = "On"
+                    self.Matrix[][] = "Yes"
                     #Unit 55: Parameter 'On', Level: 0
                 else:
                     svalue = "Off"
