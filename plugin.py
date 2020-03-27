@@ -90,9 +90,13 @@ class BasePlugin:
             Domoticz.Debugging(0)
         
         # load custom images
-        if "UnifiHome" not in Images: Domoticz.Image("uhome.zip").Create()
+        if "UnifiHome" not in Images: 
+            Domoticz.Log(strName+"Add UnifiHome icons to Domoticz")
+            Domoticz.Image("uhome.zip").Create()
+        else:
+            Domoticz.Log(strName+"Already added UnifiHome icons to Domoticz")
         if "UnifiOverride" not in Images: Domoticz.Image("uoverride.zip").Create()
-        if "UnifiUnit" not in Images: Domoticz.Image("uunit.zip").Create()
+        if "UnifiApp" not in Images: Domoticz.Image("uapp.zip").Create()
         
         if "UnifiHome" in Images:
             Domoticz.Log(strName+"Image ID = "+str(Images.ID))
