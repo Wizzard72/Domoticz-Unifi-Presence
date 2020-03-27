@@ -271,8 +271,10 @@ class BasePlugin:
             for dv in Devices:
                 # Find the unit number
                 search_phone = Devices[dv].Name[8:]
+                Domoticz.Log(strName+"TESTTTTTTTT --- 1")
                 if Devices[dv].Name[8:] == found_user:
                     self.Matrix[count][2] = Devices[dv].Unit
+                    Domoticz.Log(strName+"TESTTTTTTTT --- 2")
                     continue
             Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3]+" | "+self.Matrix[count][4])
             count = count + 1
