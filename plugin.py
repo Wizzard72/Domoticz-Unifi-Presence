@@ -600,14 +600,15 @@ class BasePlugin:
                 Domoticz.Log(strName+"Nothing to do")
                 Domoticz.Log(strName+"5. ACTION = "+action)
             else:
-                Domoticz.Log(strName+"6. ACTION = "+action)
-                svalue = "Off"
-                nvalue = 0
-                if self.Matrix[x][0] == "OverRide":
-                    UpdateDevice(self.Matrix[x][2], nvalue, "0")
-                else:
-                    UpdateDevice(self.Matrix[x][2], nvalue, svalue)
-                    self.Matrix[x][3] = svalue
+                if action == "normal":
+                    Domoticz.Log(strName+"6. ACTION = "+action)
+                    svalue = "Off"
+                    nvalue = 0
+                    if self.Matrix[x][0] == "OverRide":
+                        UpdateDevice(self.Matrix[x][2], nvalue, "0")
+                    else:
+                        UpdateDevice(self.Matrix[x][2], nvalue, svalue)
+                        self.Matrix[x][3] = svalue
             
         
         count = 0
