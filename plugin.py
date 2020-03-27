@@ -354,6 +354,7 @@ class BasePlugin:
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 1, str(Level))
                 self.Matrix[0][3] = "On"
                 self.Matrix[0][4] = "Yes"
+                self.Matrix[0][5] = "Change"
 		
             
             elif Level == 10: # Override 1 hour
@@ -362,6 +363,7 @@ class BasePlugin:
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 1, str(Level))
                 self.Matrix[0][3] = "On"
                 self.Matrix[0][4] = "Yes"
+                self.Matrix[0][5] = "Change"
 
             elif Level == 20: # Override 2 hours
                 self.override_time = 2 * 60 * 60 #seconds
@@ -369,6 +371,7 @@ class BasePlugin:
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 1, str(Level))
                 self.Matrix[0][3] = "On"
                 self.Matrix[0][4] = "Yes"
+                self.Matrix[0][5] = "Change"
 
             elif Level == 30: # Override 3 hour
                 self.override_time = 3 * 60 * 60 #seconds
@@ -376,6 +379,7 @@ class BasePlugin:
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 1, str(Level))
                 self.Matrix[0][3] = "On"
                 self.Matrix[0][4] = "Yes"
+                self.Matrix[0][5] = "Change"
 
             elif Level == 40: # Override On
                 self.override_time = 99999999999 #seconds
@@ -383,6 +387,7 @@ class BasePlugin:
                 UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 1, str(Level))
                 self.Matrix[0][3] = "On"
                 self.Matrix[0][4] = "Yes"
+                self.Matrix[0][5] = "Change"
             
                    
         t = self.total_devices_count - self.count_ex_device
@@ -555,6 +560,26 @@ class BasePlugin:
                     else:
                         UpdateDevice(self.Matrix[x][2], nvalue, svalue)
                         self.Matrix[x][4] = "No"
+                else:
+                    svalue = "Off"
+                    nvalue = 0
+                    if self.Matrix[x][0] == "OverRide":
+                        UpdateDevice(self.Matrix[x][2], nvalue, "0")
+                    else:
+                        UpdateDevice(self.Matrix[x][2], nvalue, svalue)
+                        self.Matrix[x][3] = svalue
+            elif self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "Change":
+                if self.Matrix[x][3] == "On":
+                    svalue = "On"
+                    nvalue = 1
+                    if self.Matrix[x][0] == "OverRide":
+                        self.Matrix[x][4] = "Yes"
+                        self.Matrix[x][5] = "No"
+                        
+                    else:
+                        UpdateDevice(self.Matrix[x][2], nvalue, svalue)
+                        self.Matrix[x][4] = "No"
+                        self.Matrix[x][5] = "No"
                 else:
                     svalue = "Off"
                     nvalue = 0
