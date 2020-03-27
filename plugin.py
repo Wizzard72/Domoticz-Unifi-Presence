@@ -405,13 +405,15 @@ class BasePlugin:
                     svalue = "On"
                     nvalue = 1
                     UpdateDevice(Unit, nvalue, svalue)
-                    self.Matrix[][] = "On"
-                    self.Matrix[][] = "Yes"
+                    self.Matrix[r][4] = "On"
+                    self.Matrix[r][5] = "Yes"
                     #Unit 55: Parameter 'On', Level: 0
                 else:
                     svalue = "Off"
                     nvalue = 0
                     UpdateDevice(Unit, nvalue, svalue)
+                    self.Matrix[r][4] = "On"
+                    self.Matrix[r][5] = "Yes"
                 
                 
                 
