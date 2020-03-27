@@ -276,12 +276,13 @@ class BasePlugin:
                     self.Matrix[count][2] = Devices[dv].Unit
                     Domoticz.Log(strName+"TESTTTTTTTT --- 2")
                     continue
-            Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3]+" | "+self.Matrix[count][4])
+            #Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3]+" | "+self.Matrix[count][4])
             count = count + 1
             
+            x = range(self.total_devices_count)
+            for n in x:
+                Domoticz.Log(strName+"Phone Naam = "+self.Matrix[n][0]+" | "+str(self.Matrix[n][1])+" | "+str(self.Matrix[n][2])+" | "+self.Matrix[n][3]+" | "+self.Matrix[n][4])
             
-
-        
         
 
         self.SetupConnection()
