@@ -600,7 +600,7 @@ class BasePlugin:
                 Domoticz.Log(strName+"Nothing to do")
                 Domoticz.Log(strName+"5. ACTION = "+action)
             else:
-                if action == "normal":
+                if action == "normal" and self.Matrix[x][5] == "NO":
                     Domoticz.Log(strName+"6. ACTION = "+action)
                     svalue = "Off"
                     nvalue = 0
