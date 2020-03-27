@@ -398,7 +398,7 @@ class BasePlugin:
                 Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
         
         if 55 == Unit:
-            if Parameter == "On":
+            if str(Command) == "On":
                 svalue = "On"
                 nvalue = 1
                 UpdateDevice(self.Matrix[6][2], nvalue, svalue)
