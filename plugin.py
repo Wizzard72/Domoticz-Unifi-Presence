@@ -90,25 +90,18 @@ class BasePlugin:
             Domoticz.Debugging(0)
         
         # load custom images
-        if "UnifiAnyone" not in Images: 
-            Domoticz.Log(strName+"Add UnifiAnyone icons to Domoticz")
+        if "UnifiPresenceAnyone" not in Images: 
+            Domoticz.Log(strName+"Add UnifiPresenceAnyone icons to Domoticz")
             Domoticz.Image("uanyone.zip").Create()
-            #Domoticz.Log(strName+"UnifiHome ID = "+str(Images["UnifiHome"].ID))
-        else:
-            Domoticz.Log(strName+"Already added UnifiAnyone icons to Domoticz")
         
-        if "UnifiOverride" not in Images: 
-            Domoticz.Log(strName+"Add UnifiOverride icons to Domoticz")
+        if "UnifiPresenceOverride" not in Images: 
+            Domoticz.Log(strName+"Add UnifiPresenceOverride icons to Domoticz")
             Domoticz.Image("uoverride.zip").Create()
-        else:
-            Domoticz.Log(strName+"Already added UnifiOverride icons to Domoticz")
         
-        if "UnifiApp" not in Images: 
-            Domoticz.Log(strName+"Add UnifiApp icons to Domoticz")
-            Domoticz.Image("uapp.zip").Create()
-        else:
-            Domoticz.Log(strName+"Already added UnifiApp icons to Domoticz")
-        
+        if "UnifiPresenceDevice" not in Images: 
+            Domoticz.Log(strName+"Add UnifiPresenceDevice icons to Domoticz")
+            Domoticz.Image("udevice.zip").Create()
+
         #Domoticz.Log(strName+"TEST IMAGE = "+str(Images['UnifiApp'].ID))
         Domoticz.Log("Number of icons loaded = " + str(len(Images)))
         for item in Images:
@@ -124,7 +117,7 @@ class BasePlugin:
             UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, 0, "0")
             
         if (self.UNIFI_ANYONE_HOME_UNIT not in Devices):
-            Domoticz.Device(Name="AnyOne",  Unit=self.UNIFI_ANYONE_HOME_UNIT, Used=1, TypeName="Switch", Image=Images['UnifiAnyone'].ID).Create()
+            Domoticz.Device(Name="AnyOne",  Unit=self.UNIFI_ANYONE_HOME_UNIT, Used=1, TypeName="Switch", Image=Images['UnifiPresenceAnyone'].ID).Create()
             UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 0, "Off")
             
         if (self.UNIFI_OVERRIDE_UNIT not in Devices):
@@ -132,7 +125,7 @@ class BasePlugin:
                        "LevelNames": "Off|1 hour|2 hours|3 hours|On",
                        "LevelOffHidden": "false",
                        "SelectorStyle": "0"}
-            Domoticz.Device(Name="OverRide", Unit=self.UNIFI_OVERRIDE_UNIT, TypeName="Selector Switch", Switchtype=18, Used=1, Options=Options, Image=Images['UnifiOverride'].ID).Create()
+            Domoticz.Device(Name="OverRide", Unit=self.UNIFI_OVERRIDE_UNIT, TypeName="Selector Switch", Switchtype=18, Used=1, Options=Options, Image=Images['UnifiPresenceOverride'].ID).Create()
         UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 0, "0")
         
         if (self.UNIFI_CPU_PERC_UNIT not in Devices):
@@ -180,7 +173,7 @@ class BasePlugin:
                         found_phone = True
                 if found_phone == False:
                     new_unit = find_available_unit()
-                    Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1, Image=Images['UnifiApp'].ID).Create()
+                    Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1, Image=Images['UnifiPresenceDevice'].ID).Create()
             except:
                 Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
             count_phone = count_phone + 1
