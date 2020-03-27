@@ -540,6 +540,7 @@ class BasePlugin:
         self.ProcessDevices()
         
     def ProcessDevices(self):
+	strName = "ProcessDevices: "
         for x in range(self.total_devices_count):
             Domoticz.Debug(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
             if self.Matrix[x][4] == "Yes":
