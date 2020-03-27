@@ -401,7 +401,7 @@ class BasePlugin:
             if str(Command) == "On":
                 svalue = "On"
                 nvalue = 1
-                UpdateDevice(self.Matrix[6][2], nvalue, svalue)
+                UpdateDevice(Unit, nvalue, svalue)
                 #Unit 55: Parameter 'On', Level: 0
                 
                 
