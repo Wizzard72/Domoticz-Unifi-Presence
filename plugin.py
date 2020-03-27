@@ -243,7 +243,7 @@ class BasePlugin:
             Device_Unit = None
             self.Matrix[count][3] = "Off"
             self.Matrix[count][4] = "No"
-            self.Matrix[0][5] = "Yes"
+            self.Matrix[count][5] = "Yes"
             found_user = Device_Name
             for dv in Devices:
                 # Find the unit number
@@ -262,7 +262,7 @@ class BasePlugin:
             self.Matrix[count][1] = "11:11:11:11:11:11"
             self.Matrix[count][3] = "Off"
             self.Matrix[count][4] = "No"
-            self.Matrix[0][5] = "No"
+            self.Matrix[count][5] = "No"
             found_user = ex_device.strip()
             for dv in Devices:
                 # Find the unit number
@@ -576,7 +576,7 @@ class BasePlugin:
         
         count = 0
         for x in range(self.total_devices_count):
-            Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
+            Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4]+" | "+self.Matrix[x][5])
             if self.Matrix[x][3] == "On":
                 count = count + 1
         Domoticz.Log(strName+"Total Phones connected = "+str(count))
