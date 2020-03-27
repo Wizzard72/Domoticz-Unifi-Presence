@@ -180,7 +180,7 @@ class BasePlugin:
                         found_phone = True
                 if found_phone == False:
                     new_unit = find_available_unit()
-                    Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
+                    Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1, Image=Images['UnifiApp'].ID).Create()
             except:
                 Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
             count_phone = count_phone + 1
