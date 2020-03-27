@@ -112,7 +112,8 @@ class BasePlugin:
         
         Domoticz.Log("Number of icons loaded = " + str(len(Images)))
         for item in Images:
-            Domoticz.Log("Icon " + str(Images[item].ID) + " Name = " + Images[item].Name)
+            Domoticz.Log(strName+"Items = "+str(items))
+            Domoticz.Log(strName+"Icon " + str(Images[item].ID) + " Name = " + Images[item].Name)
         
         if (self.UNIFI_WLAN_COUNTER_UNIT not in Devices):
             Domoticz.Device(Name="WLAN Counter",  Unit=self.UNIFI_WLAN_COUNTER_UNIT, Used=1, Type=243, Subtype=31).Create()
@@ -121,8 +122,6 @@ class BasePlugin:
         if (self.UNIFI_LAN_COUNTER_UNIT not in Devices):
             Domoticz.Device(Name="LAN Counter",  Unit=self.UNIFI_LAN_COUNTER_UNIT, Used=1, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, 0, "0")
-        for items in Images:
-            Domoticz.Log(strName+"Image nr= "+str(Images[items]))
             
         if (self.UNIFI_ANYONE_HOME_UNIT not in Devices):
             Domoticz.Device(Name="AnyOne",  Unit=self.UNIFI_ANYONE_HOME_UNIT, Used=1, TypeName="Switch", Image=116).Create()
