@@ -593,14 +593,14 @@ class BasePlugin:
                     else:
                         UpdateDevice(self.Matrix[x][2], nvalue, svalue)
                         self.Matrix[x][3] = svalue
-            elif action == "change" and self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "NO":
+            elif action == "change" and self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "No":
                 Domoticz.Log(strName+"Nothing to do")
                 Domoticz.Log(strName+"4. ACTION = "+action)
-            elif action == "change" and self.Matrix[x][4] == "No" and self.Matrix[x][5] == "NO":
+            elif action == "change" and self.Matrix[x][4] == "No" and self.Matrix[x][5] == "No":
                 Domoticz.Log(strName+"Nothing to do")
                 Domoticz.Log(strName+"5. ACTION = "+action)
             else:
-                if action == "normal" and self.Matrix[x][5] == "NO":
+                if action == "normal" and self.Matrix[x][5] == "Yes":
                     Domoticz.Log(strName+"6. ACTION = "+action)
                     svalue = "Off"
                     nvalue = 0
