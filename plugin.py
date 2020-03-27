@@ -399,7 +399,7 @@ class BasePlugin:
                 Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
         
         for r in range(0, self.count_ex_device):
-            if self.Matrix[r][2] == Unit:
+            if self.Matrix[r][3] == Unit:
                 if str(Command) == "On":
                     svalue = "On"
                     nvalue = 1
