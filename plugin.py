@@ -179,7 +179,7 @@ class BasePlugin:
         device_extra=Parameters["Mode3"].split(",")
         
         found_phone = False
-        count_phone = 1
+        count_phone = 0
         for device in device_mac:
             device = device.strip()
             phone_name, mac_id = device.split("=")
@@ -199,7 +199,7 @@ class BasePlugin:
         
         # Extra devices for Geo Fence for example
         found_phone = False
-        count_ex_device = 1
+        count_ex_device = 0
         for ex_device in device_extra:
             ex_device = ex_device.strip()
             phone_name = ex_device
