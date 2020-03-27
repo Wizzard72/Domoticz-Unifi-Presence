@@ -112,7 +112,7 @@ class BasePlugin:
         
         Domoticz.Log("Number of icons loaded = " + str(len(Images)))
         for item in Images:
-            Domoticz.Log(strName+"Items = "+str(items))
+            Domoticz.Log(strName+"Items = "+str(item))
             Domoticz.Log(strName+"Icon " + str(Images[item].ID) + " Name = " + Images[item].Name)
         
         if (self.UNIFI_WLAN_COUNTER_UNIT not in Devices):
