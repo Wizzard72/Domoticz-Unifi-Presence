@@ -396,7 +396,16 @@ class BasePlugin:
             
             for x in range(self.total_devices_count):
                 Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
-
+        
+        if 55 == Unit:
+            if Parameter == "On":
+                svalue = "On"
+                nvalue = 1
+                UpdateDevice(self.Matrix[6][2], nvalue, svalue)
+                #Unit 55: Parameter 'On', Level: 0
+                
+                
+                
     def onNotification(self, Name, Subject, Text, Status, Priority, Sound, ImageFile):
         strName = "onNotification: "
         Domoticz.Debug(strName+"called")
