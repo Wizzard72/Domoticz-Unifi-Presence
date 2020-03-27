@@ -95,7 +95,7 @@ class BasePlugin:
         if "UnifiUnit" not in Images: Domoticz.Image("uunit.zip").Create()
         
         if "UnifiHome" in Images:
-            Domoticz.Log(strName+""+str(Images.ID))
+            Domoticz.Log(strName+"Image ID = "+str(Images.ID))
         
         Domoticz.Log("Number of icons loaded = " + str(len(Images)))
         for item in Images:
