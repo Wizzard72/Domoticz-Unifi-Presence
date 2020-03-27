@@ -179,6 +179,7 @@ class BasePlugin:
         device_extra=Parameters["Mode3"].split(",")
         
         found_phone = False
+        count_phone = 1
         for device in device_mac:
             device = device.strip()
             phone_name, mac_id = device.split("=")
@@ -194,9 +195,11 @@ class BasePlugin:
                     Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
             except:
                 Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
+            count_phone = count_phone + 1
         
         # Extra devices for Geo Fence for example
         found_phone = False
+        count_ex_device = 1
         for ex_device in device_extra:
             ex_device = ex_device.strip()
             phone_name = ex_device
@@ -210,7 +213,10 @@ class BasePlugin:
                     Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
             except:
                 Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
+            count_ex_device = count_ex_device + 1
         
+        total_devices = count_phone + count_ex_device
+        Domoticz.Log(strName+"total_devices = "+str(total_devices))
         # Create table
         device_mac=Parameters["Mode2"].split(",")
         device_extra=Parameters["Mode3"].split(",")
