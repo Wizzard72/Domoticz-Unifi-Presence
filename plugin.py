@@ -236,8 +236,6 @@ class BasePlugin:
         
         # Extra devices for Geo Fence for example
         for ex_device in device_extra:
-            Domoticz.Log(strName+"ex_device = "+str(ex_device))
-            Domoticz.Log(strName+"count = "+str(count))
             self.Matrix[count][0] = ex_device.strip()
             self.Matrix[count][1] = "11:11:11:11:11:11"
             self.Matrix[count][3] = "Off"
