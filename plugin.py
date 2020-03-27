@@ -398,7 +398,7 @@ class BasePlugin:
             for x in range(self.total_devices_count):
                 Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
         
-        t = self.total_devices_count - self.count_ex_device
+        t = self.total_devices_count - self.count_ex_device + 1
         Domoticz.Log(strName+"Range = "+str(t)+" - "+str(self.total_devices_count))
         for r in range(t, self.total_devices_count):
             if self.Matrix[r][3] == Unit:
