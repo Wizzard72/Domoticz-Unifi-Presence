@@ -414,7 +414,7 @@ class BasePlugin:
                     svalue = "Off"
                     nvalue = 0
                     UpdateDevice(Unit, nvalue, svalue)
-                    self.Matrix[r][3] = "On"
+                    self.Matrix[r][3] = "Off"
                     self.Matrix[r][4] = "Yes"
                 
                 
