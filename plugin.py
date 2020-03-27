@@ -215,17 +215,18 @@ class BasePlugin:
                 Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
             count_ex_device = count_ex_device + 1
         
-        total_devices = count_phone + count_ex_device
-        Domoticz.Log(strName+"total_devices = "+str(total_devices))
+        extra_devices = 1 # Override device
+        self.total_devices_count = count_phone + count_ex_device + extra_devices
+        Domoticz.Log(strName+"total_devices = "+str(self.total_devices_count))
         # Create table
         device_mac=Parameters["Mode2"].split(",")
         device_extra=Parameters["Mode3"].split(",")
-        self.total_devices_count = 0
-        for device in device_mac:
-            self.total_devices_count = self.total_devices_count + 1
+        #self.total_devices_count = 0
+        #for device in device_mac:
+        #    self.total_devices_count = self.total_devices_count + 1
         #for extra in device_extra:
         #    self.total_devices_count = self.total_devices_count + 1
-        extra_devices = 1 # Override device
+        #extra_devices = 1 # Override device
         self.total_devices_count = self.total_devices_count + extra_devices
         Domoticz.Log(strName+"Count = "+str(self.total_devices_count))
         w, h = 5, self.total_devices_count;
