@@ -222,10 +222,10 @@ class BasePlugin:
         # Create table
         device_mac=Parameters["Mode2"].split(",")
         device_extra=Parameters["Mode3"].split(",")
-        w, h = 5, self.total_devices_count;
+        w, h = 6, self.total_devices_count;
         self.Matrix = [[0 for x in range(w)] for y in range(h)] 
         # table:
-        # Phone_Name | MAC_ID | Unit_Number | State | Changed
+        # Phone_Name | MAC_ID | Unit_Number | State | Changed | Refresh
         # Matrix[0][0] = 1
         count = 1
         found_user = None
@@ -234,6 +234,7 @@ class BasePlugin:
         self.Matrix[0][2] = 255                   # Used for the OverRide Selector Switch
         self.Matrix[0][3] = "Off"                 # Used for the OverRide Selector Switch
         self.Matrix[0][4] = "No"                  # Used for the OverRide Selector Switch
+        self.Matrix[0][5] = "No"                  # Used for the OverRide Selector Switch
         for device in device_mac:
             device = device.strip()
             Device_Name, Device_Mac = device.split("=")
@@ -242,6 +243,7 @@ class BasePlugin:
             Device_Unit = None
             self.Matrix[count][3] = "Off"
             self.Matrix[count][4] = "No"
+            self.Matrix[0][5] = "Yes"
             found_user = Device_Name
             for dv in Devices:
                 # Find the unit number
@@ -260,6 +262,7 @@ class BasePlugin:
             self.Matrix[count][1] = "11:11:11:11:11:11"
             self.Matrix[count][3] = "Off"
             self.Matrix[count][4] = "No"
+            self.Matrix[0][5] = "No"
             found_user = ex_device.strip()
             for dv in Devices:
                 # Find the unit number
@@ -272,7 +275,7 @@ class BasePlugin:
             
         x = range(0, self.total_devices_count, 1)
         for n in x:
-            Domoticz.Log(strName+"Phone Naam = "+self.Matrix[n][0]+" | "+str(self.Matrix[n][1])+" | "+str(self.Matrix[n][2])+" | "+self.Matrix[n][3]+" | "+self.Matrix[n][4])
+            Domoticz.Log(strName+"Phone Naam = "+self.Matrix[n][0]+" | "+str(self.Matrix[n][1])+" | "+str(self.Matrix[n][2])+" | "+self.Matrix[n][3]+" | "+self.Matrix[n][4]+" | "+self.Matrix[n][5])
             
 
         self.SetupConnection()
@@ -543,7 +546,7 @@ class BasePlugin:
         strName = "ProcessDevices: "
         for x in range(self.total_devices_count):
             Domoticz.Debug(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
-            if self.Matrix[x][4] == "Yes":
+            if self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "Yes":
                 if self.Matrix[x][3] == "On":
                     svalue = "On"
                     nvalue = 1
@@ -561,7 +564,7 @@ class BasePlugin:
                         UpdateDevice(self.Matrix[x][2], nvalue, svalue)
                         self.Matrix[x][3] = svalue
             else:
-                #if self.Matrix[x][3] == "Off":
+                #if self.Matrix[x][5] == "NO":
                 svalue = "Off"
                 nvalue = 0
                 if self.Matrix[x][0] == "OverRide":
