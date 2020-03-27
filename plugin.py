@@ -174,7 +174,43 @@ class BasePlugin:
         if (self.UNIFI_UPTIME_UNIT not in Devices):
             Domoticz.Device(Name="Uptime (hours)", Unit=self.UNIFI_UPTIME_UNIT, Used=1, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_UPTIME_UNIT, 0, "0.0")
-
+        
+        device_mac=Parameters["Mode2"].split(",")
+        device_extra=Parameters["Mode3"].split(",")
+        
+        found_phone = False
+        for device in device_mac:
+            device = device.strip()
+            phone_name, mac_id = device.split("=")
+            phone_name = phone_name.strip()
+            mac_id = mac_id.strip().lower()
+            try:
+                for item in Devices:
+                    if Devices[item].Name[8:] == phone_name:
+                        Domoticz.Log(strName+"Found phone from configuration = "+device)
+                        found_phone = True
+                if found_phone == False:
+                    new_unit = find_available_unit()
+                    Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
+            except:
+                Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
+        
+        # Extra devices for Geo Fence for example
+        found_phone = False
+        for ex_device in device_extra:
+            ex_device = ex_device.strip()
+            phone_name = ex_device
+            try:
+                for item in Devices:
+                    if Devices[item].Name[8:] == phone_name:
+                        Domoticz.Log(strName+"Found phone from configuration = "+device)
+                        found_phone = True
+                if found_phone == False:
+                    new_unit = find_available_unit()
+                    Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
+            except:
+                Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
+        
         # Create table
         device_mac=Parameters["Mode2"].split(",")
         device_extra=Parameters["Mode3"].split(",")
@@ -219,24 +255,17 @@ class BasePlugin:
         # Extra devices for Geo Fence for example
         for ex_device in device_extra:
             Domoticz.Log(strName+"ex_device = "+str(ex_device))
+            Domoticz.Log(strName+"count = "+str(count))
+            self.Matrix[count][0] = ex_device.strip()
+            self.Matrix[count][1] = "11:11:11:11:11:11"
+            self.Matrix[count][3] = "Off"
+            self.Matrix[count][4] = "No"
+            found_user = ex_device.strip()
+            
+            
 
         
-        found_phone = False
-        for device in device_mac:
-            device = device.strip()
-            phone_name, mac_id = device.split("=")
-            phone_name = phone_name.strip()
-            mac_id = mac_id.strip().lower()
-            try:
-                for item in Devices:
-                    if Devices[item].Name[8:] == phone_name:
-                        Domoticz.Log(strName+"Found phone from configuration = "+device)
-                        found_phone = True
-                if found_phone == False:
-                    new_unit = find_available_unit()
-                    Domoticz.Device(Name=phone_name, Unit=new_unit, TypeName="Switch", Used=1).Create()
-            except:
-                Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
+        
 
         self.SetupConnection()
         Domoticz.Heartbeat(int(Parameters["Mode4"]))
