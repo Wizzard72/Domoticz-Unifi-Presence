@@ -412,7 +412,7 @@ class BasePlugin:
                     self.Matrix[r][5] = "Change"
         
         for x in range(self.total_devices_count):
-            Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4])
+            Domoticz.Log(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4]+" | "+self.Matrix[x][5])
         
         self.ProcessDevices()
                 
