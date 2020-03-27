@@ -96,6 +96,8 @@ class BasePlugin:
         
         if "UnifiHome" in Images:
             Domoticz.Log(strName+"Image ID = "+str(Images.ID))
+        else:
+            Domoticz.Error(strName+"Image ID niet gevonden")
         
         Domoticz.Log("Number of icons loaded = " + str(len(Images)))
         for item in Images:
