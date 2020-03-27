@@ -590,15 +590,18 @@ class BasePlugin:
                     else:
                         UpdateDevice(self.Matrix[x][2], nvalue, svalue)
                         self.Matrix[x][3] = svalue
-            #else:
-                #if self.Matrix[x][5] == "NO":
-            #    svalue = "Off"
-            #    nvalue = 0
-            #    if self.Matrix[x][0] == "OverRide":
-            #        UpdateDevice(self.Matrix[x][2], nvalue, "0")
-            #    else:
-            #        UpdateDevice(self.Matrix[x][2], nvalue, svalue)
-            #        self.Matrix[x][3] = svalue
+            elif self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "NO":
+                Domoticz.Log(strName+"Nothing to do")
+            elif self.Matrix[x][4] == "No" and self.Matrix[x][5] == "NO":
+                Domoticz.Log(strName+"Nothing to do")
+            else:
+                svalue = "Off"
+                nvalue = 0
+                if self.Matrix[x][0] == "OverRide":
+                    UpdateDevice(self.Matrix[x][2], nvalue, "0")
+                else:
+                    UpdateDevice(self.Matrix[x][2], nvalue, svalue)
+                    self.Matrix[x][3] = svalue
             
         
         count = 0
