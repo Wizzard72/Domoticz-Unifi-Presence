@@ -107,7 +107,7 @@ class BasePlugin:
             Domoticz.Log(strName+"Add UnifiApp icons to Domoticz")
             Domoticz.Image("uapp.zip").Create()
         else:
-            Domoticz.Log(strName+"Already added UnifiOverride icons to Domoticz")
+            Domoticz.Log(strName+"Already added UnifiApp icons to Domoticz")
         
         
         Domoticz.Log("Number of icons loaded = " + str(len(Images)))
