@@ -401,8 +401,8 @@ class BasePlugin:
         t = self.total_devices_count - self.count_ex_device + 1
         Domoticz.Log(strName+"Range = "+str(t)+" - "+str(self.total_devices_count))
         for r in range(t, self.total_devices_count):
-            Domoticz.Log(strName+"self.Matrix[r][3] = "+str(self.Matrix[r][3])+"/ Unit = "+str(Unit))
-            if self.Matrix[r][3] == Unit:
+            Domoticz.Log(strName+"self.Matrix[r][2] = "+str(self.Matrix[r][2])+"/ Unit = "+str(Unit))
+            if self.Matrix[r][2] == Unit:
                 if str(Command) == "On":
                     svalue = "On"
                     nvalue = 1
