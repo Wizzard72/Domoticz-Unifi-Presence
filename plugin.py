@@ -90,24 +90,24 @@ class BasePlugin:
             Domoticz.Debugging(0)
         
         # load custom images
-        #if "UnifiAnyone" not in Images: 
-        #    Domoticz.Log(strName+"Add UnifiAnyone icons to Domoticz")
-        #    Domoticz.Image("uanyone.zip").Create()
-        #    #Domoticz.Log(strName+"UnifiHome ID = "+str(Images["UnifiHome"].ID))
-        #else:
-        #    Domoticz.Log(strName+"Already added UnifiAnyone icons to Domoticz")
-        
-        if "UnifiOverride" not in Images: 
-            Domoticz.Log(strName+"Add UnifiOverride icons to Domoticz")
-            Domoticz.Image("uoverride.zip").Create()
+        if "UnifiAnyone" not in Images: 
+            Domoticz.Log(strName+"Add UnifiAnyone icons to Domoticz")
+            Domoticz.Image("uanyone.zip").Create()
+            #Domoticz.Log(strName+"UnifiHome ID = "+str(Images["UnifiHome"].ID))
         else:
-            Domoticz.Log(strName+"Already added UnifiOverride icons to Domoticz")
+            Domoticz.Log(strName+"Already added UnifiAnyone icons to Domoticz")
         
-        #if "UnifiApp" not in Images: 
-        #    Domoticz.Log(strName+"Add UnifiApp icons to Domoticz")
-        #    Domoticz.Image("uapp.zip").Create()
+        #if "UnifiOverride" not in Images: 
+        #    Domoticz.Log(strName+"Add UnifiOverride icons to Domoticz")
+        #    Domoticz.Image("uoverride.zip").Create()
         #else:
-        #    Domoticz.Log(strName+"Already added UnifiApp icons to Domoticz")
+        #    Domoticz.Log(strName+"Already added UnifiOverride icons to Domoticz")
+        
+        if "UnifiApp" not in Images: 
+            Domoticz.Log(strName+"Add UnifiApp icons to Domoticz")
+            Domoticz.Image("uapp.zip").Create()
+        else:
+            Domoticz.Log(strName+"Already added UnifiApp icons to Domoticz")
         
         #Domoticz.Log(strName+"TEST IMAGE = "+str(Images['UnifiApp'].ID))
         Domoticz.Log("Number of icons loaded = " + str(len(Images)))
