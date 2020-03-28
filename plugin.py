@@ -6,7 +6,11 @@
 <plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="1.0.0" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
-        To be done
+        This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway. 
+        Beside this it checks the presence of phone(s) and it is possible to add extra devices for example Geo Fencing.
+        
+        ToDo:
+            * Notifications are not working.
     </description>
     <params>
         <param field="Address" label="IP Address / DNS name of the Unifi Controller" width="200px" required="true" default="127.0.0.1"/>
@@ -15,8 +19,8 @@
         <param field="Password" label="Password" width="600px" required="true" default="password" password="true"/>
         <param field="Mode1" label="Site Name" width="200px" required="true" default="default"/>
         <param field="Mode2" label="MAC Phone Addresses" width="600px" required="true" default="Phone1=1A:2B:3C:4D:5E:6F,Phone2=7A:8B:9C:AD:BE:CF"/>
-        <param field="Mode3" label="Extra devices to monitor" width="600px" required="false" default="phone10,phone20"/>
-        <param field="Mode4" label="Interval" width="200px" required="true" default="15"/>
+        <param field="Mode3" label="Extra devices for Geofencing" width="600px" required="false" default="Geofencing10,Geofencing 20"/>
+        <param field="Mode4" label="Interval in seconds" width="200px" required="true" default="15"/>
         <param field="Mode5" label="Notifications" width="75px">
             <options>
                 <option label="True" value="True"/>
@@ -42,16 +46,9 @@ import socket
 import json
 import re
 import requests
-#import urllib.request
-#from urllib.parse import quote
 import urllib
-#import urllib.parse
 from datetime import datetime
 import time
-
-icons = {"UnifiHome": "uhome.zip",
-         "UnifiOverride": "uoverride.zip",
-         "UnifiUnit": "uunit.zip"}
 
 
 class BasePlugin:
@@ -71,8 +68,6 @@ class BasePlugin:
     UNIFI_OVERRIDE_UNIT = 255
     cookie = None
     cookieAvailable = False
-    #unifises = ""
-    #csrftoken = ""
     phone_name = ""
     Matrix = ""
     count_ex_device = 0
@@ -102,12 +97,12 @@ class BasePlugin:
             Domoticz.Log(strName+"Add UnifiPresenceDevice icons to Domoticz")
             Domoticz.Image("udevice.zip").Create()
 
-        #Domoticz.Log(strName+"TEST IMAGE = "+str(Images['UnifiApp'].ID))
         Domoticz.Log("Number of icons loaded = " + str(len(Images)))
         for item in Images:
             Domoticz.Log(strName+"Items = "+str(item))
             Domoticz.Log(strName+"Icon " + str(Images[item].ID) + " Name = " + Images[item].Name)
         
+        # create devices
         if (self.UNIFI_WLAN_COUNTER_UNIT not in Devices):
             Domoticz.Device(Name="WLAN Counter",  Unit=self.UNIFI_WLAN_COUNTER_UNIT, Used=1, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, 0, "0")
@@ -156,6 +151,7 @@ class BasePlugin:
             Domoticz.Device(Name="Uptime (hours)", Unit=self.UNIFI_UPTIME_UNIT, Used=1, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_UPTIME_UNIT, 0, "0.0")
         
+        # create phone devices
         device_mac=Parameters["Mode2"].split(",")
         device_extra=Parameters["Mode3"].split(",")
         
@@ -178,9 +174,8 @@ class BasePlugin:
                 Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
             count_phone = count_phone + 1
         
-        # Extra devices for Geo Fence for example
+        # Extra devices for Geofencing for example
         found_phone = False
-        #count_ex_device = 0
         for ex_device in device_extra:
             ex_device = ex_device.strip()
             phone_name = ex_device
@@ -196,6 +191,7 @@ class BasePlugin:
                 Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
             self.count_ex_device = self.count_ex_device + 1
         
+        # calculate total devices
         extra_devices = 1 # Override device
         self.total_devices_count = count_phone + self.count_ex_device + extra_devices
         Domoticz.Debug(strName+"total_devices = "+str(self.total_devices_count))
@@ -234,7 +230,7 @@ class BasePlugin:
             Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3]+" | "+self.Matrix[count][4])
             count = count + 1
         
-        # Extra devices for Geo Fence for example
+        # Extra devices for Geofencing for example
         for ex_device in device_extra:
             self.Matrix[count][0] = ex_device.strip()
             self.Matrix[count][1] = "11:11:11:11:11:11"
@@ -250,7 +246,8 @@ class BasePlugin:
                     continue
             #Domoticz.Log(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3]+" | "+self.Matrix[count][4])
             count = count + 1
-            
+        
+        # report the phone and geofencing devices
         x = range(0, self.total_devices_count, 1)
         for n in x:
             Domoticz.Log(strName+"Phone Naam = "+self.Matrix[n][0]+" | "+str(self.Matrix[n][1])+" | "+str(self.Matrix[n][2])+" | "+self.Matrix[n][3]+" | "+self.Matrix[n][4]+" | "+self.Matrix[n][5])
@@ -380,7 +377,6 @@ class BasePlugin:
                     self.Matrix[r][3] = "On"
                     self.Matrix[r][4] = "Yes"
                     self.Matrix[r][5] = "Change"
-                    #Unit 55: Parameter 'On', Level: 0
                 else:
                     svalue = "Off"
                     nvalue = 0
@@ -407,8 +403,8 @@ class BasePlugin:
     def onHeartbeat(self):
         strName = "onHeartbeat: "
         Domoticz.Debug(strName+"called")
-        #if (self.unifiConn != None) and (self.unifiConn.Connecting()):
-        #    return
+        if (self.unifiConn != None) and (self.unifiConn.Connecting()):
+            return
         
         if self.Matrix[0][3] == "On":
             try:
@@ -449,6 +445,7 @@ class BasePlugin:
         test = responseapi.read().decode('utf-8', 'ignore')
         testjson = json.loads(test)
         url = "/api/s/"+str(Parameters["Mode1"])+"/stat/health"
+        # the api connection with the build in connection doesn't work :-(
         sendData = {'Verb' : 'GET',
                     'URL'  : '/api/s/default/stat/health',
                     'Headers' : {
@@ -461,39 +458,40 @@ class BasePlugin:
                     }
 #        Domoticz.Log("RequestDetails: sendData = "+str(sendData))
 #        self.unifiConn.Send(sendData)
+        # get the hardware information
         if ('meta' in testjson):
             meta = testjson['meta']
             if (meta['rc'] == "ok"):
                 Domoticz.Debug(strName+"AUTHENTICATED: " +meta['rc'])
-        if ('data' in testjson):
-            data = testjson['data']
-            for item in data:
-                if item['subsystem'] == "wlan":
-                    wlan = item
-                    wlan_user_count = wlan['num_user']
-                    UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, int(wlan_user_count), str(wlan_user_count))
-                if item['subsystem'] == "lan":
-                    lan = item
-                    lan_user_count = lan['num_user']
-                    UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, int(lan_user_count), str(lan_user_count))
-                if item['subsystem'] == "wan":
-                    wan = item
-                    cpu_pers = wan['gw_system-stats']['cpu']
-                    UpdateDevice(self.UNIFI_CPU_PERC_UNIT, int(cpu_pers), str(cpu_pers))
-                    mem_pers = wan['gw_system-stats']['mem']
-                    UpdateDevice(self.UNIFI_MEM_PERC_UNIT, int(mem_pers), str(mem_pers))
-                    board_cpu = wan['gw_system-stats']['temps']['Board (CPU)'][:-2]
-                    UpdateDevice(self.UNIFI_BOARD_CPU_UNIT, int(board_cpu), str(board_cpu))
-                    board_phy = wan['gw_system-stats']['temps']['Board (PHY)'][:-2]
-                    UpdateDevice(self.UNIFI_BOARD_PHY_UNIT, int(board_phy), str(board_phy))
-                    cpu = wan['gw_system-stats']['temps']['CPU'][:-2]
-                    UpdateDevice(self.UNIFI_CPU_UNIT, int(cpu), str(cpu))
-                    phy = wan['gw_system-stats']['temps']['PHY'][:-2]
-                    UpdateDevice(self.UNIFI_PHY_UNIT, int(phy), str(phy))
-                    uptime = int(wan['gw_system-stats']['uptime'])/3600
-                    UpdateDevice(self.UNIFI_UPTIME_UNIT, int(uptime), str(uptime))
+                if ('data' in testjson):
+                    data = testjson['data']
+                    for item in data:
+                        if item['subsystem'] == "wlan":
+                            wlan = item
+                            wlan_user_count = wlan['num_user']
+                            UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, int(wlan_user_count), str(wlan_user_count))
+                        if item['subsystem'] == "lan":
+                            lan = item
+                            lan_user_count = lan['num_user']
+                            UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, int(lan_user_count), str(lan_user_count))
+                        if item['subsystem'] == "wan":
+                            wan = item
+                            cpu_pers = wan['gw_system-stats']['cpu']
+                            UpdateDevice(self.UNIFI_CPU_PERC_UNIT, int(cpu_pers), str(cpu_pers))
+                            mem_pers = wan['gw_system-stats']['mem']
+                            UpdateDevice(self.UNIFI_MEM_PERC_UNIT, int(mem_pers), str(mem_pers))
+                            board_cpu = wan['gw_system-stats']['temps']['Board (CPU)'][:-2]
+                            UpdateDevice(self.UNIFI_BOARD_CPU_UNIT, int(board_cpu), str(board_cpu))
+                            board_phy = wan['gw_system-stats']['temps']['Board (PHY)'][:-2]
+                            UpdateDevice(self.UNIFI_BOARD_PHY_UNIT, int(board_phy), str(board_phy))
+                            cpu = wan['gw_system-stats']['temps']['CPU'][:-2]
+                            UpdateDevice(self.UNIFI_CPU_UNIT, int(cpu), str(cpu))
+                            phy = wan['gw_system-stats']['temps']['PHY'][:-2]
+                            UpdateDevice(self.UNIFI_PHY_UNIT, int(phy), str(phy))
+                            uptime = int(wan['gw_system-stats']['uptime'])/3600
+                            UpdateDevice(self.UNIFI_UPTIME_UNIT, int(uptime), str(uptime))
                     
-
+        # get the phone information
         url = "/api/s/"+str(Parameters["Mode1"])+"/stat/sta"  
         url_api_s_default_stat_sta = "/api/s/"+Parameters["Mode1"]+"/stat/sta"
         reqapi = urllib.request.Request(host+url_api_s_default_stat_sta,headers={'Cookie':self.cookie})
