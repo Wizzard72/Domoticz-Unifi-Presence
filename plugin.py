@@ -9,8 +9,7 @@
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway. 
         Beside this it checks the presence of phone(s) and it is possible to add extra devices for example Geo Fencing.
         
-        ToDo:
-            * Notifications are not working.
+
     </description>
     <params>
         <param field="Address" label="IP Address / DNS name of the Unifi Controller" width="200px" required="true" default="127.0.0.1"/>
@@ -21,12 +20,6 @@
         <param field="Mode2" label="MAC Phone Addresses" width="600px" required="true" default="Phone1=1A:2B:3C:4D:5E:6F,Phone2=7A:8B:9C:AD:BE:CF"/>
         <param field="Mode3" label="Extra devices for Geofencing" width="600px" required="false" default="Geofencing10,Geofencing 20"/>
         <param field="Mode4" label="Interval in seconds" width="200px" required="true" default="15"/>
-        <param field="Mode5" label="Notifications" width="75px">
-            <options>
-                <option label="True" value="True"/>
-                <option label="False" value="False"  default="true" />
-            </options>
-        </param>
         <param field="Mode6" label="Debug" width="75px">
             <options>
                 <option label="None" value="0"  default="true" />
