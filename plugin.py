@@ -47,7 +47,12 @@ import time
 class BasePlugin:
     unifiConn = None
     override_time = 0
+    count_ex_device = 0
     hostAuth = False
+    cookie = None
+    cookieAvailable = False
+    phone_name = ""
+    Matrix = ""
     UNIFI_WLAN_COUNTER_UNIT = 1
     UNIFI_LAN_COUNTER_UNIT = 2
     UNIFI_CPU_PERC_UNIT = 3
@@ -59,11 +64,7 @@ class BasePlugin:
     UNIFI_UPTIME_UNIT = 9
     UNIFI_ANYONE_HOME_UNIT = 50
     UNIFI_OVERRIDE_UNIT = 255
-    cookie = None
-    cookieAvailable = False
-    phone_name = ""
-    Matrix = ""
-    count_ex_device = 0
+
     
     def __init__(self):
         #self.var = 123
