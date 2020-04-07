@@ -78,6 +78,7 @@ class BasePlugin:
             Domoticz.Debugging(0)
         
         # load custom images
+        # reused the icons from iDetect - https://github.com/d-EScape/Domoticz_iDetect
         if "UnifiPresenceAnyone" not in Images: 
             Domoticz.Log(strName+"Add UnifiPresenceAnyone icons to Domoticz")
             Domoticz.Image("uanyone.zip").Create()
