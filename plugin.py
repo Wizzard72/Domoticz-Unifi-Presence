@@ -141,7 +141,7 @@ class BasePlugin:
             UpdateDevice(self.UNIFI_PHY_UNIT, 0, "0")
             
         if (self.UNIFI_UPTIME_UNIT not in Devices):
-            Domoticz.Device(Name="Uptime (hours)", Unit=self.UNIFI_UPTIME_UNIT, Used=1, Type=243, Subtype=31).Create()
+            Domoticz.Device(Name="Gateway Uptime (hours)", Unit=self.UNIFI_UPTIME_UNIT, Used=1, Type=243, Subtype=31).Create()
             UpdateDevice(self.UNIFI_UPTIME_UNIT, 0, "0.0")
         
         # create phone devices
