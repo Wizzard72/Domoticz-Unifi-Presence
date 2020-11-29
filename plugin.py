@@ -401,14 +401,17 @@ class BasePlugin:
                 UpdateDevice(self.UNIFI_CPU_PERC_UNIT, int(cpu_pers), str(cpu_pers))
                 mem_pers = item['gw_system-stats']['mem']
                 UpdateDevice(self.UNIFI_MEM_PERC_UNIT, int(mem_pers), str(mem_pers))
-                board_cpu = item['gw_system-stats']['temps']['Board (CPU)'][:-2]
-                UpdateDevice(self.UNIFI_BOARD_CPU_UNIT, int(board_cpu), str(board_cpu))
-                board_phy = item['gw_system-stats']['temps']['Board (PHY)'][:-2]
-                UpdateDevice(self.UNIFI_BOARD_PHY_UNIT, int(board_phy), str(board_phy))
-                cpu = item['gw_system-stats']['temps']['CPU'][:-2]
-                UpdateDevice(self.UNIFI_CPU_UNIT, int(cpu), str(cpu))
-                phy = item['gw_system-stats']['temps']['PHY'][:-2]
-                UpdateDevice(self.UNIFI_PHY_UNIT, int(phy), str(phy))
+                if item['gw_system-stats']['temps'] != "":
+                    board_cpu = item['gw_system-stats']['temps']['Board (CPU)'][:-2]
+                    UpdateDevice(self.UNIFI_BOARD_CPU_UNIT, int(board_cpu), str(board_cpu))
+                    board_phy = item['gw_system-stats']['temps']['Board (PHY)'][:-2]
+                    UpdateDevice(self.UNIFI_BOARD_PHY_UNIT, int(board_phy), str(board_phy))
+                    cpu = item['gw_system-stats']['temps']['CPU'][:-2]
+                    UpdateDevice(self.UNIFI_CPU_UNIT, int(cpu), str(cpu))
+                    phy = item['gw_system-stats']['temps']['PHY'][:-2]
+                    UpdateDevice(self.UNIFI_PHY_UNIT, int(phy), str(phy))
+                else:
+                    Domoticz.Error(strName+"Error reading part of the Unifi API (Restart Unifi Controller if this error continue to exist).")
                 uptime = int(item['gw_system-stats']['uptime'])/3600
                 UpdateDevice(self.UNIFI_UPTIME_UNIT, int(uptime), str(uptime))
 
