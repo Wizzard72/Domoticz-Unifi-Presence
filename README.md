@@ -5,13 +5,19 @@ Normal use without the option to block a configured user:
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/OverRide.png)
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/User%20A.png)
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/User%20B.png)
+
 With the option to block a configured user:
+
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/User%20A%20Block.png)
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/User%20B%20Block.png)
+
 With the option for Geofencing devices:
+
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/Geo%20User%20A%20Block.png)
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/Geo%20User%20B%20Block.png)
+
 Hardware information:
+
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/LAN%20Counter.png)
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/Uptime.png)
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/Gateway%20Mem.png)
