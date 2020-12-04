@@ -37,13 +37,14 @@ Hardware information:
 ## Introduction
 There is a good Dzvents script, but I wanted to create a plugin for this. 
 This plugin works with this setup (all three present):
+ - Unifi Controller installed on a Raspberry Pi 3b
  - Unifi Gateway
  - Unifi Switch
  - Unifi Access Points
 
 ## Installation
 
-The plugin is tested to works on a Raspberry Pi 3b.
+The plugin is tested to works with the Unifi Controller installed on a Raspberry Pi 3b.
 
 ### Prerequisite:
   - A working Unifi Controller setup. Tested with version 6.0.36.
