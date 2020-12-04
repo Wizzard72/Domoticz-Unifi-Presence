@@ -46,7 +46,7 @@ This plugin works with this setup (all three present):
 The plugin is tested to works on a Raspberry Pi 3b.
 
 ### Prerequisite:
-  - A working Unifi Controller setup
+  - A working Unifi Controller setup. Tested with version 6.0.36.
 
 ### Install plugin on Domoticz (only Linux is supported)
 To install the plugin login to the Raspberry Pi (SSH / Putty).
