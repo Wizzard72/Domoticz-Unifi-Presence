@@ -36,7 +36,7 @@ Hardware information:
 
 ## Introduction
 There is a good Dzvents script, but I wanted to create a plugin for this. 
-This plugin works with this setup:
+This plugin works with this setup (all three present):
  - Unifi Gateway
  - Unifi Switch
  - Unifi Access Points
