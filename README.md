@@ -1,6 +1,8 @@
 # Domoticz-Unifi-Presence
 This plugin detects devices - usualy phone(s) - on a Unifi (Controller) network. When a phone is detected on the network it turns on the corresponding switch. If the switch AnyOne is Off it will be turned on. If the last configured phone is off, the switch AnyOne will be switched off.
 
+Be aware that some phones have the ability to mask their MAC address.This can be configured in the Wi-Fi settings of the phone. To use this plugin the connection to the Wi-Fi network must be done with the real MAC address of the phone.
+
 Normal use without the option to block a configured user:
 
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/AnyOne.png)
