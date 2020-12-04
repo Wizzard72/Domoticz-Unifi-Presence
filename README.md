@@ -1,4 +1,6 @@
 # Domoticz-Unifi-Presence
+This plugin detects devices - usualy phone(s) - on a Unifi (Controller) network. When a phone is detected on the network it turns on the corresponding switch. If the switch AnyOne is Off it will be turned on. If the last configured phone is off, the switch AnyOne will be switched off.
+
 Normal use without the option to block a configured user:
 
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/AnyOne.png)
@@ -17,7 +19,7 @@ With the option for Geofencing devices:
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/Geo%20User%20B.png)
 
 Hardware information:
-
+It's tested in this setup: Controller, Gateway, Switch, Access Points.
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/LAN%20Counter.png)
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/Uptime.png)
 ![ble_tag](https://raw.githubusercontent.com/Wizzard72/Domoticz-Unifi-Presence/master/image/Gateway%20Mem.png)
