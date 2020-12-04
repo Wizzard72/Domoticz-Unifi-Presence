@@ -72,7 +72,7 @@ Fill in all fields:
 | Password: | The password of the Unifi Administrator. |
 | Site Name:  | The Unifi Site name. |
 | MAC Phone Addresses: | The MAC addresses of the phones to be detected. Syntax: User A=00:00:00:00:00:00,User B=11:11:11:11:11:11 |
-| Enable Geofencing devices: | This creates Geofencing devices the the configured phones |
+| Enable Geofencing devices: | This creates Geofencing devices for the configured phones |
 | Interval in seconds: | The  interval to query the Unifi Controller. |
 | Posibility to block devices from the network?: | The ability to block and unblock devices from the Unifi Controller. |
 | Debug: | Debug information. |
