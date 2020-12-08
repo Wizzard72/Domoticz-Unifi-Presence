@@ -196,8 +196,9 @@ class BasePlugin:
                 search_phone = Devices[dv].Name[8:]
                 if Devices[dv].Name[8:] == found_user:
                     self.Matrix[count][2] = Devices[dv].Unit
+                    count = count + 1
                     continue
-            count = count + 1
+#            count = count + 1
             if Parameters["Mode3"] == "Yes":
                 self.Matrix[count][0] = "Geo "+Device_Name
                 self.Matrix[count][1] = "11:11:11:11:11:11"
@@ -214,9 +215,9 @@ class BasePlugin:
                         self.Matrix[count][3] = Devices[dv].sValue
                         self.Matrix[count][5] = "GEO"
                         Domoticz.Log(strName+"Geo Phone with name '"+found_user+"' is detected from config.")
+                        count = count + 1
                         continue
-            Domoticz.Debug(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+str(self.Matrix[count][3])+" | "+str(self.Matrix[count][4])+" | "+str(self.Matrix[count][5]))
-            count = count + 1
+#            count = count + 1
 
         # report the phone and geofencing devices
         x = range(0, self.total_devices_count, 1)
@@ -510,8 +511,9 @@ class BasePlugin:
                 UpdateDevice(self.Matrix[x][2], nvalueOn, svalueOn)
 
         count = 0
+        Domoticz.Debug(strName+"NU self.total_devices_count - "+str(self.total_devices_count))
         for x in range(self.total_devices_count):
-            Domoticz.Debug(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4]+" | "+self.Matrix[x][5])
+            Domoticz.Debug(strName+" "+str(x)+" Phone Naam = "+str(self.Matrix[x][0])+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+str(self.Matrix[x][3])+" | "+str(self.Matrix[x][4])+" | "+str(self.Matrix[x][5]))
             if self.Matrix[x][3] == "On":
                 count = count + 1
         Domoticz.Log(strName+"Total Phones connected = "+str(count))
