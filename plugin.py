@@ -215,7 +215,7 @@ class BasePlugin:
                         self.Matrix[count][5] = "GEO"
                         Domoticz.Log(strName+"Geo Phone with name '"+found_user+"' is detected from config.")
                         continue
-            Domoticz.Debug(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+self.Matrix[count][3]+" | "+self.Matrix[count][4]+" | "+self.Matrix[count][5])
+            Domoticz.Debug(strName+"Phone Naam = "+self.Matrix[count][0]+" | "+str(self.Matrix[count][1])+" | "+str(self.Matrix[count][2])+" | "+str(self.Matrix[count][3])+" | "+str(self.Matrix[count][4])+" | "+str(self.Matrix[count][5]))
             count = count + 1
 
         # report the phone and geofencing devices
