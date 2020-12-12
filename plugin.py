@@ -465,7 +465,7 @@ class BasePlugin:
             if item['type'] == "ugw":
                 for devUnit in Devices:
                     devName = Devices[devUnit].Name
-                    uapName = item['name']+" CPU"
+                    uapName = item['name']+" CPU Usage"
                     if devName.find(uapName) > 0:
                         ugw_cpu = item['system-stats']['cpu'] 
                         UpdateDevice(devUnit, int(float(ugw_cpu)), str(ugw_cpu))
@@ -712,7 +712,7 @@ class BasePlugin:
                     foundDevice = True
             if foundDevice == False:
                 new_unit = find_available_unit_ugw()
-                Domoticz.Device(Name=deviceName+" CPU",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                Domoticz.Device(Name=deviceName+" CPU Usage",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_ugw()
                 Domoticz.Device(Name=deviceName+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
