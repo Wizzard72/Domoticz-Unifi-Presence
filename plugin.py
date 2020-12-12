@@ -53,6 +53,7 @@ import time
 from requests import Session
 from typing import Pattern, Dict, Union
 from datetime import datetime
+# https://ubntwiki.com/products/software/unifi-controller/api
 
 class BasePlugin:
     unifiConn = None
