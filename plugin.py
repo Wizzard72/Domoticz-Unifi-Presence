@@ -22,7 +22,12 @@
                 <option label="No" value="No"  default="true" />
             </options>
         </param>
-        <param field="Mode4" label="Interval in seconds" width="200px" required="true" default="15"/>
+        <param field="Mode4" label="Select Unifi Controller" width="150px">
+            <options>
+                <option label="Unifi Controller" value="/api/login" default="true" />
+                <option label="Dreammachine" value="/api/auth/login"/>
+            </options>
+        </param>
         <param field="Mode5" label="Posibility to block devices from the network?" width="75px">
             <options>
                 <option label="Yes" value="Yes"/>
@@ -59,16 +64,7 @@ class BasePlugin:
     unifiConn = None
     override_time = 0
     hostAuth = False
-    UNIFI_WLAN_COUNTER_UNIT = 1
-    UNIFI_LAN_COUNTER_UNIT = 2
-    UNIFI_CPU_PERC_UNIT = 3
-    UNIFI_MEM_PERC_UNIT = 4
-    UNIFI_BOARD_CPU_UNIT = 5
-    UNIFI_BOARD_PHY_UNIT = 6
-    UNIFI_CPU_UNIT = 7
-    UNIFI_PHY_UNIT = 8
-    UNIFI_UPTIME_UNIT = 9
-    UNIFI_ANYONE_HOME_UNIT = 50
+    UNIFI_ANYONE_HOME_UNIT = 1
     UNIFI_OVERRIDE_UNIT = 255
     cookie = None
     cookieAvailable = False
@@ -88,7 +84,77 @@ class BasePlugin:
     _verify_ssl = False
     _baseurl = None
     _session = Session()
-
+    UnifiDevicesNames = {
+        #Device Code, Device Type, Device Name
+        "BZ2":       ("uap",       "UniFi AP"),
+        "BZ2LR":     ("uap",       "UniFi AP-LR"),
+        "U2HSR":     ("uap",       "UniFi AP-Outdoor+"),
+        "U2IW":      ("uap",       "UniFi AP-In Wall"),
+        "U2L48":     ("uap",       "UniFi AP-LR"),
+        "U2Lv2":     ("uap",       "UniFi AP-LR v2"),
+        "U2M":       ("uap",       "UniFi AP-Mini"),
+        "U2O":       ("uap",       "UniFi AP-Outdoor"),
+        "U2S48":     ("uap",       "UniFi AP"),
+        "U2Sv2":     ("uap",       "UniFi AP v2"),
+        "U5O":       ("uap",       "UniFi AP-Outdoor 5G"),
+        "U7E":       ("uap",       "UniFi AP-AC"),
+        "U7EDU":     ("uap",       "UniFi AP-AC-EDU"),
+        "U7Ev2":     ("uap",       "UniFi AP-AC v2"),
+        "U7HD":      ("uap",       "UniFi AP-HD"),
+        "U7SHD":     ("uap",       "UniFi AP-SHD"),
+        "U7NHD":     ("uap",       "UniFi AP-nanoHD"),
+        "UFLHD":     ("uap",       "UniFi AP-Flex-HD"),
+        "UHDIW":     ("uap",       "UniFi AP-HD-In Wall"),
+        "UCXG":      ("uap",       "UniFi AP-XG"),
+        "UXSDM":     ("uap",       "UniFi AP-BaseStationXG"),
+        "UCMSH":     ("uap",       "UniFi AP-MeshXG"),
+        "U7IW":      ("uap",       "UniFi AP-AC-In Wall"),
+        "U7IWP":     ("uap",       "UniFi AP-AC-In Wall Pro"),
+        "U7MP":      ("uap",       "UniFi AP-AC-Mesh-Pro"),
+        "U7LR":      ("uap",       "UniFi AP-AC-LR"),
+        "U7LT":      ("uap",       "UniFi AP-AC-Lite"),
+        "U7O":       ("uap",       "UniFi AP-AC Outdoor"),
+        "U7P":       ("uap",       "UniFi AP-Pro"),
+        "U7MSH":     ("uap",       "UniFi AP-AC-Mesh"),
+        "U7PG2":     ("uap",       "UniFi AP-AC-Pro"),
+        "p2N":       ("uap",       "PicoStation M2"),
+        "US48PRO":   ("usw",       "UniFi Switch Pro 48"),
+        "US8":       ("usw",       "UniFi Switch 8"),
+        "US8P60":    ("usw",       "UniFi Switch 8 POE-60W"),
+        "US8P150":   ("usw",       "UniFi Switch 8 POE-150W"),
+        "S28150":    ("usw",       "UniFi Switch 8 AT-150W"),
+        "USC8":      ("usw",       "UniFi Switch 8"),
+        "US16P150":  ("usw",       "UniFi Switch 16 POE-150W"),
+        "S216150":   ("usw",       "UniFi Switch 16 AT-150W"),
+        "US24":      ("usw",       "UniFi Switch 24"),
+        "US24P250":  ("usw",       "UniFi Switch 24 POE-250W"),
+        "US24PL2":   ("usw",       "UniFi Switch 24 L2 POE"),
+        "US24P500":  ("usw",       "UniFi Switch 24 POE-500W"),
+        "S224250":   ("usw",       "UniFi Switch 24 AT-250W"),
+        "S224500":   ("usw",       "UniFi Switch 24 AT-500W"),
+        "US48":      ("usw",       "UniFi Switch 48"),
+        "US48P500":  ("usw",       "UniFi Switch 48 POE-500W"),
+        "US48PL2":   ("usw",       "UniFi Switch 48 L2 POE"),
+        "US48P750":  ("usw",       "UniFi Switch 48 POE-750W"),
+        "S248500":   ("usw",       "UniFi Switch 48 AT-500W"),
+        "S248750":   ("usw",       "UniFi Switch 48 AT-750W"),
+        "US6XG150":  ("usw",       "UniFi Switch 6XG POE-150W"),
+        "USXG":      ("usw",       "UniFi Switch 16XG"),
+        "UGW3":      ("ugw",       "UniFi Security Gateway 3P"),
+        "UGW4":      ("ugw",       "UniFi Security Gateway 4P"),
+        "UGWHD4":    ("ugw",       "UniFi Security Gateway HD"),
+        "UGWXG":     ("ugw",       "UniFi Security Gateway XG-8"),
+        "UP4":       ("uph",       "UniFi Phone-X"),
+        "UP5":       ("uph",       "UniFi Phone"),
+        "UP5t":      ("uph",       "UniFi Phone-Pro"),
+        "UP7":       ("uph",       "UniFi Phone-Executive"),
+        "UP5c":      ("uph",       "UniFi Phone"),
+        "UP5tc":     ("uph",       "UniFi Phone-Pro"),
+        "UP7c":      ("uph",       "UniFi Phone-Executive")}
+    uap = []
+    usw = []
+    ugw = []
+    uph = []
 
     def __init__(self):
         return
@@ -145,22 +211,8 @@ class BasePlugin:
 
         # create devices
         self.login()
-        r = self._session.get("{}/api/s/{}/stat/health".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}")
-        self._current_status_code = r.status_code
-        if self._current_status_code == 200:
-            data = r.json()['data']
-            for item in data:
-                Domoticz.Debug("Json Data (request details) = " + str(item))
-                if item['subsystem'] == "wlan":
-                    Domoticz.Log("Found one or more wlan devices")
-                    self.create_devices("wlan")
-                if item['subsystem'] == "lan":
-                    Domoticz.Log("Found one or more lan devices")
-                    self.create_devices("lan")
-                if item['subsystem'] == "wan":
-                    Domoticz.Log("Found one or more wan devices")
-                    self.create_devices("wan")
-        self.create_devices("unifi")
+        self.detectUnifiDevices()
+        self.create_devices()
 
         # Create table
         #     0           1         2           3        4              5
@@ -225,7 +277,7 @@ class BasePlugin:
         for n in x:
             Domoticz.Debug(strName+"Phone Naam = "+str(self.Matrix[n][0])+" | "+str(self.Matrix[n][1])+" | "+str(self.Matrix[n][2])+" | "+str(self.Matrix[n][3])+" | "+str(self.Matrix[n][4])+" | "+str(self.Matrix[n][5]))
 
-        Domoticz.Heartbeat(int(Parameters["Mode4"]))
+        Domoticz.Heartbeat(5)
 
     def onStop(self):
         strName = "onStop: "
@@ -366,8 +418,10 @@ class BasePlugin:
         """
         Log the user in
         :return: None
+        api url for dreammachine pro: /api/auth/login
+        api url for other: /api/login
         """
-        self._current_status_code = self._session.post("{}/api/login".format(self._baseurl), data=json.dumps(self._login_data), verify=self._verify_ssl).status_code
+        self._current_status_code = self._session.post("{}{}".format(self._baseurl,Parameters["Mode4"]), data=json.dumps(self._login_data), verify=self._verify_ssl).status_code
         if self._current_status_code == 400:
             Domoticz.Debug(strName+"Failed to log in to api with provided credentials")
         Domoticz.Debug(strName+"self._current_status_code = " + str(self._current_status_code))
@@ -381,9 +435,10 @@ class BasePlugin:
         self._session.get("{}/logout".format(self._baseurl))
         self._session.close()
 
+
     def request_details(self):
         strName = "request_details: "
-        r = self._session.get("{}/api/s/{}/stat/health".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}")
+        r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}")
         self._current_status_code = r.status_code
 
         if self._current_status_code == 401:
@@ -392,30 +447,72 @@ class BasePlugin:
         data = r.json()['data']
         for item in data:
             Domoticz.Debug(strName+"Json Data (request details) = " + str(item))
-            if item['subsystem'] == "wlan":
-                wlan_user_count = item['num_user']
-                UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, int(wlan_user_count), str(wlan_user_count))
-            if item['subsystem'] == "lan":
-                lan_user_count = item['num_user']
-                UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, int(lan_user_count), str(lan_user_count))
-            if item['subsystem'] == "wan":
-                cpu_pers = item['gw_system-stats']['cpu']
-                UpdateDevice(self.UNIFI_CPU_PERC_UNIT, int(cpu_pers), str(cpu_pers))
-                mem_pers = item['gw_system-stats']['mem']
-                UpdateDevice(self.UNIFI_MEM_PERC_UNIT, int(mem_pers), str(mem_pers))
-                if item['gw_system-stats']['temps'] != "":
-                    board_cpu = item['gw_system-stats']['temps']['Board (CPU)'][:-2]
-                    UpdateDevice(self.UNIFI_BOARD_CPU_UNIT, int(board_cpu), str(board_cpu))
-                    board_phy = item['gw_system-stats']['temps']['Board (PHY)'][:-2]
-                    UpdateDevice(self.UNIFI_BOARD_PHY_UNIT, int(board_phy), str(board_phy))
-                    cpu = item['gw_system-stats']['temps']['CPU'][:-2]
-                    UpdateDevice(self.UNIFI_CPU_UNIT, int(cpu), str(cpu))
-                    phy = item['gw_system-stats']['temps']['PHY'][:-2]
-                    UpdateDevice(self.UNIFI_PHY_UNIT, int(phy), str(phy))
-                else:
-                    Domoticz.Error(strName+"Error reading part of the Unifi API (Restart Unifi Controller if this error continue to exist).")
-                uptime = int(item['gw_system-stats']['uptime'])/3600
-                UpdateDevice(self.UNIFI_UPTIME_UNIT, int(uptime), str(uptime))
+            if item['type'] == "usw":
+                for devUnit in Devices:
+                    devName = Devices[devUnit].Name
+                    uapName = item['name']+" CPU"
+                    if devName.find(uapName) > 0:
+                        usw_cpu = item['system-stats']['cpu']
+                        UpdateDevice(devUnit, int(float(usw_cpu)), str(usw_cpu))
+                    uapName = item['name']+" Memory"
+                    if devName.find(uapName) > 0:
+                        usw_mem = item['system-stats']['mem'] 
+                        UpdateDevice(devUnit, int(float(usw_mem)), str(usw_mem))
+                    uapName = item['name']+" General Temperature"
+                    if devName.find(uapName) > 0:
+                        general_temperature = item['general_temperature'] 
+                        UpdateDevice(devUnit, int(float(general_temperature)), str(general_temperature))
+            if item['type'] == "ugw":
+                for devUnit in Devices:
+                    devName = Devices[devUnit].Name
+                    uapName = item['name']+" CPU"
+                    if devName.find(uapName) > 0:
+                        ugw_cpu = item['system-stats']['cpu'] 
+                        UpdateDevice(devUnit, int(float(ugw_cpu)), str(ugw_cpu))
+                    uapName = item['name']+" Memory"
+                    if devName.find(uapName) > 0:
+                        ugw_mem = item['system-stats']['mem'] 
+                        UpdateDevice(devUnit, int(float(ugw_mem)), str(ugw_mem))
+                    uapName = item['name']+" Board (CPU) Temperature"
+                    if devName.find(uapName) > 0:
+                        ugw_board_cpu_temp = item['system-stats']['temps']['Board (CPU)'][:-2]
+                        UpdateDevice(devUnit, int(float(ugw_board_cpu_temp)), str(ugw_board_cpu_temp))
+                    uapName = item['name']+" Board (PHY) Temperature"
+                    if devName.find(uapName) > 0:
+                        ugw_board_phy_temp = item['system-stats']['temps']['Board (PHY)'][:-2]
+                        UpdateDevice(devUnit, int(float(ugw_board_phy_temp)), str(ugw_board_phy_temp))
+                    uapName = item['name']+" CPU Temperature"
+                    if devName.find(uapName) > 0:
+                        ugw_cpu_temp = item['system-stats']['temps']['CPU'][:-2]
+                        UpdateDevice(devUnit, int(float(ugw_cpu_temp)), str(ugw_cpu_temp))
+                    uapName = item['name']+" PHY Temperature"
+                    if devName.find(uapName) > 0:
+                        ugw_phy_temp = item['system-stats']['temps']['PHY'][:-2]
+                        UpdateDevice(devUnit, int(float(ugw_phy_temp)), str(ugw_phy_temp))
+                    uapName = item['name']+" Latency"
+                    if devName.find(uapName) > 0:
+                        ugw_latency = item['speedtest-status']['latency']
+                        UpdateDevice(devUnit, int(float(ugw_latency)), str(ugw_latency))
+                    uapName = item['name']+" XPut Download"
+                    if devName.find(uapName) > 0:
+                        ugw_xput_download = item['speedtest-status']['xput_download'] 
+                        UpdateDevice(devUnit, int(float(ugw_xput_download)), str(ugw_xput_download))
+                    uapName = item['name']+" XPut Upload"
+                    if devName.find(uapName) > 0:
+                        ugw_xput_upload = item['speedtest-status']['xput_upload'] 
+                        UpdateDevice(devUnit, int(float(ugw_xput_upload)), str(ugw_xput_upload))
+            if item['type'] == "uap":
+                for devUnit in Devices:
+                    devName = Devices[devUnit].Name
+                    uapName = item['name']+" CPU"
+                    if devName.find(uapName) > 0:
+                        uap_cpu = item['system-stats']['cpu'] 
+                        UpdateDevice(devUnit, int(float(uap_cpu)), str(uap_cpu))
+                    uapName = item['name']+" Memory"
+                    if devName.find(uapName) > 0:
+                        uap_mem = item['system-stats']['mem'] 
+                        UpdateDevice(devUnit, int(float(uap_mem)), str(uap_mem))
+
 
 
     def request_online_phones(self):
@@ -533,93 +630,170 @@ class BasePlugin:
             self.versionCheck = False
             Domoticz.Error(strName+"Plugin NOT allowed to start (triggered by: "+note+")")
 
-    def create_devices(self, device):
+    def detectUnifiDevices(self):
+        strName = "detect Unifi Devices: "
+        r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}")
+        self._current_status_code = r.status_code
+
+        if self._current_status_code == 401:
+            Domoticz.Log(strName+"Invalid login, or login has expired")
+
+        data = r.json()['data']
+
+        totalUnifiDevices = 0
+        for item in data:
+            Domoticz.Debug(strName+"Json Data (device) = " + str(item))
+            deviceCode = item['model']
+            deviceName = self.UnifiDevicesNames[deviceCode][1]
+            if self.UnifiDevicesNames[deviceCode][0] == "uap":
+                self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
+            elif self.UnifiDevicesNames[deviceCode][0] == "usw":
+                self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
+            elif self.UnifiDevicesNames[deviceCode][0] == "ugw":
+                self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
+            elif self.UnifiDevicesNames[deviceCode][0] == "uph":
+                self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
+            Domoticz.Log(strName+"Found Unifi Device: "+deviceName+" ("+deviceCode+")")
+
+        #Domoticz.Log(strName+"uag aantal = "+str(len(self.uph)))
+        #for ph in self.uph:
+        #    Domoticz.Log(strName+"uph = "+str(ph))
+
+
+    def create_devices(self):
         strName = "create_devices: "
         # create devices
-        if device == "wlan":
-            if (self.UNIFI_WLAN_COUNTER_UNIT not in Devices):
-                Domoticz.Device(Name="WLAN Counter",  Unit=self.UNIFI_WLAN_COUNTER_UNIT, Used=1, Type=243, Subtype=31).Create()
-                UpdateDevice(self.UNIFI_WLAN_COUNTER_UNIT, 0, "0")
+        foundDevice = False
+        for device in self.uap:
+            device = device.strip()
+            deviceType, deviceName = device.split(",")
+            for item in Devices:
+                devName = Devices[item].Name
+                uapName = deviceName
+                if devName.find(uapName) > 0:
+                    foundDevice = True
+            if foundDevice == False:
+                    new_unit = find_available_unit_uap()
+                    Domoticz.Device(Name=deviceName+" CPU",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                    UpdateDevice(new_unit, 0, "0")
+                    new_unit = find_available_unit_uap()
+                    Domoticz.Device(Name=deviceName+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                    UpdateDevice(new_unit, 0, "0")
 
-        if device == "lan":
-            if (self.UNIFI_LAN_COUNTER_UNIT not in Devices):
-                Domoticz.Device(Name="LAN Counter",  Unit=self.UNIFI_LAN_COUNTER_UNIT, Used=1, Type=243, Subtype=31).Create()
-                UpdateDevice(self.UNIFI_LAN_COUNTER_UNIT, 0, "0")
-
-        if device == "wan":
-            if (self.UNIFI_CPU_PERC_UNIT not in Devices):
-                Domoticz.Device(Name="Gateway CPU Percentage",  Unit=self.UNIFI_CPU_PERC_UNIT, Used=1, TypeName="Percentage").Create()
-                UpdateDevice(self.UNIFI_CPU_PERC_UNIT, 0, "0")
-            if (self.UNIFI_MEM_PERC_UNIT not in Devices):
-                Domoticz.Device(Name="Gateway Mem Percentage",  Unit=self.UNIFI_MEM_PERC_UNIT, Used=1, TypeName="Percentage").Create()
-                UpdateDevice(self.UNIFI_MEM_PERC_UNIT, 0, "0")
-            if (self.UNIFI_BOARD_CPU_UNIT not in Devices):
-                Domoticz.Device(Name="Gateway Board (CPU) Temperature",  Unit=self.UNIFI_BOARD_CPU_UNIT, Used=1, TypeName="Temperature").Create()
-                UpdateDevice(self.UNIFI_BOARD_CPU_UNIT, 0, "0")
-            if (self.UNIFI_BOARD_PHY_UNIT not in Devices):
-                Domoticz.Device(Name="Gateway Board (PHY) Temperature",  Unit=self.UNIFI_BOARD_PHY_UNIT, Used=1, TypeName="Temperature").Create()
-                UpdateDevice(self.UNIFI_BOARD_PHY_UNIT, 0, "0")
-            if (self.UNIFI_CPU_UNIT not in Devices):
-                Domoticz.Device(Name="Gateway CPU Temperature",  Unit=self.UNIFI_CPU_UNIT, Used=1, TypeName="Temperature").Create()
-                UpdateDevice(self.UNIFI_CPU_UNIT, 0, "0")
-            if (self.UNIFI_PHY_UNIT not in Devices):
-                Domoticz.Device(Name="Gateway PHY Temperature",  Unit=self.UNIFI_PHY_UNIT, Used=1, TypeName="Temperature").Create()
-                UpdateDevice(self.UNIFI_PHY_UNIT, 0, "0")
-            if (self.UNIFI_UPTIME_UNIT not in Devices):
-                Domoticz.Device(Name="Uptime (hours)", Unit=self.UNIFI_UPTIME_UNIT, Used=1, Type=243, Subtype=31).Create()
-                UpdateDevice(self.UNIFI_UPTIME_UNIT, 0, "0.0")
-
-        if device == "unifi":
-            if (self.UNIFI_ANYONE_HOME_UNIT not in Devices):
-                Domoticz.Device(Name="AnyOne",  Unit=self.UNIFI_ANYONE_HOME_UNIT, Used=1, TypeName="Switch", Image=Images['UnifiPresenceAnyone'].ID).Create()
-                UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 0, "Off")
-            if (self.UNIFI_OVERRIDE_UNIT not in Devices):
-                Options = {"LevelActions": "||||",
-                           "LevelNames": "Off|1 hour|2 hours|3 hours|On",
-                           "LevelOffHidden": "false",
-                           "SelectorStyle": "0"}
-                Domoticz.Device(Name="OverRide", Unit=self.UNIFI_OVERRIDE_UNIT, TypeName="Selector Switch", Switchtype=18, Used=1, Options=Options, Image=Images['UnifiPresenceOverride'].ID).Create()
-            UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 0, "0")
+        foundDevice = False
+        for device in self.usw:
+            device = device.strip()
+            deviceType, deviceName = device.split(",")
+            for item in Devices:
+                devName = Devices[item].Name
+                uapName = deviceName
+                if devName.find(uapName) > 0:
+                    foundDevice = True
+            if foundDevice == False:
+                new_unit = find_available_unit_usw()
+                Domoticz.Device(Name=deviceName+" CPU",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_usw()
+                Domoticz.Device(Name=deviceName+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_usw()
+                Domoticz.Device(Name=deviceName+" General Temperature",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                UpdateDevice(new_unit, 0, "0")
 
 
-            # create phone devices
-            device_mac=Parameters["Mode2"].split(",")
+        foundDevice = False
+        for device in self.ugw:
+            device = device.strip()
+            deviceType, deviceName = device.split(",")
+            for item in Devices:
+                devName = Devices[item].Name
+                uapName = deviceName
+                if devName.find(uapName) > 0:
+                    foundDevice = True
+            if foundDevice == False:
+                new_unit = find_available_unit_ugw()
+                Domoticz.Device(Name=deviceName+" CPU",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_ugw()
+                Domoticz.Device(Name=deviceName+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_ugw()
+                Domoticz.Device(Name=deviceName+" Board (CPU) Temperature",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_ugw()
+                Domoticz.Device(Name=deviceName+" Board (PHY) Temperature",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_ugw()
+                Domoticz.Device(Name=deviceName+" CPU Temperature",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_ugw()
+                Domoticz.Device(Name=deviceName+" PHY Temperature",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_ugw()
+                Options = {'Custom': '1;milliseconds'}
+                Domoticz.Device(Name=deviceName+" Latency",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_ugw()
+                Options = {'Custom': '1;MBit/s'}
+                Domoticz.Device(Name=deviceName+" XPut Download",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_ugw()
+                Options = {'Custom': '1;MBit/s'}
+                Domoticz.Device(Name=deviceName+" XPut Upload",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
+                UpdateDevice(new_unit, 0, "0")
 
-            found_phone = False
-            count_phone = 0
-            for device in device_mac:
-                device = device.strip()
-                phone_name, mac_id = device.split("=")
-                phone_name = phone_name.strip()
-                mac_id = mac_id.strip().lower()
-                try:
-                    for item in Devices:
-                        if Devices[item].Name[8:] == phone_name:
-                            Domoticz.Log(strName+"Found phone to monitor from configuration = "+device)
-                            found_phone = True
-                            if Parameters["Mode3"] == "Yes":
-                                count_phone = count_phone + 2
-                            elif Parameters["Mode3"] == "No":
-                                count_phone = count_phone + 1
-                    if found_phone == False:
-                        new_unit_phone = find_available_unit_phone()
-                        if Parameters["Mode5"] == "Yes":
-                            Options = {"LevelActions": "||||",
-                            "LevelNames": "Off|Block|Unblock|On",
-                            "LevelOffHidden": "false",
-                            "SelectorStyle": "0"}
-                            Domoticz.Device(Name=phone_name, Unit=new_unit_phone, TypeName="Selector Switch", Switchtype=18, Used=1, Options=Options, Image=Images['UnifiPresenceOverride'].ID).Create()
-                            count_phone = count_phone + 1
-                        else:
-                            Domoticz.Device(Name=phone_name, Unit=new_unit_phone, TypeName="Switch", Used=1, Image=Images['UnifiPresenceOverride'].ID).Create()
-                            count_phone = count_phone + 1
+
+        if (self.UNIFI_ANYONE_HOME_UNIT not in Devices):
+            Domoticz.Device(Name="AnyOne",  Unit=self.UNIFI_ANYONE_HOME_UNIT, Used=1, TypeName="Switch", Image=Images['UnifiPresenceAnyone'].ID).Create()
+            UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 0, "Off")
+        if (self.UNIFI_OVERRIDE_UNIT not in Devices):
+            Options = {"LevelActions": "||||",
+                       "LevelNames": "Off|1 hour|2 hours|3 hours|On",
+                       "LevelOffHidden": "false",
+                       "SelectorStyle": "0"}
+            Domoticz.Device(Name="OverRide", Unit=self.UNIFI_OVERRIDE_UNIT, TypeName="Selector Switch", Switchtype=18, Used=1, Options=Options, Image=Images['UnifiPresenceOverride'].ID).Create()
+        UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 0, "0")
+
+        # create phone devices
+        device_mac=Parameters["Mode2"].split(",")
+
+        found_phone = False
+        count_phone = 0
+        for device in device_mac:
+            device = device.strip()
+            phone_name, mac_id = device.split("=")
+            phone_name = phone_name.strip()
+            mac_id = mac_id.strip().lower()
+            try:
+                for item in Devices:
+                    devName = Devices[item].Name
+                    position = devName.find("-")+2
+                    if Devices[item].Name[position:] == phone_name:
+                        Domoticz.Log(strName+"Found phone to monitor from configuration = "+device)
+                        found_phone = True
                         if Parameters["Mode3"] == "Yes":
-                            new_unit_geo = find_available_unit_geo()
-                            phone_name = "Geo " + phone_name
-                            Domoticz.Device(Name=phone_name, Unit=new_unit_geo, TypeName="Switch", Used=1, Image=Images['UnifiPresenceOverride'].ID).Create()
+                            count_phone = count_phone + 2
+                        elif Parameters["Mode3"] == "No":
                             count_phone = count_phone + 1
-                except:
-                    Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
+                if found_phone == False:
+                    new_unit_phone = find_available_unit_phone()
+                    if Parameters["Mode5"] == "Yes":
+                        Options = {"LevelActions": "||||",
+                        "LevelNames": "Off|Block|Unblock|On",
+                        "LevelOffHidden": "false",
+                        "SelectorStyle": "0"}
+                        Domoticz.Device(Name=phone_name, Unit=new_unit_phone, TypeName="Selector Switch", Switchtype=18, Used=1, Options=Options, Image=Images['UnifiPresenceOverride'].ID).Create()
+                        count_phone = count_phone + 1
+                    else:
+                        Domoticz.Device(Name=phone_name, Unit=new_unit_phone, TypeName="Switch", Used=1, Image=Images['UnifiPresenceOverride'].ID).Create()
+                        count_phone = count_phone + 1
+                    if Parameters["Mode3"] == "Yes":
+                        new_unit_geo = find_available_unit_geo()
+                        phone_name = "Geo " + phone_name
+                        Domoticz.Device(Name=phone_name, Unit=new_unit_geo, TypeName="Switch", Used=1, Image=Images['UnifiPresenceOverride'].ID).Create()
+                        count_phone = count_phone + 1
+            except:
+                Domoticz.Error(strName+"Invalid phone settings. (" +device+")")
 
             # calculate total devices
             extra_devices = 1 # Override device
@@ -716,13 +890,31 @@ def DumpConfigToLog():
     return
 
 def find_available_unit_phone():
-    for num in range(100,120):
+    for num in range(50,70):
         if num not in Devices:
             return num
     return None
 
 def find_available_unit_geo():
-    for num in range(150,170):
+    for num in range(80,100):
+        if num not in Devices:
+            return num
+    return None
+
+def find_available_unit_uap():
+    for num in range(110,140):
+        if num not in Devices:
+            return num
+    return None
+
+def find_available_unit_usw():
+    for num in range(150,180):
+        if num not in Devices:
+            return num
+    return None
+
+def find_available_unit_ugw():
+    for num in range(140,250):
         if num not in Devices:
             return num
     return None
