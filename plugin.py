@@ -84,6 +84,7 @@ class BasePlugin:
     _verify_ssl = False
     _baseurl = None
     _session = Session()
+    _uapDevices = []
     UnifiDevicesNames = {
         #Device Code, Device Type, Device Name
         "BZ2":       ("uap",       "UniFi AP"),
@@ -299,7 +300,7 @@ class BasePlugin:
         strData = Data["Data"].decode("utf-8", "ignore")
         status = int(Data["Status"])
 
-        if (status == 200):
+        if (self._current_status_code == 200):
             unifiResponse = json.loads(strData)
             Domoticz.Debug(strName+"Retrieved following json: "+json.dumps(unifiResponse))
             self.onHeartbeat()
@@ -392,7 +393,7 @@ class BasePlugin:
         strName = "onHeartbeat: "
         Domoticz.Debug(strName+"called")
 
-        if (self._current_status_code == None) or (self._current_status_code == 401):
+        if (self._current_status_code == None) or (self._current_status_code == 401) or (self._current_status_code != 200):
             Domoticz.Log(strName+'Attempting to reconnect Unifi Controller')
             self.login()
 
@@ -424,7 +425,6 @@ class BasePlugin:
         self._current_status_code = self._session.post("{}{}".format(self._baseurl,Parameters["Mode4"]), data=json.dumps(self._login_data), verify=self._verify_ssl).status_code
         if self._current_status_code == 400:
             Domoticz.Debug(strName+"Failed to log in to api with provided credentials")
-        Domoticz.Debug(strName+"self._current_status_code = " + str(self._current_status_code))
 
     def logout(self):
         strName = "logout: "
@@ -450,68 +450,130 @@ class BasePlugin:
             if item['type'] == "usw":
                 for devUnit in Devices:
                     devName = Devices[devUnit].Name
-                    uapName = item['name']+" CPU"
+                    json_field = "CPU"
+                    uapName = item['name']+" "+json_field
                     if devName.find(uapName) > 0:
-                        usw_cpu = item['system-stats']['cpu']
-                        UpdateDevice(devUnit, int(float(usw_cpu)), str(usw_cpu))
-                    uapName = item['name']+" Memory"
+                        if 'system-stats' in item:
+                            test_json = item['system-stats']
+                            if 'cpu' in test_json:
+                                usw_cpu = item['system-stats']['cpu']
+                                UpdateDevice(devUnit, int(float(usw_cpu)), str(usw_cpu))
+                    json_field = "Memory"
+                    uapName = item['name']+" "+json_field
                     if devName.find(uapName) > 0:
-                        usw_mem = item['system-stats']['mem'] 
-                        UpdateDevice(devUnit, int(float(usw_mem)), str(usw_mem))
-                    uapName = item['name']+" General Temperature"
+                        if 'system-stats' in item:
+                            test_json = item['system-stats']
+                            if 'mem' in test_json:
+                                usw_mem = item['system-stats']['mem'] 
+                                UpdateDevice(devUnit, int(float(usw_mem)), str(usw_mem))
+                    json_field = "General Temperature"
+                    uapName = item['name']+" "+json_field
                     if devName.find(uapName) > 0:
-                        general_temperature = item['general_temperature'] 
-                        UpdateDevice(devUnit, int(float(general_temperature)), str(general_temperature))
+                        if 'general_temperature' in item:
+                            general_temperature = item['general_temperature'] 
+                            UpdateDevice(devUnit, int(float(general_temperature)), str(general_temperature))
             if item['type'] == "ugw":
                 for devUnit in Devices:
                     devName = Devices[devUnit].Name
-                    uapName = item['name']+" CPU Usage"
-                    if devName.find(uapName) > 0:
-                        ugw_cpu = item['system-stats']['cpu'] 
-                        UpdateDevice(devUnit, int(float(ugw_cpu)), str(ugw_cpu))
-                    uapName = item['name']+" Memory"
-                    if devName.find(uapName) > 0:
-                        ugw_mem = item['system-stats']['mem'] 
-                        UpdateDevice(devUnit, int(float(ugw_mem)), str(ugw_mem))
-                    uapName = item['name']+" Board (CPU) Temperature"
-                    if devName.find(uapName) > 0:
-                        ugw_board_cpu_temp = item['system-stats']['temps']['Board (CPU)'][:-2]
-                        UpdateDevice(devUnit, int(float(ugw_board_cpu_temp)), str(ugw_board_cpu_temp))
-                    uapName = item['name']+" Board (PHY) Temperature"
-                    if devName.find(uapName) > 0:
-                        ugw_board_phy_temp = item['system-stats']['temps']['Board (PHY)'][:-2]
-                        UpdateDevice(devUnit, int(float(ugw_board_phy_temp)), str(ugw_board_phy_temp))
-                    uapName = item['name']+" CPU Temperature"
-                    if devName.find(uapName) > 0:
-                        ugw_cpu_temp = item['system-stats']['temps']['CPU'][:-2]
-                        UpdateDevice(devUnit, int(float(ugw_cpu_temp)), str(ugw_cpu_temp))
-                    uapName = item['name']+" PHY Temperature"
-                    if devName.find(uapName) > 0:
-                        ugw_phy_temp = item['system-stats']['temps']['PHY'][:-2]
-                        UpdateDevice(devUnit, int(float(ugw_phy_temp)), str(ugw_phy_temp))
-                    uapName = item['name']+" Latency"
-                    if devName.find(uapName) > 0:
-                        ugw_latency = item['speedtest-status']['latency']
-                        UpdateDevice(devUnit, int(float(ugw_latency)), str(ugw_latency))
-                    uapName = item['name']+" XPut Download"
-                    if devName.find(uapName) > 0:
-                        ugw_xput_download = item['speedtest-status']['xput_download'] 
-                        UpdateDevice(devUnit, int(float(ugw_xput_download)), str(ugw_xput_download))
-                    uapName = item['name']+" XPut Upload"
-                    if devName.find(uapName) > 0:
-                        ugw_xput_upload = item['speedtest-status']['xput_upload'] 
-                        UpdateDevice(devUnit, int(float(ugw_xput_upload)), str(ugw_xput_upload))
+                    json_field = "CPU Usage"
+                    ugwName = item['name']+" "+json_field
+                    if devName.find(ugwName) > 0:
+                        if 'system-stats' in item:
+                            test_json = item['system-stats']
+                            if 'cpu' in test_json:
+                                ugw_cpu = item['system-stats']['cpu'] 
+                                UpdateDevice(devUnit, int(float(ugw_cpu)), str(ugw_cpu))
+                    json_field = "Memory"
+                    ugwName = item['name']+" "+json_field
+                    if devName.find(ugwName) > 0:
+                        if 'system-stats' in item:
+                            test_json = item['system-stats']
+                            if 'mem' in test_json:
+                                ugw_mem = item['system-stats']['mem'] 
+                                UpdateDevice(devUnit, int(float(ugw_mem)), str(ugw_mem))
+                    json_field = "Board (CPU) Temperature"
+                    ugwName = item['name']+" "+json_field
+                    if devName.find(ugwName) > 0:
+                        if 'system-stats' in item:
+                            test_json = item['system-stats']
+                            if 'temps' in test_json:
+                                test_json = item['system-stats']['temps']
+                                if 'Board (CPU)' in test_json:
+                                    ugw_board_cpu_temp = item['system-stats']['temps']['Board (CPU)'][:-2]
+                                    UpdateDevice(devUnit, int(float(ugw_board_cpu_temp)), str(ugw_board_cpu_temp))
+                    json_field = "Board (PHY) Temperature"
+                    ugwName = item['name']+" "+json_field
+                    if devName.find(ugwName) > 0:
+                        if 'system-stats' in item:
+                            test_json = item['system-stats']
+                            if 'temps' in test_json:
+                                test_json = item['system-stats']['temps']
+                                if 'Board (PHY)' in test_json:
+                                    ugw_board_phy_temp = item['system-stats']['temps']['Board (PHY)'][:-2]
+                                    UpdateDevice(devUnit, int(float(ugw_board_phy_temp)), str(ugw_board_phy_temp))
+                    json_field = "CPU Temperature"
+                    ugwName = item['name']+" "+json_field
+                    if devName.find(ugwName) > 0:
+                        if 'system-stats' in item:
+                            test_json = item['system-stats']
+                            if 'temps' in test_json:
+                                test_json = item['system-stats']['temps']
+                                if 'CPU' in test_json:
+                                    ugw_cpu_temp = item['system-stats']['temps']['CPU'][:-2]
+                                    UpdateDevice(devUnit, int(float(ugw_cpu_temp)), str(ugw_cpu_temp))
+                    json_field = "PHY Temperature"
+                    ugwName = item['name']+" "+json_field
+                    if devName.find(ugwName) > 0:
+                        if 'system-stats' in item:
+                            test_json = item['system-stats']
+                            if 'temps' in test_json:
+                                test_json = item['system-stats']['temps']
+                                if 'PHY' in test_json:
+                                    ugw_phy_temp = item['system-stats']['temps']['PHY'][:-2]
+                                    UpdateDevice(devUnit, int(float(ugw_phy_temp)), str(ugw_phy_temp))
+                    json_field = "Latency"
+                    ugwName = item['name']+" "+json_field
+                    if devName.find(ugwName) > 0:
+                        if 'speedtest-status' in item:
+                            test_json = item['speedtest-status']
+                            if 'latency' in test_json:
+                                ugw_latency = item['speedtest-status']['latency']
+                                UpdateDevice(devUnit, int(float(ugw_latency)), str(ugw_latency))
+                    json_field = "XPut Download"
+                    ugwName = item['name']+" "+json_field
+                    if devName.find(ugwName) > 0:
+                        if 'speedtest-status' in item:
+                            test_json = item['speedtest-status']
+                            if 'xput_downlaod' in test_json:
+                                ugw_xput_download = item['speedtest-status']['xput_download'] 
+                                UpdateDevice(devUnit, int(float(ugw_xput_download)), str(ugw_xput_download))
+                    json_field = "XPut Upload"
+                    ugwName = item['name']+" "+json_field
+                    if devName.find(ugwName) > 0:
+                        if 'speedtest-status' in item:
+                            test_json = item['speedtest-status']
+                            if 'xput_upload' in test_json:
+                                ugw_xput_upload = item['speedtest-status']['xput_upload'] 
+                                UpdateDevice(devUnit, int(float(ugw_xput_upload)), str(ugw_xput_upload))
             if item['type'] == "uap":
                 for devUnit in Devices:
                     devName = Devices[devUnit].Name
-                    uapName = item['name']+" CPU"
+                    json_field = "CPU"
+                    uapName = item['name']+" "+json_field
                     if devName.find(uapName) > 0:
-                        uap_cpu = item['system-stats']['cpu'] 
-                        UpdateDevice(devUnit, int(float(uap_cpu)), str(uap_cpu))
-                    uapName = item['name']+" Memory"
+                        if 'system-stats' in item:
+                            test_json = item['system-stats']
+                            if 'cpu' in test_json:
+                                uap_cpu = item['system-stats']['cpu'] 
+                                UpdateDevice(devUnit, int(float(uap_cpu)), str(uap_cpu))
+                    json_field = "Memory"
+                    uapName = item['name']+" "+json_field
                     if devName.find(uapName) > 0:
-                        uap_mem = item['system-stats']['mem'] 
-                        UpdateDevice(devUnit, int(float(uap_mem)), str(uap_mem))
+                        if 'system-stats' in item:
+                            test_json = item['system-stats']
+                            if 'mem' in test_json:
+                                uap_mem = item['system-stats']['mem'] 
+                                UpdateDevice(devUnit, int(float(uap_mem)), str(uap_mem))
 
 
 
@@ -543,6 +605,7 @@ class BasePlugin:
                         if self.Matrix[x][1] == mac_id:
                             self.Matrix[x][5] = "Yes"
         self.ProcessDevices()
+
 
 
     def block_phone(self, phone_name, mac):
@@ -656,8 +719,8 @@ class BasePlugin:
             Domoticz.Log(strName+"Found Unifi Device: "+deviceName+" ("+deviceCode+")")
 
         #Domoticz.Log(strName+"uag aantal = "+str(len(self.uph)))
-        #for ph in self.uph:
-        #    Domoticz.Log(strName+"uph = "+str(ph))
+        #for ap in self.uap:
+        #    Domoticz.Log(strName+"uap = "+str(ap))
 
 
     def create_devices(self):
