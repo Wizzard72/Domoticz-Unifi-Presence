@@ -646,6 +646,8 @@ class BasePlugin:
         for x in range(self.total_devices_count):
             if self.Matrix[x][3] == "Off" and self.Matrix[x][4] == "No" and self.Matrix[x][5] == "No":
                 self.Matrix[x][4] = self.Matrix[x][5]
+                if Devices[self.Matrix[x][2]].nValue != 0:
+                    UpdateDevice(self.Matrix[x][2], nvalueOff, svalueOff)
             elif self.Matrix[x][3] == "Off" and self.Matrix[x][4] == "No" and self.Matrix[x][5] == "Yes":
                 Domoticz.Log(strName+"Phone '"+self.Matrix[x][0]+"' connected to the Unifi Controller")
                 self.Matrix[x][3] = "On"
