@@ -544,7 +544,7 @@ class BasePlugin:
                     if devName.find(ugwName) > 0:
                         if 'speedtest-status' in item:
                             test_json = item['speedtest-status']
-                            if 'xput_downlaod' in test_json:
+                            if 'xput_download' in test_json:
                                 ugw_xput_download = item['speedtest-status']['xput_download'] 
                                 UpdateDevice(devUnit, int(float(ugw_xput_download)), str(ugw_xput_download))
                     json_field = "XPut Upload"
