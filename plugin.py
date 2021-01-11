@@ -24,8 +24,8 @@
         </param>
         <param field="Mode4" label="Select Unifi Controller" width="150px">
             <options>
-                <option label="Unifi Controller" value="/api/login" default="true" />
-                <option label="Dreammachine" value="/api/auth/login"/>
+                <option label="Unifi Controller" value="unificontroller" default="true" />
+                <option label="Dreammachine" value="dreammachinepro"/>
             </options>
         </param>
         <param field="Mode5" label="Posibility to block devices from the network?" width="75px">
@@ -151,11 +151,14 @@ class BasePlugin:
         "UP7":       ("uph",       "UniFi Phone-Executive"),
         "UP5c":      ("uph",       "UniFi Phone"),
         "UP5tc":     ("uph",       "UniFi Phone-Pro"),
-        "UP7c":      ("uph",       "UniFi Phone-Executive")}
+        "UP7c":      ("uph",       "UniFi Phone-Executive"),
+        "UDMPRO":    ("udm",       "Unifi Dream Machine Pro")
+        }
     uap = []
     usw = []
     ugw = []
     uph = []
+    udm = []
 
     def __init__(self):
         return
@@ -279,6 +282,7 @@ class BasePlugin:
             Domoticz.Debug(strName+"Phone Naam = "+str(self.Matrix[n][0])+" | "+str(self.Matrix[n][1])+" | "+str(self.Matrix[n][2])+" | "+str(self.Matrix[n][3])+" | "+str(self.Matrix[n][4])+" | "+str(self.Matrix[n][5]))
 
         Domoticz.Heartbeat(5)
+        self.devicesPerAP()
 
     def onStop(self):
         strName = "onStop: "
@@ -422,7 +426,12 @@ class BasePlugin:
         api url for dreammachine pro: /api/auth/login
         api url for other: /api/login
         """
-        self._current_status_code = self._session.post("{}{}".format(self._baseurl,Parameters["Mode4"]), data=json.dumps(self._login_data), verify=self._verify_ssl).status_code
+        if Parameters["Mode4"] == "unificontroller":
+            url_api_login = '/api/login'
+        elif Parameters["Mode4"] == "dreammachinepro":
+            url_api_login = '/api/auth/login'
+
+        self._current_status_code = self._session.post("{}{}".format(self._baseurl,url_api_login), data=json.dumps(self._login_data), verify=self._verify_ssl).status_code
         if self._current_status_code == 400:
             Domoticz.Debug(strName+"Failed to log in to api with provided credentials")
 
@@ -432,13 +441,20 @@ class BasePlugin:
         Log the user out
         :return: None
         """
-        self._session.get("{}/logout".format(self._baseurl))
+        if Parameters["Mode4"] == "unificontroller":
+            self._session.get("{}/logout".format(self._baseurl))
+        elif Parameters["Mode4"] == "dreammachinepro":
+            self._session.get("{}/proxy/network/logout".format(self._baseurl))
         self._session.close()
 
 
     def request_details(self):
         strName = "request_details: "
-        r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}")
+        if Parameters["Mode4"] == "unificontroller":
+            r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}")
+        elif Parameters["Mode4"] == "dreammachinepro":
+            r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}")
+
         self._current_status_code = r.status_code
 
         if self._current_status_code == 401:
@@ -579,7 +595,11 @@ class BasePlugin:
 
     def request_online_phones(self):
         strName = "request_online_phones: "
-        r = self._session.get("{}/api/s/{}/stat/sta".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}")
+        if Parameters["Mode4"] == "unificontroller":
+            r = self._session.get("{}/api/s/{}/stat/sta".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}")
+        elif Parameters["Mode4"] == "dreammachinepro":
+            r = self._session.get("{}/proxy/network/api/s/{}/stat/sta".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}")
+
         self._current_status_code = r.status_code
 
         if self._current_status_code == 401:
@@ -612,7 +632,10 @@ class BasePlugin:
         strName = "block_phone: "
         self._block_data['cmd'] ='block-sta'
         self._block_data['mac'] = mac
-        r = self._session.post("{}/api/s/{}/cmd/stamgr".format(self._baseurl, self._site, verify=self._verify_ssl), data=json.dumps(self._block_data), verify=self._verify_ssl).status_code
+        if Parameters["Mode4"] == "unificontroller":
+            r = self._session.post("{}/api/s/{}/cmd/stamgr".format(self._baseurl, self._site, verify=self._verify_ssl), data=json.dumps(self._block_data), verify=self._verify_ssl).status_code
+        elif Parameters["Mode4"] == "dreammachinepro":
+            r = self._session.post("{}/proxy/network/api/s/{}/cmd/stamgr".format(self._baseurl, self._site, verify=self._verify_ssl), data=json.dumps(self._block_data), verify=self._verify_ssl).status_code
 
         if r == 401:
             Domoticz.Log(strName+"Invalid login, or login has expired")
@@ -623,7 +646,10 @@ class BasePlugin:
         strName = "unblock_phone: "
         self._block_data['cmd'] ='unblock-sta'
         self._block_data['mac'] = mac
-        r = self._session.post("{}/api/s/{}/cmd/stamgr".format(self._baseurl, self._site, verify=self._verify_ssl), data=json.dumps(self._block_data), verify=self._verify_ssl).status_code
+        if Parameters["Mode4"] == "unificontroller":
+            r = self._session.post("{}/api/s/{}/cmd/stamgr".format(self._baseurl, self._site, verify=self._verify_ssl), data=json.dumps(self._block_data), verify=self._verify_ssl).status_code
+        elif Parameters["Mode4"] == "dreammachinepro":
+            r = self._session.post("{}/proxy/network/api/s/{}/cmd/stamgr".format(self._baseurl, self._site, verify=self._verify_ssl), data=json.dumps(self._block_data), verify=self._verify_ssl).status_code
 
         if r == 401:
             Domoticz.Log(strName+"Invalid login, or login has expired")
@@ -697,7 +723,11 @@ class BasePlugin:
 
     def detectUnifiDevices(self):
         strName = "detect Unifi Devices: "
-        r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}")
+        if Parameters["Mode4"] == "unificontroller":
+            r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}")
+        elif Parameters["Mode4"] == "dreammachinepro":
+            r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}")
+
         self._current_status_code = r.status_code
 
         if self._current_status_code == 401:
@@ -718,11 +748,22 @@ class BasePlugin:
                 self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
             elif self.UnifiDevicesNames[deviceCode][0] == "uph":
                 self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
+            elif self.UnifiDevicesNames[deviceCode][0] == "udm":
+                self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
             Domoticz.Log(strName+"Found Unifi Device: "+deviceName+" ("+deviceCode+")")
 
         #Domoticz.Log(strName+"uag aantal = "+str(len(self.uph)))
         #for ap in self.uap:
         #    Domoticz.Log(strName+"uap = "+str(ap))
+
+
+    def devicesPerAP(self):
+        strName = "devicesPerAP - "
+        totalUAPs = len(self.uap)
+        Domoticz.Log("Total UAP = " + str(totalUAPs))
+        devUAPs = {}
+        for x in range(totalUAPs):
+            devUAPs[x] = set()
 
 
     def create_devices(self):
