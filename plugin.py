@@ -792,8 +792,8 @@ class BasePlugin:
             deviceType, deviceName = device.split(",")
             for item in Devices:
                 devName = Devices[item].Name
-                uapName = deviceName
-                if devName.find(uapName) > 0:
+                uswName = deviceName
+                if devName.find(uswName) > 0:
                     foundDevice = True
             if foundDevice == False:
                 new_unit = find_available_unit_usw()
@@ -813,8 +813,8 @@ class BasePlugin:
             deviceType, deviceName = device.split(",")
             for item in Devices:
                 devName = Devices[item].Name
-                uapName = deviceName
-                if devName.find(uapName) > 0:
+                ugwName = deviceName
+                if devName.find(ugwName) > 0:
                     foundDevice = True
             if foundDevice == False:
                 new_unit = find_available_unit_ugw()
