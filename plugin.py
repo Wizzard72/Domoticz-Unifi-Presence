@@ -849,6 +849,52 @@ class BasePlugin:
                 UpdateDevice(new_unit, 0, "0")
 
 
+        foundDevice = False
+        for device in self.udm:
+            device = device.strip()
+            deviceType, deviceName = device.split(",")
+            for item in Devices:
+                devName = Devices[item].Name
+                udmName = deviceName
+                if devName.find(udmName) > 0:
+                    foundDevice = True
+            if foundDevice == False:
+                new_unit = find_available_unit_udm()
+                Domoticz.Device(Name=deviceName+" CPU Usage",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_udm()
+                Domoticz.Device(Name=deviceName+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_udm()
+                Domoticz.Device(Name=deviceName+" Board (CPU) Temperature",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_udm()
+                Domoticz.Device(Name=deviceName+" Board (PHY) Temperature",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_udm()
+                Domoticz.Device(Name=deviceName+" CPU Temperature",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_udm()
+                Domoticz.Device(Name=deviceName+" PHY Temperature",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_udm()
+                Options = {'Custom': '1;milliseconds'}
+                Domoticz.Device(Name=deviceName+" Latency",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_udm()
+                Options = {'Custom': '1;MBit/s'}
+                Domoticz.Device(Name=deviceName+" XPut Download",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
+                UpdateDevice(new_unit, 0, "0")
+                new_unit = find_available_unit_udm()
+                Options = {'Custom': '1;MBit/s'}
+                Domoticz.Device(Name=deviceName+" XPut Upload",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
+                UpdateDevice(new_unit, 0, "0")
+
+
+
+
+
+
         if (self.UNIFI_ANYONE_HOME_UNIT not in Devices):
             Domoticz.Device(Name="AnyOne",  Unit=self.UNIFI_ANYONE_HOME_UNIT, Used=1, TypeName="Switch", Image=Images['UnifiPresenceAnyone'].ID).Create()
             UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 0, "Off")
@@ -1020,6 +1066,12 @@ def find_available_unit_usw():
     return None
 
 def find_available_unit_ugw():
+    for num in range(140,250):
+        if num not in Devices:
+            return num
+    return None
+
+def find_available_unit_udm():
     for num in range(140,250):
         if num not in Devices:
             return num
