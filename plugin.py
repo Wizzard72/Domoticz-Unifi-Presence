@@ -60,6 +60,7 @@ from typing import Pattern, Dict, Union
 from datetime import datetime
 # https://ubntwiki.com/products/software/unifi-controller/api
 
+
 class BasePlugin:
     unifiConn = None
     override_time = 0
@@ -428,14 +429,22 @@ class BasePlugin:
         """
         if Parameters["Mode4"] == "unificontroller":
             url_api_login = '/api/login'
+            controller = "Unifi Controller"
         elif Parameters["Mode4"] == "dreammachinepro":
             url_api_login = '/api/auth/login'
+            controller = "Dream Machine Pro"
         else:
             Domoticz.Error("Check configuration!!")
 
-        self._current_status_code = self._session.post("{}{}".format(self._baseurl,url_api_login), data=json.dumps(self._login_data), verify=self._verify_ssl).status_code
-        if self._current_status_code == 400:
+        r = self._session.post("{}{}".format(self._baseurl,url_api_login), data=json.dumps(self._login_data), verify=self._verify_ssl)
+
+        self._current_status_code = r.status_code
+        if self._current_status_code == 200:
+            Domoticz.Log(strName+"Login successful into "+controller)
+        elif self._current_status_code == 400:
             Domoticz.Debug(strName+"Failed to log in to api with provided credentials")
+        else:
+            Domoticz.Error(strName+"Failed to login to the "+controller+" with errorcode "+str(self._current_status_code))
 
     def logout(self):
         strName = "logout: "
@@ -739,6 +748,7 @@ class BasePlugin:
         if Parameters["Mode4"] == "unificontroller":
             r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}")
         elif Parameters["Mode4"] == "dreammachinepro":
+            self.login()
             r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}")
         else:
             Domoticz.Error("Check configuration!!")
@@ -747,7 +757,6 @@ class BasePlugin:
 
         if self._current_status_code == 200:
             data = r.json()['data']
-
             totalUnifiDevices = 0
             for item in data:
                 Domoticz.Debug(strName+"Json Data (device) = " + str(item))
