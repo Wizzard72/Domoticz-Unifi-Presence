@@ -444,7 +444,7 @@ class BasePlugin:
             Domoticz.Log(strName+"Login successful into "+controller)
             self._Cookies = r.cookies
         elif self._current_status_code == 400:
-            Domoticz.Debug(strName+"Failed to log in to api with provided credentials")
+            Domoticz.Log(strName+"Failed to log in to api ("+controller+") with provided credentials ("+str(self._current_status_code)+")")
         else:
             Domoticz.Error(strName+"Failed to login to the "+controller+" with errorcode "+str(self._current_status_code))
 
