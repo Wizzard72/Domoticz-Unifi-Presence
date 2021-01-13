@@ -770,18 +770,30 @@ class BasePlugin:
                 deviceCode = item['model']
                 deviceName = self.UnifiDevicesNames[deviceCode][1]
                 if self.UnifiDevicesNames[deviceCode][0] == "uap":
-                    self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
+                    if item['name'] is None:
+                         self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
+                    elif item['name'] is not None:
+                        self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "usw":
-                    if item['name'] == None:
-                        self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']
-                    else:
+                    if item['name'] is None:
+                        self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
+                    elif item['name'] is not None:
                         self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "ugw":
-                    self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
+                    if item['name'] is None:
+                        self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
+                    elif item['name'] is not None:
+                        self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "uph":
-                    self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
+                    if item['name'] is None:
+                        self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
+                    elif item['name'] is not None:
+                        self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "udm":
-                    self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
+                    if item['name'] is None:
+                        self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
+                    elif item['name'] is not None:
+                        self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 Domoticz.Log(strName+"Found Unifi Device: "+deviceName+" ("+deviceCode+")")
         elif self._current_status_code == 401:
             Domoticz.Log(strName+"Invalid login, or login has expired")
