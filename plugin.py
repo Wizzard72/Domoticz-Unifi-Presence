@@ -926,32 +926,38 @@ class BasePlugin:
                 deviceCode = item['model']
                 deviceName = self.UnifiDevicesNames[deviceCode][1]
                 if self.UnifiDevicesNames[deviceCode][0] == "uap":
-                    if item['name'] is None:
+                    if 'name' not in item:
+                         Domoticz.Log(strName+"1 uap name = None")
                          self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
-                    elif item['name'] is not None:
+                    elif 'name' in item:
+                        Domoticz.Log(strName+"2 uap name = "+item['name'])
                         self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "usw":
-                    if item['name'] is None:
+                    if 'name' not in item:
                         Domoticz.Log(strName+"1 usw name = None")
                         self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
-                    elif item['name'] is not None:
+                    elif 'name' in item:
                         Domoticz.Log(strName+"2 usw name = "+item['name'])
                         self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "ugw":
-                    if item['name'] is None:
+                    if 'name' not in item:
+                        Domoticz.Log(strName+"1 ugw name = None")
                         self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
-                    elif item['name'] is not None:
+                    elif 'name' in item:
+                        Domoticz.Log(strName+"2 ugw name = "+item['name'])
                         self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "uph":
-                    if item['name'] is None:
+                    if 'name' not in item:
+                        Domoticz.Log(strName+"1 uph name = None")
                         self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
-                    elif item['name'] is not None:
+                    elif 'name' in item:
+                        Domoticz.Log(strName+"2 uph name = "+item['name'])
                         self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "udm":
-                    if item['name'] is None:
+                    if 'name' not in item:
                         Domoticz.Log(strName+"1 udm name = None")
                         self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
-                    elif item['name'] is not None:
+                    elif 'name' in item:
                         Domoticz.Log(strName+"2 udm name = "+item['name'])
                         self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 Domoticz.Log(strName+"Found Unifi Device: "+deviceName+" ("+deviceCode+")")
