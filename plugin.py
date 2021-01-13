@@ -3,7 +3,7 @@
 # Author: Wizzard72
 #
 """
-<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="2.5.7" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="2.5.8" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
@@ -489,9 +489,9 @@ class BasePlugin:
                     for devUnit in Devices:
                         devName = Devices[devUnit].Name
                         json_field = "CPU"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             uapName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             uapName = item['name']+" "+json_field
                         if devName.find(uapName) > 0:
                             if 'system-stats' in item:
@@ -500,9 +500,9 @@ class BasePlugin:
                                     usw_cpu = item['system-stats']['cpu']
                                     UpdateDevice(devUnit, int(float(usw_cpu)), str(usw_cpu))
                         json_field = "Memory"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             uapName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             uapName = item['name']+" "+json_field
                         if devName.find(uapName) > 0:
                             if 'system-stats' in item:
@@ -511,9 +511,9 @@ class BasePlugin:
                                     usw_mem = item['system-stats']['mem'] 
                                     UpdateDevice(devUnit, int(float(usw_mem)), str(usw_mem))
                         json_field = "General Temperature"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             uapName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             uapName = item['name']+" "+json_field
                         if devName.find(uapName) > 0:
                             if 'general_temperature' in item:
@@ -523,9 +523,9 @@ class BasePlugin:
                     for devUnit in Devices:
                         devName = Devices[devUnit].Name
                         json_field = "CPU Usage"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             ugwName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'system-stats' in item:
@@ -534,9 +534,9 @@ class BasePlugin:
                                     ugw_cpu = item['system-stats']['cpu'] 
                                     UpdateDevice(devUnit, int(float(ugw_cpu)), str(ugw_cpu))
                         json_field = "Memory"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             ugwName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'system-stats' in item:
@@ -545,9 +545,9 @@ class BasePlugin:
                                     ugw_mem = item['system-stats']['mem'] 
                                     UpdateDevice(devUnit, int(float(ugw_mem)), str(ugw_mem))
                         json_field = "Board (CPU) Temperature"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             ugwName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'system-stats' in item:
@@ -558,9 +558,9 @@ class BasePlugin:
                                         ugw_board_cpu_temp = item['system-stats']['temps']['Board (CPU)'][:-2]
                                         UpdateDevice(devUnit, int(float(ugw_board_cpu_temp)), str(ugw_board_cpu_temp))
                         json_field = "Board (PHY) Temperature"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             ugwName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'system-stats' in item:
@@ -571,9 +571,9 @@ class BasePlugin:
                                         ugw_board_phy_temp = item['system-stats']['temps']['Board (PHY)'][:-2]
                                         UpdateDevice(devUnit, int(float(ugw_board_phy_temp)), str(ugw_board_phy_temp))
                         json_field = "CPU Temperature"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             ugwName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'system-stats' in item:
@@ -584,9 +584,9 @@ class BasePlugin:
                                         ugw_cpu_temp = item['system-stats']['temps']['CPU'][:-2]
                                         UpdateDevice(devUnit, int(float(ugw_cpu_temp)), str(ugw_cpu_temp))
                         json_field = "PHY Temperature"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             ugwName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'system-stats' in item:
@@ -597,9 +597,9 @@ class BasePlugin:
                                         ugw_phy_temp = item['system-stats']['temps']['PHY'][:-2]
                                         UpdateDevice(devUnit, int(float(ugw_phy_temp)), str(ugw_phy_temp))
                         json_field = "Latency"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             ugwName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'speedtest-status' in item:
@@ -608,9 +608,9 @@ class BasePlugin:
                                     ugw_latency = item['speedtest-status']['latency']
                                     UpdateDevice(devUnit, int(float(ugw_latency)), str(ugw_latency))
                         json_field = "XPut Download"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             ugwName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'speedtest-status' in item:
@@ -619,9 +619,9 @@ class BasePlugin:
                                     ugw_xput_download = item['speedtest-status']['xput_download'] 
                                     UpdateDevice(devUnit, int(float(ugw_xput_download)), str(ugw_xput_download))
                         json_field = "XPut Upload"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             ugwName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'speedtest-status' in item:
@@ -633,9 +633,9 @@ class BasePlugin:
                     for devUnit in Devices:
                         devName = Devices[devUnit].Name
                         json_field = "CPU"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             uapName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             uapName = item['name']+" "+json_field
                         if devName.find(uapName) > 0:
                             if 'system-stats' in item:
@@ -644,9 +644,9 @@ class BasePlugin:
                                     uap_cpu = item['system-stats']['cpu'] 
                                     UpdateDevice(devUnit, int(float(uap_cpu)), str(uap_cpu))
                         json_field = "Memory"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             uapName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             uapName = item['name']+" "+json_field
                         if devName.find(uapName) > 0:
                             if 'system-stats' in item:
@@ -658,9 +658,9 @@ class BasePlugin:
                     for devUnit in Devices:
                         devName = Devices[devUnit].Name
                         json_field = "CPU Usage"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             udmName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             udmName = item['name']+" "+json_field
                         if devName.find(udmName) > 0:
                             if 'system-stats' in item:
@@ -669,9 +669,9 @@ class BasePlugin:
                                     udm_cpu = item['system-stats']['cpu'] 
                                     UpdateDevice(devUnit, int(float(udm_cpu)), str(udm_cpu))
                         json_field = "Memory"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             udmName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             udmName = item['name']+" "+json_field
                         if devName.find(udmName) > 0:
                             if 'system-stats' in item:
@@ -680,9 +680,9 @@ class BasePlugin:
                                     udm_mem = item['system-stats']['mem'] 
                                     UpdateDevice(devUnit, int(float(udm_mem)), str(udm_mem))
                         json_field = "Board (CPU) Temperature"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             udmName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             udmName = item['name']+" "+json_field
                         if devName.find(udmName) > 0:
                             if 'system-stats' in item:
@@ -693,9 +693,9 @@ class BasePlugin:
                                         udm_board_cpu_temp = item['system-stats']['temps']['Board (CPU)'][:-2]
                                         UpdateDevice(devUnit, int(float(udm_board_cpu_temp)), str(udm_board_cpu_temp))
                         json_field = "Board (PHY) Temperature"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             udmName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             udmName = item['name']+" "+json_field
                         if devName.find(udmName) > 0:
                             if 'system-stats' in item:
@@ -706,9 +706,9 @@ class BasePlugin:
                                         udm_board_phy_temp = item['system-stats']['temps']['Board (PHY)'][:-2]
                                         UpdateDevice(devUnit, int(float(udm_board_phy_temp)), str(udm_board_phy_temp))
                         json_field = "CPU Temperature"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             udmName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             udmName = item['name']+" "+json_field
                         if devName.find(udmName) > 0:
                             if 'system-stats' in item:
@@ -719,9 +719,9 @@ class BasePlugin:
                                         udm_cpu_temp = item['system-stats']['temps']['CPU'][:-2]
                                         UpdateDevice(devUnit, int(float(udm_cpu_temp)), str(udm_cpu_temp))
                         json_field = "PHY Temperature"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             udmName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             udmName = item['name']+" "+json_field
                         if devName.find(udmName) > 0:
                             if 'system-stats' in item:
@@ -732,9 +732,9 @@ class BasePlugin:
                                         udm_phy_temp = item['system-stats']['temps']['PHY'][:-2]
                                         UpdateDevice(devUnit, int(float(udm_phy_temp)), str(udm_phy_temp))
                         json_field = "Latency"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             udmName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             udmName = item['name']+" "+json_field
                         if devName.find(udmName) > 0:
                             if 'speedtest-status' in item:
@@ -743,9 +743,9 @@ class BasePlugin:
                                     udm_latency = item['speedtest-status']['latency']
                                     UpdateDevice(devUnit, int(float(udm_latency)), str(udm_latency))
                         json_field = "XPut Download"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             udmName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             udmName = item['name']+" "+json_field
                         if devName.find(udmName) > 0:
                             if 'speedtest-status' in item:
@@ -754,9 +754,9 @@ class BasePlugin:
                                     udm_xput_download = item['speedtest-status']['xput_download'] 
                                     UpdateDevice(devUnit, int(float(udm_xput_download)), str(udm_xput_download))
                         json_field = "XPut Upload"
-                        if item['name'] is None:
+                        if 'name' not in item:
                             udmName = item['model']+" "+json_field
-                        elif item['name'] is not None:
+                        elif 'name' in item:
                             udmName = item['name']+" "+json_field
                         if devName.find(udmName) > 0:
                             if 'speedtest-status' in item:
@@ -928,38 +928,28 @@ class BasePlugin:
                 deviceName = self.UnifiDevicesNames[deviceCode][1]
                 if self.UnifiDevicesNames[deviceCode][0] == "uap":
                     if 'name' not in item:
-                         Domoticz.Log(strName+"1 uap name = None")
                          self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
                     elif 'name' in item:
-                        Domoticz.Log(strName+"2 uap name = "+item['name'])
                         self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "usw":
                     if 'name' not in item:
-                        Domoticz.Log(strName+"1 usw name = None")
                         self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
                     elif 'name' in item:
-                        Domoticz.Log(strName+"2 usw name = "+item['name'])
                         self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "ugw":
                     if 'name' not in item:
-                        Domoticz.Log(strName+"1 ugw name = None")
                         self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
                     elif 'name' in item:
-                        Domoticz.Log(strName+"2 ugw name = "+item['name'])
                         self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "uph":
                     if 'name' not in item:
-                        Domoticz.Log(strName+"1 uph name = None")
                         self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
                     elif 'name' in item:
-                        Domoticz.Log(strName+"2 uph name = "+item['name'])
                         self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "udm":
                     if 'name' not in item:
-                        Domoticz.Log(strName+"1 udm name = None")
                         self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
                     elif 'name' in item:
-                        Domoticz.Log(strName+"2 udm name = "+item['name'])
                         self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 Domoticz.Log(strName+"Found Unifi Device: "+deviceName+" ("+deviceCode+")")
         elif self._current_status_code == 401:
