@@ -773,7 +773,10 @@ class BasePlugin:
                 if self.UnifiDevicesNames[deviceCode][0] == "uap":
                     self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "usw":
-                    self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
+                    if Parameters["Mode4"] == "unificontroller":
+                        self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
+                    elif Parameters["Mode4"] == "dreammachinepro":
+                        self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+"UDMPRO Switch")
                 elif self.UnifiDevicesNames[deviceCode][0] == "ugw":
                     self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "uph":
