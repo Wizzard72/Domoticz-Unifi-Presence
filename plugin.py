@@ -487,7 +487,10 @@ class BasePlugin:
                     for devUnit in Devices:
                         devName = Devices[devUnit].Name
                         json_field = "CPU"
-                        uapName = item['name']+" "+json_field
+                        if item['name'] is None:
+                            uapName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            uapName = item['name']+" "+json_field
                         if devName.find(uapName) > 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
@@ -495,7 +498,10 @@ class BasePlugin:
                                     usw_cpu = item['system-stats']['cpu']
                                     UpdateDevice(devUnit, int(float(usw_cpu)), str(usw_cpu))
                         json_field = "Memory"
-                        uapName = item['name']+" "+json_field
+                        if item['name'] is None:
+                            uapName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            uapName = item['name']+" "+json_field
                         if devName.find(uapName) > 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
@@ -503,7 +509,10 @@ class BasePlugin:
                                     usw_mem = item['system-stats']['mem'] 
                                     UpdateDevice(devUnit, int(float(usw_mem)), str(usw_mem))
                         json_field = "General Temperature"
-                        uapName = item['name']+" "+json_field
+                        if item['name'] is None:
+                            uapName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            uapName = item['name']+" "+json_field
                         if devName.find(uapName) > 0:
                             if 'general_temperature' in item:
                                 general_temperature = item['general_temperature'] 
@@ -512,7 +521,10 @@ class BasePlugin:
                     for devUnit in Devices:
                         devName = Devices[devUnit].Name
                         json_field = "CPU Usage"
-                        ugwName = item['name']+" "+json_field
+                        if item['name'] is None:
+                            ugwName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
@@ -520,7 +532,10 @@ class BasePlugin:
                                     ugw_cpu = item['system-stats']['cpu'] 
                                     UpdateDevice(devUnit, int(float(ugw_cpu)), str(ugw_cpu))
                         json_field = "Memory"
-                        ugwName = item['name']+" "+json_field
+                        if item['name'] is None:
+                            ugwName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
@@ -528,7 +543,10 @@ class BasePlugin:
                                     ugw_mem = item['system-stats']['mem'] 
                                     UpdateDevice(devUnit, int(float(ugw_mem)), str(ugw_mem))
                         json_field = "Board (CPU) Temperature"
-                        ugwName = item['name']+" "+json_field
+                        if item['name'] is None:
+                            ugwName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
@@ -538,7 +556,10 @@ class BasePlugin:
                                         ugw_board_cpu_temp = item['system-stats']['temps']['Board (CPU)'][:-2]
                                         UpdateDevice(devUnit, int(float(ugw_board_cpu_temp)), str(ugw_board_cpu_temp))
                         json_field = "Board (PHY) Temperature"
-                        ugwName = item['name']+" "+json_field
+                        if item['name'] is None:
+                            ugwName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
@@ -548,7 +569,10 @@ class BasePlugin:
                                         ugw_board_phy_temp = item['system-stats']['temps']['Board (PHY)'][:-2]
                                         UpdateDevice(devUnit, int(float(ugw_board_phy_temp)), str(ugw_board_phy_temp))
                         json_field = "CPU Temperature"
-                        ugwName = item['name']+" "+json_field
+                        if item['name'] is None:
+                            ugwName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
@@ -558,7 +582,10 @@ class BasePlugin:
                                         ugw_cpu_temp = item['system-stats']['temps']['CPU'][:-2]
                                         UpdateDevice(devUnit, int(float(ugw_cpu_temp)), str(ugw_cpu_temp))
                         json_field = "PHY Temperature"
-                        ugwName = item['name']+" "+json_field
+                        if item['name'] is None:
+                            ugwName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
@@ -568,7 +595,10 @@ class BasePlugin:
                                         ugw_phy_temp = item['system-stats']['temps']['PHY'][:-2]
                                         UpdateDevice(devUnit, int(float(ugw_phy_temp)), str(ugw_phy_temp))
                         json_field = "Latency"
-                        ugwName = item['name']+" "+json_field
+                        if item['name'] is None:
+                            ugwName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'speedtest-status' in item:
                                 test_json = item['speedtest-status']
@@ -576,7 +606,10 @@ class BasePlugin:
                                     ugw_latency = item['speedtest-status']['latency']
                                     UpdateDevice(devUnit, int(float(ugw_latency)), str(ugw_latency))
                         json_field = "XPut Download"
-                        ugwName = item['name']+" "+json_field
+                        if item['name'] is None:
+                            ugwName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'speedtest-status' in item:
                                 test_json = item['speedtest-status']
@@ -584,7 +617,10 @@ class BasePlugin:
                                     ugw_xput_download = item['speedtest-status']['xput_download'] 
                                     UpdateDevice(devUnit, int(float(ugw_xput_download)), str(ugw_xput_download))
                         json_field = "XPut Upload"
-                        ugwName = item['name']+" "+json_field
+                        if item['name'] is None:
+                            ugwName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            ugwName = item['name']+" "+json_field
                         if devName.find(ugwName) > 0:
                             if 'speedtest-status' in item:
                                 test_json = item['speedtest-status']
@@ -595,7 +631,10 @@ class BasePlugin:
                     for devUnit in Devices:
                         devName = Devices[devUnit].Name
                         json_field = "CPU"
-                        uapName = item['name']+" "+json_field
+                        if item['name'] is None:
+                            uapName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            uapName = item['name']+" "+json_field
                         if devName.find(uapName) > 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
@@ -603,13 +642,126 @@ class BasePlugin:
                                     uap_cpu = item['system-stats']['cpu'] 
                                     UpdateDevice(devUnit, int(float(uap_cpu)), str(uap_cpu))
                         json_field = "Memory"
-                        uapName = item['name']+" "+json_field
+                        if item['name'] is None:
+                            uapName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            uapName = item['name']+" "+json_field
                         if devName.find(uapName) > 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
                                 if 'mem' in test_json:
                                     uap_mem = item['system-stats']['mem'] 
                                     UpdateDevice(devUnit, int(float(uap_mem)), str(uap_mem))
+                if item['type'] == "udm":
+                    for devUnit in Devices:
+                        devName = Devices[devUnit].Name
+                        json_field = "CPU Usage"
+                        if item['name'] is None:
+                            udmName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            udmName = item['name']+" "+json_field
+                        if devName.find(udmName) > 0:
+                            if 'system-stats' in item:
+                                test_json = item['system-stats']
+                                if 'cpu' in test_json:
+                                    udm_cpu = item['system-stats']['cpu'] 
+                                    UpdateDevice(devUnit, int(float(udm_cpu)), str(udm_cpu))
+                        json_field = "Memory"
+                        if item['name'] is None:
+                            udmName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            udmName = item['name']+" "+json_field
+                        if devName.find(udmName) > 0:
+                            if 'system-stats' in item:
+                                test_json = item['system-stats']
+                                if 'mem' in test_json:
+                                    udm_mem = item['system-stats']['mem'] 
+                                    UpdateDevice(devUnit, int(float(udm_mem)), str(udm_mem))
+                        json_field = "Board (CPU) Temperature"
+                        if item['name'] is None:
+                            udmName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            udmName = item['name']+" "+json_field
+                        if devName.find(udmName) > 0:
+                            if 'system-stats' in item:
+                                test_json = item['system-stats']
+                                if 'temps' in test_json:
+                                    test_json = item['system-stats']['temps']
+                                    if 'Board (CPU)' in test_json:
+                                        udm_board_cpu_temp = item['system-stats']['temps']['Board (CPU)'][:-2]
+                                        UpdateDevice(devUnit, int(float(udm_board_cpu_temp)), str(udm_board_cpu_temp))
+                        json_field = "Board (PHY) Temperature"
+                        if item['name'] is None:
+                            udmName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            udmName = item['name']+" "+json_field
+                        if devName.find(udmName) > 0:
+                            if 'system-stats' in item:
+                                test_json = item['system-stats']
+                                if 'temps' in test_json:
+                                    test_json = item['system-stats']['temps']
+                                    if 'Board (PHY)' in test_json:
+                                        udm_board_phy_temp = item['system-stats']['temps']['Board (PHY)'][:-2]
+                                        UpdateDevice(devUnit, int(float(udm_board_phy_temp)), str(udm_board_phy_temp))
+                        json_field = "CPU Temperature"
+                        if item['name'] is None:
+                            udmName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            udmName = item['name']+" "+json_field
+                        if devName.find(udmName) > 0:
+                            if 'system-stats' in item:
+                                test_json = item['system-stats']
+                                if 'temps' in test_json:
+                                    test_json = item['system-stats']['temps']
+                                    if 'CPU' in test_json:
+                                        udm_cpu_temp = item['system-stats']['temps']['CPU'][:-2]
+                                        UpdateDevice(devUnit, int(float(udm_cpu_temp)), str(udm_cpu_temp))
+                        json_field = "PHY Temperature"
+                        if item['name'] is None:
+                            udmName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            udmName = item['name']+" "+json_field
+                        if devName.find(ugwName) > 0:
+                            if 'system-stats' in item:
+                                test_json = item['system-stats']
+                                if 'temps' in test_json:
+                                    test_json = item['system-stats']['temps']
+                                    if 'PHY' in test_json:
+                                        udm_phy_temp = item['system-stats']['temps']['PHY'][:-2]
+                                        UpdateDevice(devUnit, int(float(udm_phy_temp)), str(udm_phy_temp))
+                        json_field = "Latency"
+                        if item['name'] is None:
+                            udmName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            udmName = item['name']+" "+json_field
+                        if devName.find(udmName) > 0:
+                            if 'speedtest-status' in item:
+                                test_json = item['speedtest-status']
+                                if 'latency' in test_json:
+                                    udm_latency = item['speedtest-status']['latency']
+                                    UpdateDevice(devUnit, int(float(udm_latency)), str(udm_latency))
+                        json_field = "XPut Download"
+                        if item['name'] is None:
+                            udmName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            udmName = item['name']+" "+json_field
+                        if devName.find(udmName) > 0:
+                            if 'speedtest-status' in item:
+                                test_json = item['speedtest-status']
+                                if 'xput_download' in test_json:
+                                    udm_xput_download = item['speedtest-status']['xput_download'] 
+                                    UpdateDevice(devUnit, int(float(udm_xput_download)), str(udm_xput_download))
+                        json_field = "XPut Upload"
+                        if item['name'] is None:
+                            udmName = item['model']+" "+json_field
+                        elif item['name'] is not None:
+                            udmName = item['name']+" "+json_field
+                        if devName.find(udmName) > 0:
+                            if 'speedtest-status' in item:
+                                test_json = item['speedtest-status']
+                                if 'xput_upload' in test_json:
+                                    udm_xput_upload = item['speedtest-status']['xput_upload'] 
+                                    UpdateDevice(devUnit, int(float(udm_xput_upload)), str(udm_xput_upload))
         elif self._current_status_code == 401:
             Domoticz.Log(strName+"Invalid login, or login has expired")
 
