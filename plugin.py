@@ -247,7 +247,7 @@ class BasePlugin:
                 device = device.strip()
                 Device_Name, Device_Mac = device.split("=")
                 self.Matrix[count][0] = Device_Name
-                self.Matrix[count][1] = Device_Mac
+                self.Matrix[count][1] = Device_Mac.lower()
                 Device_Unit = None
                 self.Matrix[count][3] = "Off"
                 self.Matrix[count][4] = "No"
@@ -259,7 +259,7 @@ class BasePlugin:
                     if Devices[dv].Name[8:] == found_user:
                         self.Matrix[count][2] = Devices[dv].Unit
                         count = count + 1
-                        continue
+                        #continue
                 if Parameters["Mode3"] == "Yes":
                     self.Matrix[count][0] = "Geo "+Device_Name
                     self.Matrix[count][1] = "11:11:11:11:11:11"
@@ -277,7 +277,7 @@ class BasePlugin:
                             self.Matrix[count][5] = "GEO"
                             Domoticz.Log(strName+"Geo Phone with name '"+found_user+"' is detected from config.")
                             count = count + 1
-                            continue
+                            #continue
 
             # report the phone and geofencing devices
             x = range(0, self.total_devices_count, 1)
