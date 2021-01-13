@@ -3,7 +3,7 @@
 # Author: Wizzard72
 #
 """
-<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="2.5.6" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="2.5.7" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
@@ -723,7 +723,7 @@ class BasePlugin:
                             udmName = item['model']+" "+json_field
                         elif item['name'] is not None:
                             udmName = item['name']+" "+json_field
-                        if devName.find(ugwName) > 0:
+                        if devName.find(udmName) > 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
                                 if 'temps' in test_json:
