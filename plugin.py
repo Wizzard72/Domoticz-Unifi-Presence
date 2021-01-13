@@ -431,10 +431,12 @@ class BasePlugin:
         api url for other: /api/login
         """
         if Parameters["Mode4"] == "unificontroller":
-            r = self._session.post("{}/api/login".format(self._baseurl), data=json.dumps(self._login_data), verify=self._verify_ssl)
+            self._session.headers.update({'Content-Type' : 'application/json'})
+            r = self._session.post("{}/api/login".format(self._baseurl), data=json.dumps(self._login_data), verify=self._verify_ssl, timeout=4000)
             controller = "Unifi Controller"
         elif Parameters["Mode4"] == "dreammachinepro":
-            r = self._session.post("{}/api/auth/login".format(self._baseurl), data=json.dumps(self._login_data), verify=self._verify_ssl)
+            self._session.headers.update({'Content-Type' : 'application/json'})
+            r = self._session.post("{}/api/auth/login".format(self._baseurl), data=json.dumps(self._login_data), verify=self._verify_ssl, timeout=4000)
             controller = "Dream Machine Pro"
         else:
             Domoticz.Error("Check configuration!!")
