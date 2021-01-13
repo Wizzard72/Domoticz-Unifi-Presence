@@ -280,7 +280,7 @@ class BasePlugin:
             # report the phone and geofencing devices
             x = range(0, self.total_devices_count, 1)
             for n in x:
-                Domoticz.Debug(strName+"Phone Naam = "+str(self.Matrix[n][0])+" | "+str(self.Matrix[n][1])+" | "+str(self.Matrix[n][2])+" | "+str(self.Matrix[n][3])+" | "+str(self.Matrix[n][4])+" | "+str(self.Matrix[n][5]))
+                Domoticz.Log(strName+"Phone Naam = "+str(self.Matrix[n][0])+" | "+str(self.Matrix[n][1])+" | "+str(self.Matrix[n][2])+" | "+str(self.Matrix[n][3])+" | "+str(self.Matrix[n][4])+" | "+str(self.Matrix[n][5]))
 
             #self.devicesPerAP()
 
@@ -756,7 +756,6 @@ class BasePlugin:
         if Parameters["Mode4"] == "unificontroller":
             r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
         elif Parameters["Mode4"] == "dreammachinepro":
-            #self.login()
             r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
         else:
             Domoticz.Error("Check configuration!!")
