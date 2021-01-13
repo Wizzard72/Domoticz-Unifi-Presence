@@ -3,7 +3,7 @@
 # Author: Wizzard72
 #
 """
-<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="2.5.5" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="2.5.6" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
@@ -144,6 +144,7 @@ class BasePlugin:
         "S248750":   ("usw",       "UniFi Switch 48 AT-750W"),
         "US6XG150":  ("usw",       "UniFi Switch 6XG POE-150W"),
         "USXG":      ("usw",       "UniFi Switch 16XG"),
+        "USMINI":    ("usw",       "Unifi Switch Flex Mini"),
         "UGW3":      ("ugw",       "UniFi Security Gateway 3P"),
         "UGW4":      ("ugw",       "UniFi Security Gateway 4P"),
         "UGWHD4":    ("ugw",       "UniFi Security Gateway HD"),
