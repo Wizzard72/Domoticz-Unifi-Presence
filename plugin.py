@@ -87,6 +87,7 @@ class BasePlugin:
     _baseurl = None
     _session = Session()
     _uapDevices = []
+    _total_phones_active_before = 0
     UnifiDevicesNames = {
         #Device Code, Device Type, Device Name
         "BZ2":       ("uap",       "UniFi AP"),
@@ -417,7 +418,7 @@ class BasePlugin:
                     self.Matrix[0][4] = "Yes"
 
         if self._current_status_code == 200:
-            Domoticz.Log(strName+'Requesting Unifi Controller details')
+            Domoticz.Debug(strName+'Requesting Unifi Controller details')
             self.request_details()
             self.request_online_phones()
 
@@ -887,7 +888,10 @@ class BasePlugin:
             Domoticz.Debug(strName+" "+str(x)+" Phone Naam = "+str(self.Matrix[x][0])+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+str(self.Matrix[x][3])+" | "+str(self.Matrix[x][4])+" | "+str(self.Matrix[x][5]))
             if self.Matrix[x][3] == "On":
                 count = count + 1
-        Domoticz.Log(strName+"Total Phones connected = "+str(count))
+        if self._total_phones_active_before != count:
+            Domoticz.Log(strName+"Total Phones connected = "+str(count))
+        self._total_phones_active_before = count
+
         if count > 0:
             UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 1, "On")
         else:
@@ -928,8 +932,10 @@ class BasePlugin:
                         self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "usw":
                     if item['name'] is None:
+                        Domoticz.Log(strName+"1 usw name = None")
                         self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
                     elif item['name'] is not None:
+                        Domoticz.Log(strName+"2 usw name = "+item['name'])
                         self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "ugw":
                     if item['name'] is None:
@@ -943,8 +949,10 @@ class BasePlugin:
                         self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 elif self.UnifiDevicesNames[deviceCode][0] == "udm":
                     if item['name'] is None:
+                        Domoticz.Log(strName+"1 udm name = None")
                         self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
                     elif item['name'] is not None:
+                        Domoticz.Log(strName+"2 udm name = "+item['name'])
                         self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
                 Domoticz.Log(strName+"Found Unifi Device: "+deviceName+" ("+deviceCode+")")
         elif self._current_status_code == 401:
