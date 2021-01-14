@@ -435,10 +435,12 @@ class BasePlugin:
         """
         if Parameters["Mode4"] == "unificontroller":
             self._session.headers.update({'Content-Type' : 'application/json'})
+            self._session.headers.update({'Connection' : 'keep-alive'})
             r = self._session.post("{}/api/login".format(self._baseurl), data=json.dumps(self._login_data), verify=self._verify_ssl, timeout=4000)
             controller = "Unifi Controller"
         elif Parameters["Mode4"] == "dreammachinepro":
             self._session.headers.update({'Content-Type' : 'application/json'})
+            self._session.headers.update({'Connection' : 'keep-alive'})
             r = self._session.post("{}/api/auth/login".format(self._baseurl), data=json.dumps(self._login_data), verify=self._verify_ssl, timeout=4000)
             controller = "Dream Machine Pro"
         else:
