@@ -255,8 +255,9 @@ class BasePlugin:
                 found_user = Device_Name
                 for dv in Devices:
                     # Find the unit number
-                    search_phone = Devices[dv].Name[8:]
-                    if Devices[dv].Name[8:] == found_user:
+                    search_phone = Devices[dv].Name
+                    position = search_phone.find("-")+2
+                    if Devices[dv].Name[position:] == found_user:
                         self.Matrix[count][2] = Devices[dv].Unit
                         count = count + 1
                         #continue
