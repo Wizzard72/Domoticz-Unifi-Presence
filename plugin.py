@@ -25,7 +25,7 @@
         <param field="Mode4" label="Select Unifi Controller" width="150px">
             <options>
                 <option label="Unifi Controller" value="unificontroller" default="true" />
-                <option label="Dreammachine" value="dreammachinepro"/>
+                <option label="Dream Machine Pro" value="dreammachinepro"/>
             </options>
         </param>
         <param field="Mode5" label="Posibility to block devices from the network?" width="75px">
@@ -62,7 +62,7 @@ from datetime import datetime
 
 
 class BasePlugin:
-    unifiConn = None
+    _unifiConn = False
     override_time = 0
     hostAuth = False
     UNIFI_ANYONE_HOME_UNIT = 1
@@ -88,6 +88,7 @@ class BasePlugin:
     _session = Session()
     _uapDevices = []
     _total_phones_active_before = 0
+    _timeout_timer = None
     UnifiDevicesNames = {
         #Device Code, Device Type, Device Name
         "BZ2":       ("uap",       "UniFi AP"),
@@ -173,6 +174,7 @@ class BasePlugin:
 
         self._login_data['username'] = Parameters["Username"]
         self._login_data['password'] = Parameters["Password"]
+        self._login_data['remember'] = True
         self._site = Parameters["Mode1"]
         self._verify_ssl = False
         self._baseurl = 'https://'+Parameters["Address"]+':'+Parameters["Port"]
@@ -407,6 +409,10 @@ class BasePlugin:
             Domoticz.Log(strName+'Attempting to reconnect Unifi Controller')
             self.login()
 
+#        if (self._timeout_timer == False):
+#            Domoticz.Log(strName+'Attempting to reconnect Unifi Controller')
+#            self.login()
+
         if self._current_status_code == 200:
             if self.Matrix[0][3] == "On":
                 try:
@@ -424,6 +430,14 @@ class BasePlugin:
             self.request_details()
             self.request_online_phones()
 
+        timeDiff = datetime.now() - self._timeout_timer
+        timeDiff = timeDiff.seconds
+        if Parameters["Mode4"] == "dreammachinepro":
+            if timeDiff >= 1800: #30 minutes
+                Domoticz.Log(strName+"Log out before the API timeout")
+                self.logout()
+
+
     def login(self):
         strName = "login: "
         Domoticz.Debug(strName+"called")
@@ -438,11 +452,13 @@ class BasePlugin:
             self._session.headers.update({'Connection' : 'keep-alive'})
             r = self._session.post("{}/api/login".format(self._baseurl), data=json.dumps(self._login_data), verify=self._verify_ssl, timeout=4000)
             controller = "Unifi Controller"
+            self._timeout_timer = datetime.now()
         elif Parameters["Mode4"] == "dreammachinepro":
             self._session.headers.update({'Content-Type' : 'application/json'})
             self._session.headers.update({'Connection' : 'keep-alive'})
             r = self._session.post("{}/api/auth/login".format(self._baseurl), data=json.dumps(self._login_data), verify=self._verify_ssl, timeout=4000)
             controller = "Dream Machine Pro"
+            self._timeout_timer = datetime.now()
         else:
             Domoticz.Error("Check configuration!!")
 
@@ -471,7 +487,10 @@ class BasePlugin:
                 self._session.get("{}/proxy/network/logout".format(self._baseurl))
             else:
                 Domoticz.Error("Check configuration!!")
+            Domoticz.Log(strName+"Logout of the Unifi API")
             self._session.close()
+            self._current_status_code = 999
+            self._timeout_timer = None
 
 
     def request_details(self):
