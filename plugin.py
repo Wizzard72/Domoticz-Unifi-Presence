@@ -89,7 +89,7 @@ class BasePlugin:
     _session = Session()
     _uapDevices = []
     _total_phones_active_before = 0
-    _timeout_timer = None
+    _lastloginfailed = False
     UnifiDevicesNames = {
         #Device Code, Device Type, Device Name
         "BZ2":       ("uap",       "UniFi AP"),
@@ -457,15 +457,16 @@ class BasePlugin:
             self._session.headers.update({'Connection' : 'keep-alive'})
             r = self._session.post("{}/api/login".format(self._baseurl), data=json.dumps(self._login_data), verify=self._verify_ssl, timeout=4000)
             controller = "Unifi Controller"
-            self._timeout_timer = datetime.now()
         elif Parameters["Mode4"] == "dreammachinepro":
             self._session.headers.update({'Content-Type' : 'application/json'})
             self._session.headers.update({'Connection' : 'keep-alive'})
             r = self._session.post("{}/api/auth/login".format(self._baseurl), data=json.dumps(self._login_data), verify=self._verify_ssl, timeout=4000)
+            if 'X-CSRF-Token' in r.headers:
+                self._session.headers.update({'X-CSRF-Token': r.headers['X-CSRF-Token']})
+                Domoticz.Log(strName+"X-SCRF-Token found and added to header")
             controller = "Dream Machine Pro"
-            self._timeout_timer = datetime.now()
         else:
-            Domoticz.Error("Check configuration!!")
+            Domoticz.Error(strName+"Check configuration!!")
 
         #r = self._session.post("{}{}".format(self._baseurl,url_api_login), data=json.dumps(self._login_data), verify=self._verify_ssl)
 
@@ -473,16 +474,17 @@ class BasePlugin:
         if self._current_status_code == 200:
             Domoticz.Log(strName+"Login successful into "+controller)
             self._Cookies = r.cookies
-            for value in r.cookies:
-                Domoticz.Log(strName+"Value = "+str(value))
-            if 'X-CSRF-Token' in r.headers:
-                self._session.headers.update({'X-CSRF-Token': r.headers['X-CSRF-Token']})
-                Domoticz.Log(strName+"X-SCRF-Token found and added to header")
+            self._lastloginfailed = False
         elif self._current_status_code == 400:
             Domoticz.Error(strName+"Failed to log in to api ("+controller+") with provided credentials ("+str(self._current_status_code)+")")
         else:
-            Domoticz.Error(strName+"Failed to login to the "+controller+" with errorcode "+str(self._current_status_code))
-            self._current_status_code = 999
+            if self._lastloginfailed:
+                Domoticz.Error(strName+"Failed to login to the "+controller+" with errorcode "+str(self._current_status_code))
+                self._current_status_code = 999
+            else:
+                Domoticz.Log(strName+"First attempt failed to login to the "+controller+" with errorcode "+str(self._current_status_code))
+                self._lastloginfailed = True
+                self._current_status_code = 999
 
     def logout(self):
         strName = "logout: "
