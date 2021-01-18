@@ -474,11 +474,10 @@ class BasePlugin:
             Domoticz.Log(strName+"Login successful into "+controller)
             self._Cookies = r.cookies
             for value in r.cookies:
-                Domoticz.Log("Value = "+str(value))
-            #if 'csrf_token' in r.cookies:
-            #    self._csrftoken = r.cookies['csrf_token']
-            #    Domoticz.Log("HTML CSRFTOKEN = "+self._csrftoken)
-
+                Domoticz.Log(strName+"Value = "+str(value))
+            if 'X-CSRF-Token' in r.headers:
+                self._session.headers.update({'X-CSRF-Token': r.headers['X-CSRF-Token']})
+                Domoticz.Log(strName+"X-SCRF-Token found and added to header")
         elif self._current_status_code == 400:
             Domoticz.Error(strName+"Failed to log in to api ("+controller+") with provided credentials ("+str(self._current_status_code)+")")
         else:
@@ -493,9 +492,9 @@ class BasePlugin:
         """
         if self._current_status_code == 200:
             if Parameters["Mode4"] == "unificontroller":
-                self._session.get("{}/logout".format(self._baseurl))
+                self._session.post("{}/logout".format(self._baseurl, verify=self._verify_ssl))
             elif Parameters["Mode4"] == "dreammachinepro":
-                self._session.get("{}/proxy/network/logout".format(self._baseurl))
+                self._session.post("{}/proxy/network/logout".format(self._baseurl, verify=self._verify_ssl))
             else:
                 Domoticz.Error("Check configuration!!")
             Domoticz.Log(strName+"Logout of the Unifi API")
