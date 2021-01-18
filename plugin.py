@@ -68,6 +68,7 @@ class BasePlugin:
     UNIFI_ANYONE_HOME_UNIT = 1
     UNIFI_OVERRIDE_UNIT = 255
     _Cookies = None
+    _csrftoken = None
     cookie = None
     cookieAvailable = False
     phone_name = ""
@@ -405,7 +406,7 @@ class BasePlugin:
         strName = "onHeartbeat: "
         Domoticz.Debug(strName+"called")
 
-        if (self._current_status_code == None) or (self._current_status_code == 401) or (self._current_status_code != 200):
+        if (self._current_status_code == None) or (self._current_status_code == 401) or (self._current_status_code == 404) or (self._current_status_code != 200):
             Domoticz.Log(strName+'Attempting to reconnect Unifi Controller')
             self.login()
 
@@ -430,13 +431,17 @@ class BasePlugin:
             self.request_details()
             self.request_online_phones()
 
-        timeDiff = datetime.now() - self._timeout_timer
-        timeDiff = timeDiff.seconds
-        if Parameters["Mode4"] == "dreammachinepro":
-            if timeDiff >= 1800: #30 minutes
-                Domoticz.Log(strName+"Log out before the API timeout")
-                self.logout()
+        #timeDiff = datetime.now() - self._timeout_timer
+        #timeDiff = timeDiff.seconds
+        #if Parameters["Mode4"] == "dreammachinepro":
+        #    if timeDiff >= 1800: #30 minutes
+        #        Domoticz.Log(strName+"Log out before the API timeout")
+        #        self.logout()
 
+    def getCookies(cookie_jar, domain):
+        cookie_dict = cookie_jar.get_dict(domain=domain)
+        found = ['%s=%s' % (name, value) for (name, value) in cookie_dict.items()]
+        return ';'.join(found)
 
     def login(self):
         strName = "login: "
@@ -468,6 +473,12 @@ class BasePlugin:
         if self._current_status_code == 200:
             Domoticz.Log(strName+"Login successful into "+controller)
             self._Cookies = r.cookies
+            for value in r.cookies:
+                Domoticz.Log("Value = "+str(value))
+            #if 'csrf_token' in r.cookies:
+            #    self._csrftoken = r.cookies['csrf_token']
+            #    Domoticz.Log("HTML CSRFTOKEN = "+self._csrftoken)
+
         elif self._current_status_code == 400:
             Domoticz.Error(strName+"Failed to log in to api ("+controller+") with provided credentials ("+str(self._current_status_code)+")")
         else:
@@ -788,7 +799,10 @@ class BasePlugin:
                                     UpdateDevice(devUnit, int(float(udm_xput_upload)), str(udm_xput_upload))
         elif self._current_status_code == 401:
             Domoticz.Log(strName+"Invalid login, or login has expired")
-
+            self.login()
+        elif self._current_status_code == 404:
+            Domoticz.Log(strName+"Invalid login, or login has expired")
+            self.login()
 
 
 
@@ -827,7 +841,10 @@ class BasePlugin:
             self.ProcessDevices()
         elif self._current_status_code == 401:
             Domoticz.Log(strName+"Invalid login, or login has expired")
-
+            self.login()
+        elif self._current_status_code == 404:
+            Domoticz.Log(strName+"Invalid login, or login has expired")
+            self.login()
 
 
     def block_phone(self, phone_name, mac):
@@ -841,10 +858,15 @@ class BasePlugin:
         else:
             Domoticz.Error("Check configuration!!")
 
-        if r == 401:
+        if r == 200:
+            Domoticz.Log(strName+"Blocked '" + phone_name + "' with mac address " + mac)
+        elif r == 401:
             Domoticz.Log(strName+"Invalid login, or login has expired")
+            self.login()
+        elif r == 404:
+            Domoticz.Log(strName+"Invalid login, or login has expired")
+            self.login()
 
-        Domoticz.Log(strName+"Blocked '" + phone_name + "' with mac address " + mac)
 
     def unblock_phone(self, phone_name, mac, unit):
         strName = "unblock_phone: "
@@ -857,10 +879,15 @@ class BasePlugin:
         else:
             Domoticz.Error("Check configuration!!")
 
-        if r == 401:
+        if  r == 200:
+            UpdateDevice(unit, 0, "Off")
+            Domoticz.Log(strName+"Unblocked '" + phone_name + "' with mac address " + mac)
+        elif r == 401:
             Domoticz.Log(strName+"Invalid login, or login has expired")
-        UpdateDevice(unit, 0, "Off")
-        Domoticz.Log(strName+"Unblocked '" + phone_name + "' with mac address " + mac)
+            self.login()
+        elif r == 404:
+            Domoticz.Log(strName+"Invalid login, or login has expired")
+            self.login()
 
 
     def ProcessDevices(self):
