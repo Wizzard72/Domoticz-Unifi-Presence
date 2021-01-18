@@ -410,10 +410,6 @@ class BasePlugin:
             Domoticz.Log(strName+'Attempting to reconnect Unifi Controller')
             self.login()
 
-#        if (self._timeout_timer == False):
-#            Domoticz.Log(strName+'Attempting to reconnect Unifi Controller')
-#            self.login()
-
         if self._current_status_code == 200:
             if self.Matrix[0][3] == "On":
                 try:
@@ -431,12 +427,6 @@ class BasePlugin:
             self.request_details()
             self.request_online_phones()
 
-        #timeDiff = datetime.now() - self._timeout_timer
-        #timeDiff = timeDiff.seconds
-        #if Parameters["Mode4"] == "dreammachinepro":
-        #    if timeDiff >= 1800: #30 minutes
-        #        Domoticz.Log(strName+"Log out before the API timeout")
-        #        self.logout()
 
     def getCookies(cookie_jar, domain):
         cookie_dict = cookie_jar.get_dict(domain=domain)
