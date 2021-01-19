@@ -3,7 +3,7 @@
 # Author: Wizzard72
 #
 """
-<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="2.7.5" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="2.7.6" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
@@ -984,8 +984,10 @@ class BasePlugin:
             device = device.strip()
             if len(device.split(",")) == 3: #for excluding specific sensors per unifi device
                 Device_Name, Device_Model, Device_Name_User = device.split(",")
+                UnifiDeviceName = Device_Name_User
             elif len(device.split(",")) == 2:
                 Device_Name, Device_Model = device.split(",")
+                UnifiDeviceName = Device_Model
             for item in Devices:
                 devName = Devices[item].Name
                 uapName = Device_Name
@@ -993,10 +995,10 @@ class BasePlugin:
                     foundDevice = True
             if foundDevice == False:
                 new_unit = find_available_unit_uap()
-                Domoticz.Device(Name=Device_Name+" CPU",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                Domoticz.Device(Name=UnifiDeviceName+" CPU",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_uap()
-                Domoticz.Device(Name=Device_Name+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                Domoticz.Device(Name=UnifiDeviceName+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                 UpdateDevice(new_unit, 0, "0")
 
         foundDevice = False
@@ -1004,8 +1006,10 @@ class BasePlugin:
             device = device.strip()
             if len(device.split(",")) == 3: #for excluding specific sensors per unifi device
                 Device_Name, Device_Model, Device_Name_User = device.split(",")
+                UnifiDeviceName = Device_Name_User
             elif len(device.split(",")) == 2:
                 Device_Name, Device_Model = device.split(",")
+                UnifiDeviceName = Device_Model
             for item in Devices:
                 devName = Devices[item].Name
                 uswName = Device_Name
@@ -1014,15 +1018,15 @@ class BasePlugin:
             if foundDevice == False:
                 if Device_Model != "USMINI":
                     new_unit = find_available_unit_usw()
-                    Domoticz.Device(Name=Device_Name+" CPU",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                    Domoticz.Device(Name=UnifiDeviceName+" CPU",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                     UpdateDevice(new_unit, 0, "0")
                 if Device_Model != "USMINI":
                     new_unit = find_available_unit_usw()
-                    Domoticz.Device(Name=Device_Name+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                    Domoticz.Device(Name=UnifiDeviceName+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                     UpdateDevice(new_unit, 0, "0")
                 if Device_Model != "USC8" or Device_Model != "USMINI":
                     new_unit = find_available_unit_usw()
-                    Domoticz.Device(Name=Device_Name+" General",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                    Domoticz.Device(Name=UnifiDeviceName+" General",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                     UpdateDevice(new_unit, 0, "0")
 
 
@@ -1031,8 +1035,10 @@ class BasePlugin:
             device = device.strip()
             if len(device.split(",")) == 3: #for excluding specific sensors per unifi device
                 Device_Name, Device_Model, Device_Name_User = device.split(",")
+                UnifiDeviceName = Device_Name_User
             elif len(device.split(",")) == 2:
                 Device_Name, Device_Model = device.split(",")
+                UnifiDeviceName = Device_Model
             for item in Devices:
                 devName = Devices[item].Name
                 ugwName = Device_Name
@@ -1040,34 +1046,34 @@ class BasePlugin:
                     foundDevice = True
             if foundDevice == False:
                 new_unit = find_available_unit_ugw()
-                Domoticz.Device(Name=Device_Name+" CPU Usage",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                Domoticz.Device(Name=UnifiDeviceName+" CPU Usage",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_ugw()
-                Domoticz.Device(Name=Device_Name+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                Domoticz.Device(Name=UnifiDeviceName+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_ugw()
-                Domoticz.Device(Name=Device_Name+" Board (CPU)",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                Domoticz.Device(Name=UnifiDeviceName+" Board (CPU)",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_ugw()
-                Domoticz.Device(Name=Device_Name+" Board (PHY)",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                Domoticz.Device(Name=UnifiDeviceName+" Board (PHY)",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_ugw()
-                Domoticz.Device(Name=Device_Name+" CPU",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                Domoticz.Device(Name=UnifiDeviceName+" CPU",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_ugw()
-                Domoticz.Device(Name=Device_Name+" PHY",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                Domoticz.Device(Name=UnifiDeviceName+" PHY",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_ugw()
                 Options = {'Custom': '1;ms'}
-                Domoticz.Device(Name=Device_Name+" Latency",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
+                Domoticz.Device(Name=UnifiDeviceName+" Latency",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_ugw()
                 Options = {'Custom': '1;MBit/s'}
-                Domoticz.Device(Name=Device_Name+" XPut Download",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
+                Domoticz.Device(Name=UnifiDeviceName+" XPut Download",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_ugw()
                 Options = {'Custom': '1;MBit/s'}
-                Domoticz.Device(Name=Device_Name+" XPut Upload",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
+                Domoticz.Device(Name=UnifiDeviceName+" XPut Upload",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
 
 
@@ -1076,8 +1082,10 @@ class BasePlugin:
             device = device.strip()
             if len(device.split(",")) == 3: #for excluding specific sensors per unifi device
                 Device_Name, Device_Model, Device_Name_User = device.split(",")
+                UnifiDeviceName = Device_Name_User
             elif len(device.split(",")) == 2:
                 Device_Name, Device_Model = device.split(",")
+                UnifiDeviceName = Device_Model
             for item in Devices:
                 devName = Devices[item].Name
                 udmName = Device_Name
@@ -1085,31 +1093,31 @@ class BasePlugin:
                     foundDevice = True
             if foundDevice == False:
                 new_unit = find_available_unit_udm()
-                Domoticz.Device(Name=Device_Name+" CPU Usage",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                Domoticz.Device(Name=UnifiDeviceName+" CPU Usage",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_udm()
-                Domoticz.Device(Name=Device_Name+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
+                Domoticz.Device(Name=UnifiDeviceName+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_udm()
-                Domoticz.Device(Name=Device_Name+" CPU",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                Domoticz.Device(Name=UnifiDeviceName+" CPU",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_udm()
-                Domoticz.Device(Name=Device_Name+" Local Board",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                Domoticz.Device(Name=UnifiDeviceName+" Local Board",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_udm()
-                Domoticz.Device(Name=Device_Name+" PHY Board",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                Domoticz.Device(Name=UnifiDeviceName+" PHY Board",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_udm()
                 Options = {'Custom': '1;ms'}
-                Domoticz.Device(Name=Device_Name+" Latency",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
+                Domoticz.Device(Name=UnifiDeviceName+" Latency",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_udm()
                 Options = {'Custom': '1;MBit/s'}
-                Domoticz.Device(Name=Device_Name+" XPut Download",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
+                Domoticz.Device(Name=UnifiDeviceName+" XPut Download",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_udm()
                 Options = {'Custom': '1;MBit/s'}
-                Domoticz.Device(Name=Device_Name+" XPut Upload",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
+                Domoticz.Device(Name=UnifiDeviceName+" XPut Upload",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
 
 
