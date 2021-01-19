@@ -990,7 +990,7 @@ class BasePlugin:
                 UnifiDeviceName = Device_Model
             for item in Devices:
                 devName = Devices[item].Name
-                uapName = Device_Name
+                uapName = UnifiDeviceName
                 if devName.find(uapName) > 0:
                     foundDevice = True
             if foundDevice == False:
@@ -1012,7 +1012,7 @@ class BasePlugin:
                 UnifiDeviceName = Device_Model
             for item in Devices:
                 devName = Devices[item].Name
-                uswName = Device_Name
+                uswName = UnifiDeviceName
                 if devName.find(uswName) > 0:
                     foundDevice = True
             if foundDevice == False:
@@ -1041,7 +1041,7 @@ class BasePlugin:
                 UnifiDeviceName = Device_Model
             for item in Devices:
                 devName = Devices[item].Name
-                ugwName = Device_Name
+                ugwName = UnifiDeviceName
                 if devName.find(ugwName) > 0:
                     foundDevice = True
             if foundDevice == False:
@@ -1088,7 +1088,7 @@ class BasePlugin:
                 UnifiDeviceName = Device_Model
             for item in Devices:
                 devName = Devices[item].Name
-                udmName = Device_Name
+                udmName = UnifiDeviceName
                 if devName.find(udmName) > 0:
                     foundDevice = True
             if foundDevice == False:
