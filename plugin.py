@@ -3,7 +3,7 @@
 # Author: Wizzard72
 #
 """
-<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="2.7.7" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="2.7.8" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
@@ -1068,11 +1068,11 @@ class BasePlugin:
                 Domoticz.Device(Name=UnifiDeviceName+" Latency",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_ugw()
-                Options = {'Custom': '1;MBit/s'}
+                Options = {'Custom': '1;Mbps'}
                 Domoticz.Device(Name=UnifiDeviceName+" XPut Download",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_ugw()
-                Options = {'Custom': '1;MBit/s'}
+                Options = {'Custom': '1;Mbps'}
                 Domoticz.Device(Name=UnifiDeviceName+" XPut Upload",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
 
@@ -1112,11 +1112,11 @@ class BasePlugin:
                 Domoticz.Device(Name=UnifiDeviceName+" Latency",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_udm()
-                Options = {'Custom': '1;MBit/s'}
+                Options = {'Custom': '1;Mbps'}
                 Domoticz.Device(Name=UnifiDeviceName+" XPut Download",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_udm()
-                Options = {'Custom': '1;MBit/s'}
+                Options = {'Custom': '1;Mbps'}
                 Domoticz.Device(Name=UnifiDeviceName+" XPut Upload",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
 
