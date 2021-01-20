@@ -936,6 +936,7 @@ class BasePlugin:
             for item in data:
                 Domoticz.Debug(strName+"Json Data (device) = " + str(item))
                 deviceCode = item['model']
+                Domoticz.Log(strName+"deviceCode = "+str(deviceCode))
                 deviceName = self.UnifiDevicesNames[deviceCode][1]
                 if self.UnifiDevicesNames[deviceCode][0] == "uap":
                     if 'name' not in item:
