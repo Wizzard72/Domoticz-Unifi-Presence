@@ -321,77 +321,78 @@ class BasePlugin:
     def onCommand(self, Unit, Command, Level, Hue):
         strName = "onCommand: "
         Domoticz.Log(strName+"called for Unit " + str(Unit) + ": Parameter '" + str(Command) + "', Level: " + str(Level))
-        if self._current_status_code == 200:
-            if self.UNIFI_OVERRIDE_UNIT == Unit:
-                if Level == 0: # Override Off
-                    self.override_time = 0 #seconds
-                    Domoticz.Log(strName+"Override Time = "+str(self.override_time))
-                    UpdateDevice(self.UNIFI_OVERRIDE_UNIT, int(Level), str(Level))
-                    self.Matrix[0][3] = "Off"
-                    self.Matrix[0][5] = "No"
-                elif Level == 10: # Override 1 hour
-                    self.override_time = 60 * 60 #seconds
-                    Domoticz.Log(strName+"Override Time = "+str(self.override_time))
-                    UpdateDevice(self.UNIFI_OVERRIDE_UNIT, int(Level), str(Level))
-                    self.Matrix[0][3] = "On"
-                    self.Matrix[0][5] = "OverRide"
-                elif Level == 20: # Override 2 hours
-                    self.override_time = 2 * 60 * 60 #seconds
-                    Domoticz.Log(strName+"Override Time = "+str(self.override_time))
-                    UpdateDevice(self.UNIFI_OVERRIDE_UNIT, int(Level), str(Level))
-                    self.Matrix[0][3] = "On"
-                    self.Matrix[0][5] = "OverRide"
-                elif Level == 30: # Override 3 hour
-                    self.override_time = 3 * 60 * 60 #seconds
-                    Domoticz.Log(strName+"Override Time = "+str(self.override_time))
-                    UpdateDevice(self.UNIFI_OVERRIDE_UNIT, int(Level), str(Level))
-                    self.Matrix[0][3] = "On"
-                    self.Matrix[0][5] = "OverRide"
-                elif Level == 40: # Override On
-                    self.override_time = 99999999999 #seconds
-                    Domoticz.Log(strName+"Override Time = "+str(self.override_time))
-                    UpdateDevice(self.UNIFI_OVERRIDE_UNIT, int(Level), str(Level))
-                    self.Matrix[0][3] = "On"
-                    self.Matrix[0][5] = "OverRide"
+        if self.versionCheck is True:
+            if self._current_status_code == 200:
+                if self.UNIFI_OVERRIDE_UNIT == Unit:
+                    if Level == 0: # Override Off
+                        self.override_time = 0 #seconds
+                        Domoticz.Log(strName+"Override Time = "+str(self.override_time))
+                        UpdateDevice(self.UNIFI_OVERRIDE_UNIT, int(Level), str(Level))
+                        self.Matrix[0][3] = "Off"
+                        self.Matrix[0][5] = "No"
+                    elif Level == 10: # Override 1 hour
+                        self.override_time = 60 * 60 #seconds
+                        Domoticz.Log(strName+"Override Time = "+str(self.override_time))
+                        UpdateDevice(self.UNIFI_OVERRIDE_UNIT, int(Level), str(Level))
+                        self.Matrix[0][3] = "On"
+                        self.Matrix[0][5] = "OverRide"
+                    elif Level == 20: # Override 2 hours
+                        self.override_time = 2 * 60 * 60 #seconds
+                        Domoticz.Log(strName+"Override Time = "+str(self.override_time))
+                        UpdateDevice(self.UNIFI_OVERRIDE_UNIT, int(Level), str(Level))
+                        self.Matrix[0][3] = "On"
+                        self.Matrix[0][5] = "OverRide"
+                    elif Level == 30: # Override 3 hour
+                        self.override_time = 3 * 60 * 60 #seconds
+                        Domoticz.Log(strName+"Override Time = "+str(self.override_time))
+                        UpdateDevice(self.UNIFI_OVERRIDE_UNIT, int(Level), str(Level))
+                        self.Matrix[0][3] = "On"
+                        self.Matrix[0][5] = "OverRide"
+                    elif Level == 40: # Override On
+                        self.override_time = 99999999999 #seconds
+                        Domoticz.Log(strName+"Override Time = "+str(self.override_time))
+                        UpdateDevice(self.UNIFI_OVERRIDE_UNIT, int(Level), str(Level))
+                        self.Matrix[0][3] = "On"
+                        self.Matrix[0][5] = "OverRide"
 
 
-            t = self.total_devices_count - self.count_g_device
-            for r in range(self.total_devices_count):
-                Domoticz.Debug(strName+"r = "+str(r)+" / self.Matrix[r][2] = "+str(self.Matrix[r][2])+" / Unit = "+str(Unit))
-                if self.Matrix[0][2] != Unit:
-                    if self.Matrix[r][2] == Unit:
-                        Domoticz.Debug(strName+"Unit = "+str(Unit))
-                        if self.Matrix[r][5] == "Yes" or self.Matrix[r][5] == "No":
-                            if Parameters["Mode5"] == "Yes":
-                                if Level == 10: # 10 = BLOCK
-                                    svalue = str(Level)
-                                    nvalue = int(Level)
-                                    UpdateDevice(self.Matrix[r][2], nvalue, svalue)
-                                    self.Matrix[r][3] = "Off"
-                                    self.Matrix[r][4] = "No"
-                                    self.Matrix[r][5] = "No"
-                                    self.block_phone(self.Matrix[r][0], self.Matrix[r][1])
-                                elif Level == 20: # 20 = UNBLOCK
-                                    svalue = str(Level)
-                                    nvalue = int(Level)
-                                    UpdateDevice(Unit, nvalue, svalue)
-                                    self.Matrix[r][3] = "Off"
-                                    self.Matrix[r][4] = "Yes"
-                                    self.Matrix[r][5] = "No"
-                                    self.unblock_phone(self.Matrix[r][0], self.Matrix[r][1], Unit)
-                        if self.Matrix[r][5] == "GEO":
-                            if str(Command) == "On":
-                                UpdateDevice(Unit, 1, str(Command))
-                                self.Matrix[r][3] = str(Command)
-                            elif str(Command) == "Off":
-                                UpdateDevice(Unit, 0, str(Command))
-                                self.Matrix[r][3] = str(Command)
+                t = self.total_devices_count - self.count_g_device
+                for r in range(self.total_devices_count):
+                    Domoticz.Debug(strName+"r = "+str(r)+" / self.Matrix[r][2] = "+str(self.Matrix[r][2])+" / Unit = "+str(Unit))
+                    if self.Matrix[0][2] != Unit:
+                        if self.Matrix[r][2] == Unit:
+                            Domoticz.Debug(strName+"Unit = "+str(Unit))
+                            if self.Matrix[r][5] == "Yes" or self.Matrix[r][5] == "No":
+                                if Parameters["Mode5"] == "Yes":
+                                    if Level == 10: # 10 = BLOCK
+                                        svalue = str(Level)
+                                        nvalue = int(Level)
+                                        UpdateDevice(self.Matrix[r][2], nvalue, svalue)
+                                        self.Matrix[r][3] = "Off"
+                                        self.Matrix[r][4] = "No"
+                                        self.Matrix[r][5] = "No"
+                                        self.block_phone(self.Matrix[r][0], self.Matrix[r][1])
+                                    elif Level == 20: # 20 = UNBLOCK
+                                        svalue = str(Level)
+                                        nvalue = int(Level)
+                                        UpdateDevice(Unit, nvalue, svalue)
+                                        self.Matrix[r][3] = "Off"
+                                        self.Matrix[r][4] = "Yes"
+                                        self.Matrix[r][5] = "No"
+                                        self.unblock_phone(self.Matrix[r][0], self.Matrix[r][1], Unit)
+                            if self.Matrix[r][5] == "GEO":
+                                if str(Command) == "On":
+                                    UpdateDevice(Unit, 1, str(Command))
+                                    self.Matrix[r][3] = str(Command)
+                                elif str(Command) == "Off":
+                                    UpdateDevice(Unit, 0, str(Command))
+                                    self.Matrix[r][3] = str(Command)
 
 
-            for x in range(self.total_devices_count):
-                Domoticz.Debug(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4]+" | "+self.Matrix[x][5])
+                for x in range(self.total_devices_count):
+                    Domoticz.Debug(strName+" "+str(x)+" Phone Naam = "+self.Matrix[x][0]+" | "+str(self.Matrix[x][1])+" | "+str(self.Matrix[x][2])+" | "+self.Matrix[x][3]+" | "+self.Matrix[x][4]+" | "+self.Matrix[x][5])
 
-        self.onHeartbeat()
+            self.onHeartbeat()
 
 
     def onNotification(self, Name, Subject, Text, Status, Priority, Sound, ImageFile):
@@ -406,34 +407,28 @@ class BasePlugin:
     def onHeartbeat(self):
         strName = "onHeartbeat: "
         Domoticz.Debug(strName+"called")
+        if self.versionCheck is True:
+            if (self._current_status_code == None) or (self._current_status_code == 401) or (self._current_status_code == 404) or (self._current_status_code != 200):
+                Domoticz.Log(strName+'Attempting to reconnect Unifi Controller')
+                self.login()
 
-        if (self._current_status_code == None) or (self._current_status_code == 401) or (self._current_status_code == 404) or (self._current_status_code != 200):
-            Domoticz.Log(strName+'Attempting to reconnect Unifi Controller')
-            self.login()
-
-        if self._current_status_code == 200:
-            if self.Matrix[0][3] == "On":
-                try:
-                    timeDiff = datetime.now() - datetime.strptime(Devices[255].LastUpdate,'%Y-%m-%d %H:%M:%S')
-                except TypeError:
-                    timeDiff = datetime.now() - datetime(*(time.strptime(Devices[255].LastUpdate,'%Y-%m-%d %H:%M:%S')[0:6]))
-                timeDiffSeconds = timeDiff.seconds
-                Domoticz.Log(strName+"OverRide is on for: "+str(timeDiffSeconds)+"/"+str(self.override_time)+" seconds")
-                if timeDiffSeconds >= self.override_time:
-                    self.Matrix[0][3] = "Off"
-                    self.Matrix[0][4] = "Yes"
-
-        if self._current_status_code == 200:
-            Domoticz.Debug(strName+'Requesting Unifi Controller details')
-            self.request_details()
             if self._current_status_code == 200:
-                self.request_online_phones()
+                if self.Matrix[0][3] == "On":
+                    try:
+                        timeDiff = datetime.now() - datetime.strptime(Devices[255].LastUpdate,'%Y-%m-%d %H:%M:%S')
+                    except TypeError:
+                        timeDiff = datetime.now() - datetime(*(time.strptime(Devices[255].LastUpdate,'%Y-%m-%d %H:%M:%S')[0:6]))
+                    timeDiffSeconds = timeDiff.seconds
+                    Domoticz.Log(strName+"OverRide is on for: "+str(timeDiffSeconds)+"/"+str(self.override_time)+" seconds")
+                    if timeDiffSeconds >= self.override_time:
+                        self.Matrix[0][3] = "Off"
+                        self.Matrix[0][4] = "Yes"
 
-        for ugw in self.ugw:
-            if len(ugw.split(",")) == 3:
-                Device_Name, Device_Model, Device_Name_User = ugw.split(",")
-            elif len(ugw.split(",")) == 2:
-                Device_Name, Device_Model = ugw.split(",")
+            if self._current_status_code == 200:
+                Domoticz.Debug(strName+'Requesting Unifi Controller details')
+                self.request_details()
+                if self._current_status_code == 200:
+                    self.request_online_phones()
 
 
     def getCookies(cookie_jar, domain):
@@ -937,34 +932,37 @@ class BasePlugin:
             for item in data:
                 Domoticz.Debug(strName+"Json Data (device) = " + str(item))
                 deviceCode = item['model']
-                Domoticz.Log(strName+"deviceCode = "+str(deviceCode))
-                deviceName = self.UnifiDevicesNames[deviceCode][1]
-                if self.UnifiDevicesNames[deviceCode][0] == "uap":
-                    if 'name' not in item:
-                         self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
-                    elif 'name' in item:
-                        self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
-                elif self.UnifiDevicesNames[deviceCode][0] == "usw":
-                    if 'name' not in item:
-                        self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
-                    elif 'name' in item:
-                        self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
-                elif self.UnifiDevicesNames[deviceCode][0] == "ugw":
-                    if 'name' not in item:
-                        self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
-                    elif 'name' in item:
-                        self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
-                elif self.UnifiDevicesNames[deviceCode][0] == "uph":
-                    if 'name' not in item:
-                        self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
-                    elif 'name' in item:
-                        self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
-                elif self.UnifiDevicesNames[deviceCode][0] == "udm":
-                    if 'name' not in item:
-                        self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
-                    elif 'name' in item:
-                        self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
-                Domoticz.Log(strName+"Found Unifi Device: "+deviceName+" ("+deviceCode+")")
+                try:
+                    deviceName = self.UnifiDevicesNames[deviceCode][1]
+                    if self.UnifiDevicesNames[deviceCode][0] == "uap":
+                        if 'name' not in item:
+                            self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
+                        elif 'name' in item:
+                            self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
+                    elif self.UnifiDevicesNames[deviceCode][0] == "usw":
+                        if 'name' not in item:
+                            self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
+                        elif 'name' in item:
+                            self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
+                    elif self.UnifiDevicesNames[deviceCode][0] == "ugw":
+                        if 'name' not in item:
+                            self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
+                        elif 'name' in item:
+                            self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
+                    elif self.UnifiDevicesNames[deviceCode][0] == "uph":
+                        if 'name' not in item:
+                            self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
+                        elif 'name' in item:
+                            self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
+                    elif self.UnifiDevicesNames[deviceCode][0] == "udm":
+                        if 'name' not in item:
+                            self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
+                        elif 'name' in item:
+                            self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
+                    Domoticz.Log(strName+"Found Unifi Device: "+deviceName+" ("+deviceCode+")")
+                except KeyError:
+                    Domoticz.Error(strName+"Unifi device ("+deviceCode+") is not present in the table.")
+                    self.setVersionCheck(False, "detectUnifiDevices")
         elif self._current_status_code == 401:
             Domoticz.Log(strName+"Invalid login, or login has expired")
 
