@@ -706,7 +706,7 @@ class BasePlugin:
                                     Domoticz.Debug(strName+"itemTemp = "+str(itemTemp))
                                     if 'name' in itemTemp:
                                         if itemTemp['name'] == json_field:
-                                            udm_cpu_temp = itemtemp['value']
+                                            udm_cpu_temp = itemTemp['value']
                                             UpdateDevice(devUnit, int(float(udm_cpu_temp)), str(udm_cpu_temp))
                                 json_field = "Local"
                                 udmNameD = udmName + json_field
