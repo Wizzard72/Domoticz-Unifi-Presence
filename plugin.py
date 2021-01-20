@@ -516,7 +516,6 @@ class BasePlugin:
                 if item['type'] == "usw":
                     for devUnit in Devices:
                         devName = Devices[devUnit].Name
-                        json_field = "CPU"
                         if 'name' not in item: #for unifi devices without a name set by the user
                             uswName = item['model']+" "
                         elif 'name' in item:
@@ -527,6 +526,7 @@ class BasePlugin:
                             elif len(usw.split(",")) == 2:
                                 Device_Name, Device_Model = usw.split(",")
                         if Device_Model != "USMINI":
+                            json_field = "CPU"
                             uswNameD = uswName + json_field
                             if devName.find(uswNameD) > 0:
                                 if 'system-stats' in item:
@@ -698,39 +698,59 @@ class BasePlugin:
                                 if 'mem' in test_json:
                                     udm_mem = item['system-stats']['mem'] 
                                     UpdateDevice(devUnit, int(float(udm_mem)), str(udm_mem))
-                        json_field = "CPU"
-                        udmNameD = udmName + json_field
-                        if devName.find(udmNameD) > 0:
-                            if 'temperatures' in item:
-                                test_json = item['temperatures']
-                                if '0' in test_json:
-                                    test_json = item['temperatures']['0']
-                                    if 'name' in test_json:
-                                        if item['temperatures']['0']['name'] == "CPU":
-                                            udm_cpu_temp = item['temperatures']['0']['value']
+                        if 'temperatures' in item:
+                            for itemTemp in item['temperatures']:
+                                json_field = "CPU"
+                                udmNameD = udmName + json_field
+                                if devName.find(udmNameD) > 0:
+                                    Domoticz.Log(strName+"itemTemp = "+itemTemp)
+                                    if 'name' in itemTemp:
+                                        if 'name' == json_field:
+                                            udm_cpu_temp = itemtemp['value']
                                             UpdateDevice(devUnit, int(float(udm_cpu_temp)), str(udm_cpu_temp))
-                        json_field = "Local Board"
-                        udmNameD = udmName + json_field
-                        if devName.find(udmNameD) > 0:
-                            if 'temperatures' in item:
-                                test_json = item['temperatures']
-                                if '1' in test_json:
-                                    test_json = item['temperatures']['1']
-                                    if 'name' in test_json:
-                                        if item['temperatures']['0']['name'] == "Local":
-                                            udm_board_local_temp = item['temperatures']['1']['value']
+                                json_field = "Local"
+                                udmNameD = udmName + json_field
+                                if devName.find(udmNameD) > 0:
+                                    if 'name' in itemTemp:
+                                        if 'name' == json_field:
+                                            udm_board_local_temp = itemTemp['value']
                                             UpdateDevice(devUnit, int(float(udm_board_local_temp)), str(udm_board_local_temp))
-                        json_field = "PHY Board"
-                        udmNameD = udmName + json_field
-                        if devName.find(udmNameD) > 0:
-                            if 'temperatures' in item:
-                                test_json = item['temperatures']
-                                if '2' in test_json:
-                                    test_json = item['temperatures']['2']
-                                    if 'name' in test_json:
-                                        if item['temperatures']['0']['name'] == "PHY":
-                                            udm_phy_temp = item['temperatures']['2']['value']
+                                json_field = "PHY"
+                                udmNameD = udmName + json_field
+                                if devName.find(udmNameD) > 0:
+                                    if 'name' in itemTemp:
+                                        if 'name' == json_field:
+                                            udm_phy_temp = itemTemp['value']
                                             UpdateDevice(devUnit, int(float(udm_phy_temp)), str(udm_phy_temp))
+#                                test_json = item['temperatures']
+#                                if '0' in test_json:
+#                                    test_json = item['temperatures']['0']
+#                                    if 'name' in test_json:
+#                                        if item['temperatures']['0']['name'] == "CPU":
+#                                            udm_cpu_temp = item['temperatures']['0']['value']
+#                                            UpdateDevice(devUnit, int(float(udm_cpu_temp)), str(udm_cpu_temp))
+#                        json_field = "Local Board"
+#                        udmNameD = udmName + json_field
+#                        if devName.find(udmNameD) > 0:
+#                            if 'temperatures' in item:
+#                                test_json = item['temperatures']
+#                                if '1' in test_json:
+#                                    test_json = item['temperatures']['1']
+#                                    if 'name' in test_json:
+#                                        if item['temperatures']['0']['name'] == "Local":
+#                                            udm_board_local_temp = item['temperatures']['1']['value']
+#                                            UpdateDevice(devUnit, int(float(udm_board_local_temp)), str(udm_board_local_temp))
+#                        json_field = "PHY Board"
+#                        udmNameD = udmName + json_field
+#                        if devName.find(udmNameD) > 0:
+#                            if 'temperatures' in item:
+#                                test_json = item['temperatures']
+#                                if '2' in test_json:
+#                                    test_json = item['temperatures']['2']
+#                                    if 'name' in test_json:
+#                                        if item['temperatures']['0']['name'] == "PHY":
+#                                            udm_phy_temp = item['temperatures']['2']['value']
+#                                            UpdateDevice(devUnit, int(float(udm_phy_temp)), str(udm_phy_temp))
                         json_field = "Latency"
                         udmNameD = udmName + json_field
                         if devName.find(udmNameD) > 0:
