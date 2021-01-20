@@ -705,21 +705,21 @@ class BasePlugin:
                                 if devName.find(udmNameD) > 0:
                                     Domoticz.Debug(strName+"itemTemp = "+str(itemTemp))
                                     if 'name' in itemTemp:
-                                        if 'name' == json_field:
+                                        if itemTemp['name'] == json_field:
                                             udm_cpu_temp = itemtemp['value']
                                             UpdateDevice(devUnit, int(float(udm_cpu_temp)), str(udm_cpu_temp))
                                 json_field = "Local"
                                 udmNameD = udmName + json_field
                                 if devName.find(udmNameD) > 0:
                                     if 'name' in itemTemp:
-                                        if 'name' == json_field:
+                                        if itemTemp['name'] == json_field:
                                             udm_board_local_temp = itemTemp['value']
                                             UpdateDevice(devUnit, int(float(udm_board_local_temp)), str(udm_board_local_temp))
                                 json_field = "PHY"
                                 udmNameD = udmName + json_field
                                 if devName.find(udmNameD) > 0:
                                     if 'name' in itemTemp:
-                                        if 'name' == json_field:
+                                        if itemTemp['name'] == json_field:
                                             udm_phy_temp = itemTemp['value']
                                             UpdateDevice(devUnit, int(float(udm_phy_temp)), str(udm_phy_temp))
 #                                test_json = item['temperatures']
