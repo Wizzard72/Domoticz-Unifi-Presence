@@ -553,7 +553,6 @@ class BasePlugin:
                 if item['type'] == "ugw":
                     for devUnit in Devices:
                         devName = Devices[devUnit].Name
-                        json_field = "CPU Usage"
                         if 'name' not in item: #for unifi devices without a name set by the user
                             ugwName = item['model']+" "
                         elif 'name' in item:
@@ -563,6 +562,7 @@ class BasePlugin:
                                 Device_Name, Device_Model, Device_Name_User = ugw.split(",")
                             elif len(ugw.split(",")) == 2:
                                 Device_Name, Device_Model = ugw.split(",")
+                        json_field = "CPU Usage"
                         ugwNameD = ugwName + json_field
                         if devName.find(ugwNameD) > 0:
                             if 'system-stats' in item:
@@ -598,7 +598,7 @@ class BasePlugin:
                                     if 'Board (PHY)' in test_json:
                                         ugw_board_phy_temp = item['system-stats']['temps']['Board (PHY)'][:-2]
                                         UpdateDevice(devUnit, int(float(ugw_board_phy_temp)), str(ugw_board_phy_temp))
-                        json_field = "CPU"
+                        json_field = "CPU Temp"
                         ugwNameD = ugwName + json_field
                         if devName.find(ugwNameD) > 0:
                             if 'system-stats' in item:
@@ -645,7 +645,6 @@ class BasePlugin:
                 if item['type'] == "uap":
                     for devUnit in Devices:
                         devName = Devices[devUnit].Name
-                        json_field = "CPU"
                         if 'name' not in item: #for unifi devices without a name set by the user
                             uapName = item['model']+" "
                         elif 'name' in item:
@@ -655,6 +654,7 @@ class BasePlugin:
                                 Device_Name, Device_Model, Device_Name_User = uap.split(",")
                             elif len(uap.split(",")) == 2:
                                 Device_Name, Device_Model = uap.split(",")
+                        json_field = "CPU"
                         uapNameD = uapName + json_field
                         if devName.find(uapNameD) > 0:
                             if 'system-stats' in item:
@@ -1078,7 +1078,7 @@ class BasePlugin:
                 Domoticz.Device(Name=UnifiDeviceName+" Board (PHY)",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_ugw()
-                Domoticz.Device(Name=UnifiDeviceName+" CPU",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
+                Domoticz.Device(Name=UnifiDeviceName+" CPU Temp",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
                 new_unit = find_available_unit_ugw()
                 Domoticz.Device(Name=UnifiDeviceName+" PHY",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
