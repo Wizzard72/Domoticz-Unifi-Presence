@@ -703,7 +703,7 @@ class BasePlugin:
                                 json_field = "CPU"
                                 udmNameD = udmName + json_field
                                 if devName.find(udmNameD) > 0:
-                                    Domoticz.Log(strName+"itemTemp = "+str(itemTemp))
+                                    Domoticz.Debug(strName+"itemTemp = "+str(itemTemp))
                                     if 'name' in itemTemp:
                                         if 'name' == json_field:
                                             udm_cpu_temp = itemtemp['value']
