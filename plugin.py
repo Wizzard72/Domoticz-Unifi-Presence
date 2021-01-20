@@ -698,30 +698,30 @@ class BasePlugin:
                                 if 'mem' in test_json:
                                     udm_mem = item['system-stats']['mem'] 
                                     UpdateDevice(devUnit, int(float(udm_mem)), str(udm_mem))
-#                        if 'temperatures' in item:
-#                            for itemTemp in item['temperatures']:
-#                                json_field = "CPU"
-#                                udmNameD = udmName + json_field
-#                                if devName.find(udmNameD) > 0:
-#                                    Domoticz.Log(strName+"itemTemp = "+itemTemp)
-#                                    if 'name' in itemTemp:
-#                                        if 'name' == json_field:
-#                                            udm_cpu_temp = itemtemp['value']
-#                                            UpdateDevice(devUnit, int(float(udm_cpu_temp)), str(udm_cpu_temp))
-#                                json_field = "Local"
-#                                udmNameD = udmName + json_field
-#                                if devName.find(udmNameD) > 0:
-#                                    if 'name' in itemTemp:
-#                                        if 'name' == json_field:
-#                                            udm_board_local_temp = itemTemp['value']
-#                                            UpdateDevice(devUnit, int(float(udm_board_local_temp)), str(udm_board_local_temp))
-#                                json_field = "PHY"
-#                                udmNameD = udmName + json_field
-#                                if devName.find(udmNameD) > 0:
-#                                    if 'name' in itemTemp:
-#                                        if 'name' == json_field:
-#                                            udm_phy_temp = itemTemp['value']
-#                                            UpdateDevice(devUnit, int(float(udm_phy_temp)), str(udm_phy_temp))
+                        if 'temperatures' in item:
+                            for itemTemp in item['temperatures']:
+                                json_field = "CPU"
+                                udmNameD = udmName + json_field
+                                if devName.find(udmNameD) > 0:
+                                    Domoticz.Log(strName+"itemTemp = "+str(itemTemp))
+                                    if 'name' in itemTemp:
+                                        if 'name' == json_field:
+                                            udm_cpu_temp = itemtemp['value']
+                                            UpdateDevice(devUnit, int(float(udm_cpu_temp)), str(udm_cpu_temp))
+                                json_field = "Local"
+                                udmNameD = udmName + json_field
+                                if devName.find(udmNameD) > 0:
+                                    if 'name' in itemTemp:
+                                        if 'name' == json_field:
+                                            udm_board_local_temp = itemTemp['value']
+                                            UpdateDevice(devUnit, int(float(udm_board_local_temp)), str(udm_board_local_temp))
+                                json_field = "PHY"
+                                udmNameD = udmName + json_field
+                                if devName.find(udmNameD) > 0:
+                                    if 'name' in itemTemp:
+                                        if 'name' == json_field:
+                                            udm_phy_temp = itemTemp['value']
+                                            UpdateDevice(devUnit, int(float(udm_phy_temp)), str(udm_phy_temp))
 #                                test_json = item['temperatures']
 #                                if '0' in test_json:
 #                                    test_json = item['temperatures']['0']
