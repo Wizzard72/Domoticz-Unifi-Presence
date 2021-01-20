@@ -109,6 +109,7 @@ class BasePlugin:
         "U7HD":      ("uap",       "UniFi AP-HD"),
         "U7SHD":     ("uap",       "UniFi AP-SHD"),
         "U7NHD":     ("uap",       "UniFi AP-nanoHD"),
+        "UAL6":      ("uap",       "UniFi AP-U6-Lite"),
         "UFLHD":     ("uap",       "UniFi AP-Flex-HD"),
         "UHDIW":     ("uap",       "UniFi AP-HD-In Wall"),
         "UCXG":      ("uap",       "UniFi AP-XG"),
