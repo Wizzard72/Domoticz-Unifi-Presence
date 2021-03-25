@@ -3,7 +3,7 @@
 # Author: Wizzard72
 #
 """
-<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="2.7.10" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="2.8.0" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
@@ -62,6 +62,8 @@ from datetime import datetime
 
 
 class BasePlugin:
+    _plugin_name = False
+    _device_table = False
     _unifiConn = False
     override_time = 0
     hostAuth = False
@@ -203,6 +205,14 @@ class BasePlugin:
         if not self.versionCheck:
             return
 
+        # Create file
+        try:
+           f = open(Parameters["HomeFolder"] + "devicetable.txt")
+           Domoticz.Log(strName+"Found devicestable.txt file")
+        except:
+           Domoticz.Log(strName+"Didn't found devicestable.txt file, creating file")
+           f = open(Parameters["HomeFolder"] + "devicetable.txt", "w+")
+
         # load custom images
         if "UnifiPresenceAnyone" not in Images:
             Domoticz.Log(strName+"Add UnifiPresenceAnyone icons to Domoticz")
@@ -260,7 +270,7 @@ class BasePlugin:
                 for dv in Devices:
                     # Find the unit number
                     search_phone = Devices[dv].Name
-                    position = search_phone.find("-")+2
+                    position = len(self._plugin_name)+3
                     if Devices[dv].Name[position:] == found_user:
                         self.Matrix[count][2] = Devices[dv].Unit
                         count = count + 1
@@ -275,8 +285,9 @@ class BasePlugin:
                     found_user = "Geo "+Device_Name
                     for dv in Devices:
                         # Find the unit number
-                        search_phone = Devices[dv].Name[8:]
-                        if Devices[dv].Name[8:] == found_user:
+                        devName = Devices[dv].Name
+                        position = len(self._plugin_name)+3
+                        if Devices[dv].Name[position:] == found_user:
                             self.Matrix[count][2] = Devices[dv].Unit
                             self.Matrix[count][3] = Devices[dv].sValue
                             self.Matrix[count][5] = "GEO"
@@ -514,8 +525,11 @@ class BasePlugin:
             for item in data:
                 Domoticz.Debug(strName+"Json Data (request details) = " + str(item))
                 if item['type'] == "usw":
-                    for devUnit in Devices:
-                        devName = Devices[devUnit].Name
+#                    for devicetable in open(Parameters["HomeFolder"] + "devicetable.txt"):
+                    for devicetable in self._device_table:
+                        devUnit, devName = devicetable.split(",")
+                        devName = devName.strip()
+                        devUnit = int(devUnit)
                         if 'name' not in item: #for unifi devices without a name set by the user
                             uswName = item['model']+" "
                         elif 'name' in item:
@@ -528,7 +542,8 @@ class BasePlugin:
                         if Device_Model != "USMINI":
                             json_field = "CPU"
                             uswNameD = uswName + json_field
-                            if devName.find(uswNameD) > 0:
+                            if devName.find(uswNameD) >= 0:
+                                #Domoticz.Log(strName+"devName = uswNameD ==> "+devName+" = "+uswNameD)
                                 if 'system-stats' in item:
                                     test_json = item['system-stats']
                                     if 'cpu' in test_json:
@@ -537,7 +552,7 @@ class BasePlugin:
                         if Device_Model != "USMINI":
                             json_field = "Memory"
                             uswNameD = uswName + json_field
-                            if devName.find(uswNameD) > 0:
+                            if devName.find(uswNameD) >= 0:
                                 if 'system-stats' in item:
                                     test_json = item['system-stats']
                                     if 'mem' in test_json:
@@ -546,13 +561,16 @@ class BasePlugin:
                         if Device_Model != "USC8" or Device_Model != "USMINI":
                             json_field = "General"
                             uswNameD = uswName + json_field
-                            if devName.find(uswNameD) > 0:
+                            if devName.find(uswNameD) >= 0:
                                 if 'general_temperature' in item:
                                     general_temperature = item['general_temperature'] 
                                     UpdateDevice(devUnit, int(float(general_temperature)), str(general_temperature))
                 if item['type'] == "ugw":
-                    for devUnit in Devices:
-                        devName = Devices[devUnit].Name
+                    for devicetable in self._device_table:
+                    #for devicetable in open(Parameters["HomeFolder"] + "devicetable.txt"):
+                        devUnit, devName = devicetable.split(",")
+                        devName = devName.strip()
+                        devUnit = int(devUnit)
                         if 'name' not in item: #for unifi devices without a name set by the user
                             ugwName = item['model']+" "
                         elif 'name' in item:
@@ -564,7 +582,7 @@ class BasePlugin:
                                 Device_Name, Device_Model = ugw.split(",")
                         json_field = "CPU Usage"
                         ugwNameD = ugwName + json_field
-                        if devName.find(ugwNameD) > 0:
+                        if devName.find(ugwNameD) >= 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
                                 if 'cpu' in test_json:
@@ -572,7 +590,7 @@ class BasePlugin:
                                     UpdateDevice(devUnit, int(float(ugw_cpu)), str(ugw_cpu))
                         json_field = "Memory"
                         ugwNameD = ugwName + json_field
-                        if devName.find(ugwNameD) > 0:
+                        if devName.find(ugwNameD) >= 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
                                 if 'mem' in test_json:
@@ -580,7 +598,7 @@ class BasePlugin:
                                     UpdateDevice(devUnit, int(float(ugw_mem)), str(ugw_mem))
                         json_field = "Board (CPU)"
                         ugwNameD = ugwName + json_field
-                        if devName.find(ugwNameD) > 0:
+                        if devName.find(ugwNameD) >= 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
                                 if 'temps' in test_json:
@@ -590,7 +608,7 @@ class BasePlugin:
                                         UpdateDevice(devUnit, int(float(ugw_board_cpu_temp)), str(ugw_board_cpu_temp))
                         json_field = "Board (PHY)"
                         ugwNameD = ugwName + json_field
-                        if devName.find(ugwNameD) > 0:
+                        if devName.find(ugwNameD) >= 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
                                 if 'temps' in test_json:
@@ -600,7 +618,7 @@ class BasePlugin:
                                         UpdateDevice(devUnit, int(float(ugw_board_phy_temp)), str(ugw_board_phy_temp))
                         json_field = "CPU Temp"
                         ugwNameD = ugwName + json_field
-                        if devName.find(ugwNameD) > 0:
+                        if devName.find(ugwNameD) >= 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
                                 if 'temps' in test_json:
@@ -610,7 +628,7 @@ class BasePlugin:
                                         UpdateDevice(devUnit, int(float(ugw_cpu_temp)), str(ugw_cpu_temp))
                         json_field = "PHY"
                         ugwNameD = ugwName + json_field
-                        if devName.find(ugwNameD) > 0:
+                        if devName.find(ugwNameD) >= 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
                                 if 'temps' in test_json:
@@ -620,7 +638,7 @@ class BasePlugin:
                                         UpdateDevice(devUnit, int(float(ugw_phy_temp)), str(ugw_phy_temp))
                         json_field = "Latency"
                         ugwNameD = ugwName + json_field
-                        if devName.find(ugwNameD) > 0:
+                        if devName.find(ugwNameD) >= 0:
                             if 'speedtest-status' in item:
                                 test_json = item['speedtest-status']
                                 if 'latency' in test_json:
@@ -628,7 +646,7 @@ class BasePlugin:
                                     UpdateDevice(devUnit, int(float(ugw_latency)), str(ugw_latency))
                         json_field = "XPut Download"
                         ugwNameD = ugwName + json_field
-                        if devName.find(ugwNameD) > 0:
+                        if devName.find(ugwNameD) >= 0:
                             if 'speedtest-status' in item:
                                 test_json = item['speedtest-status']
                                 if 'xput_download' in test_json:
@@ -636,15 +654,18 @@ class BasePlugin:
                                     UpdateDevice(devUnit, int(float(ugw_xput_download)), str(ugw_xput_download))
                         json_field = "XPut Upload"
                         ugwNameD = ugwName + json_field
-                        if devName.find(ugwNameD) > 0:
+                        if devName.find(ugwNameD) >= 0:
                             if 'speedtest-status' in item:
                                 test_json = item['speedtest-status']
                                 if 'xput_upload' in test_json:
                                     ugw_xput_upload = round(item['speedtest-status']['xput_upload'] , 1)
                                     UpdateDevice(devUnit, int(float(ugw_xput_upload)), str(ugw_xput_upload))
                 if item['type'] == "uap":
-                    for devUnit in Devices:
-                        devName = Devices[devUnit].Name
+                    for devicetable in self._device_table:
+                    #for devicetable in open(Parameters["HomeFolder"] + "devicetable.txt"):
+                        devUnit, devName = devicetable.split(",")
+                        devName = devName.strip()
+                        devUnit = int(devUnit)
                         if 'name' not in item: #for unifi devices without a name set by the user
                             uapName = item['model']+" "
                         elif 'name' in item:
@@ -656,7 +677,7 @@ class BasePlugin:
                                 Device_Name, Device_Model = uap.split(",")
                         json_field = "CPU"
                         uapNameD = uapName + json_field
-                        if devName.find(uapNameD) > 0:
+                        if devName.find(uapNameD) >= 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
                                 if 'cpu' in test_json:
@@ -664,15 +685,18 @@ class BasePlugin:
                                     UpdateDevice(devUnit, int(float(uap_cpu)), str(uap_cpu))
                         json_field = "Memory"
                         uapNameD = uapName + json_field
-                        if devName.find(uapNameD) > 0:
+                        if devName.find(uapNameD) >= 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
                                 if 'mem' in test_json:
                                     uap_mem = item['system-stats']['mem'] 
                                     UpdateDevice(devUnit, int(float(uap_mem)), str(uap_mem))
                 if item['type'] == "udm":
-                    for devUnit in Devices:
-                        devName = Devices[devUnit].Name
+                    for devicetable in self._device_table:
+                    #for devicetable in open(Parameters["HomeFolder"] + "devicetable.txt"):
+                        devUnit, devName = devicetable.split(",")
+                        devName = devName.strip()
+                        devUnit = int(devUnit)
                         json_field = "CPU Usage"
                         if 'name' not in item: #for unifi devices without a name set by the user
                             udmName = item['model']+" "
@@ -684,7 +708,7 @@ class BasePlugin:
                             elif len(udm.split(",")) == 2:
                                 Device_Name, Device_Model = udm.split(",")
                         udmNameD = udmName + json_field
-                        if devName.find(udmNameD) > 0:
+                        if devName.find(udmNameD) >= 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
                                 if 'cpu' in test_json:
@@ -692,7 +716,7 @@ class BasePlugin:
                                     UpdateDevice(devUnit, int(float(udm_cpu)), str(udm_cpu))
                         json_field = "Memory"
                         udmNameD = udmName + json_field
-                        if devName.find(udmNameD) > 0:
+                        if devName.find(udmNameD) >= 0:
                             if 'system-stats' in item:
                                 test_json = item['system-stats']
                                 if 'mem' in test_json:
@@ -702,7 +726,7 @@ class BasePlugin:
                             for itemTemp in item['temperatures']:
                                 json_field = "CPU"
                                 udmNameD = udmName + json_field
-                                if devName.find(udmNameD) > 0:
+                                if devName.find(udmNameD) >= 0:
                                     Domoticz.Debug(strName+"itemTemp = "+str(itemTemp))
                                     if 'name' in itemTemp:
                                         if itemTemp['name'] == json_field:
@@ -710,50 +734,21 @@ class BasePlugin:
                                             UpdateDevice(devUnit, int(float(udm_cpu_temp)), str(udm_cpu_temp))
                                 json_field = "Local"
                                 udmNameD = udmName + json_field
-                                if devName.find(udmNameD) > 0:
+                                if devName.find(udmNameD) >= 0:
                                     if 'name' in itemTemp:
                                         if itemTemp['name'] == json_field:
                                             udm_board_local_temp = itemTemp['value']
                                             UpdateDevice(devUnit, int(float(udm_board_local_temp)), str(udm_board_local_temp))
                                 json_field = "PHY"
                                 udmNameD = udmName + json_field
-                                if devName.find(udmNameD) > 0:
+                                if devName.find(udmNameD) >= 0:
                                     if 'name' in itemTemp:
                                         if itemTemp['name'] == json_field:
                                             udm_phy_temp = itemTemp['value']
                                             UpdateDevice(devUnit, int(float(udm_phy_temp)), str(udm_phy_temp))
-#                                test_json = item['temperatures']
-#                                if '0' in test_json:
-#                                    test_json = item['temperatures']['0']
-#                                    if 'name' in test_json:
-#                                        if item['temperatures']['0']['name'] == "CPU":
-#                                            udm_cpu_temp = item['temperatures']['0']['value']
-#                                            UpdateDevice(devUnit, int(float(udm_cpu_temp)), str(udm_cpu_temp))
-#                        json_field = "Local Board"
-#                        udmNameD = udmName + json_field
-#                        if devName.find(udmNameD) > 0:
-#                            if 'temperatures' in item:
-#                                test_json = item['temperatures']
-#                                if '1' in test_json:
-#                                    test_json = item['temperatures']['1']
-#                                    if 'name' in test_json:
-#                                        if item['temperatures']['0']['name'] == "Local":
-#                                            udm_board_local_temp = item['temperatures']['1']['value']
-#                                            UpdateDevice(devUnit, int(float(udm_board_local_temp)), str(udm_board_local_temp))
-#                        json_field = "PHY Board"
-#                        udmNameD = udmName + json_field
-#                        if devName.find(udmNameD) > 0:
-#                            if 'temperatures' in item:
-#                                test_json = item['temperatures']
-#                                if '2' in test_json:
-#                                    test_json = item['temperatures']['2']
-#                                    if 'name' in test_json:
-#                                        if item['temperatures']['0']['name'] == "PHY":
-#                                            udm_phy_temp = item['temperatures']['2']['value']
-#                                            UpdateDevice(devUnit, int(float(udm_phy_temp)), str(udm_phy_temp))
                         json_field = "Latency"
                         udmNameD = udmName + json_field
-                        if devName.find(udmNameD) > 0:
+                        if devName.find(udmNameD) >= 0:
                             if 'speedtest-status' in item:
                                 test_json = item['speedtest-status']
                                 if 'latency' in test_json:
@@ -761,7 +756,7 @@ class BasePlugin:
                                     UpdateDevice(devUnit, int(float(udm_latency)), str(udm_latency))
                         json_field = "XPut Download"
                         udmNameD = udmName + json_field
-                        if devName.find(udmNameD) > 0:
+                        if devName.find(udmNameD) >= 0:
                             if 'speedtest-status' in item:
                                 test_json = item['speedtest-status']
                                 if 'xput_download' in test_json:
@@ -769,7 +764,7 @@ class BasePlugin:
                                     UpdateDevice(devUnit, int(float(udm_xput_download)), str(udm_xput_download))
                         json_field = "XPut Upload"
                         udmNameD = udmName + json_field
-                        if devName.find(udmNameD) > 0:
+                        if devName.find(udmNameD) >= 0:
                             if 'speedtest-status' in item:
                                 test_json = item['speedtest-status']
                                 if 'xput_upload' in test_json:
@@ -996,10 +991,17 @@ class BasePlugin:
             devUAPs[x] = set()
 
 
+    def create_devicetable(self, unitnumber, devicename):
+        f = open(Parameters["HomeFolder"] + "devicetable.txt", "a")
+        f.write(str(unitnumber) + "," + str(devicename) + "\r\n")
+        f.close()
+
     def create_devices(self):
         strName = "create_devices: "
         # create devices
         foundDevice = False
+
+
         for device in self.uap:
             device = device.strip()
             if len(device.split(",")) == 3: #for excluding specific sensors per unifi device
@@ -1008,18 +1010,21 @@ class BasePlugin:
             elif len(device.split(",")) == 2:
                 Device_Name, Device_Model = device.split(",")
                 UnifiDeviceName = Device_Model
-            for item in Devices:
-                devName = Devices[item].Name
+            for item in open(Parameters["HomeFolder"] + "devicetable.txt"):
+                unitnumber, devicename = item.split(",")
+                devicename = str(devicename.strip())
                 uapName = UnifiDeviceName
-                if devName.find(uapName) > 0:
+                if devicename.find(uapName) >= 0:
                     foundDevice = True
             if foundDevice == False:
                 new_unit = find_available_unit_uap()
                 Domoticz.Device(Name=UnifiDeviceName+" CPU",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" CPU")
                 new_unit = find_available_unit_uap()
                 Domoticz.Device(Name=UnifiDeviceName+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" Memory")
 
         foundDevice = False
         for device in self.usw:
@@ -1030,24 +1035,28 @@ class BasePlugin:
             elif len(device.split(",")) == 2:
                 Device_Name, Device_Model = device.split(",")
                 UnifiDeviceName = Device_Model
-            for item in Devices:
-                devName = Devices[item].Name
-                uswName = UnifiDeviceName
-                if devName.find(uswName) > 0:
+            for item in open(Parameters["HomeFolder"] + "devicetable.txt"):
+                unitnumber, devicename = item.split(",")
+                devicename = str(devicename.strip())
+                uapName = UnifiDeviceName
+                if devicename.find(uapName) >= 0:
                     foundDevice = True
             if foundDevice == False:
                 if Device_Model != "USMINI":
                     new_unit = find_available_unit_usw()
                     Domoticz.Device(Name=UnifiDeviceName+" CPU",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                     UpdateDevice(new_unit, 0, "0")
+                    self.create_devicetable(new_unit, UnifiDeviceName+" CPU")
                 if Device_Model != "USMINI":
                     new_unit = find_available_unit_usw()
                     Domoticz.Device(Name=UnifiDeviceName+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                     UpdateDevice(new_unit, 0, "0")
+                    self.create_devicetable(new_unit, UnifiDeviceName+" Memory")
                 if Device_Model != "USC8" or Device_Model != "USMINI":
                     new_unit = find_available_unit_usw()
                     Domoticz.Device(Name=UnifiDeviceName+" General",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                     UpdateDevice(new_unit, 0, "0")
+                    self.create_devicetable(new_unit, UnifiDeviceName+" General")
 
 
         foundDevice = False
@@ -1059,42 +1068,52 @@ class BasePlugin:
             elif len(device.split(",")) == 2:
                 Device_Name, Device_Model = device.split(",")
                 UnifiDeviceName = Device_Model
-            for item in Devices:
-                devName = Devices[item].Name
-                ugwName = UnifiDeviceName
-                if devName.find(ugwName) > 0:
+            for item in open(Parameters["HomeFolder"] + "devicetable.txt"):
+                unitnumber, devicename = item.split(",")
+                devicename = str(devicename.strip())
+                uapName = UnifiDeviceName
+                if devicename.find(uapName) >= 0:
                     foundDevice = True
             if foundDevice == False:
                 new_unit = find_available_unit_ugw()
                 Domoticz.Device(Name=UnifiDeviceName+" CPU Usage",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" CPU Usage")
                 new_unit = find_available_unit_ugw()
                 Domoticz.Device(Name=UnifiDeviceName+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" Memory")
                 new_unit = find_available_unit_ugw()
                 Domoticz.Device(Name=UnifiDeviceName+" Board (CPU)",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" Board (CPU)")
                 new_unit = find_available_unit_ugw()
                 Domoticz.Device(Name=UnifiDeviceName+" Board (PHY)",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" Board (PHY)")
                 new_unit = find_available_unit_ugw()
                 Domoticz.Device(Name=UnifiDeviceName+" CPU Temp",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" CPU Temp")
                 new_unit = find_available_unit_ugw()
                 Domoticz.Device(Name=UnifiDeviceName+" PHY",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" PHY")
                 new_unit = find_available_unit_ugw()
                 Options = {'Custom': '1;ms'}
                 Domoticz.Device(Name=UnifiDeviceName+" Latency",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" Latency")
                 new_unit = find_available_unit_ugw()
                 Options = {'Custom': '1;Mbps'}
                 Domoticz.Device(Name=UnifiDeviceName+" XPut Download",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" XPut Download")
                 new_unit = find_available_unit_ugw()
                 Options = {'Custom': '1;Mbps'}
                 Domoticz.Device(Name=UnifiDeviceName+" XPut Upload",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" XPut Upload")
 
 
         foundDevice = False
@@ -1106,48 +1125,55 @@ class BasePlugin:
             elif len(device.split(",")) == 2:
                 Device_Name, Device_Model = device.split(",")
                 UnifiDeviceName = Device_Model
-            for item in Devices:
-                devName = Devices[item].Name
-                udmName = UnifiDeviceName
-                if devName.find(udmName) > 0:
+            for item in open(Parameters["HomeFolder"] + "devicetable.txt"):
+                unitnumber, devicename = item.split(",")
+                devicename = str(devicename.strip())
+                uapName = UnifiDeviceName
+                if devicename.find(uapName) >= 0:
                     foundDevice = True
             if foundDevice == False:
                 new_unit = find_available_unit_udm()
                 Domoticz.Device(Name=UnifiDeviceName+" CPU Usage",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" CPU Usage")
                 new_unit = find_available_unit_udm()
                 Domoticz.Device(Name=UnifiDeviceName+" Memory",  Unit=new_unit, Used=1, TypeName="Percentage").Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" Memory")
                 new_unit = find_available_unit_udm()
                 Domoticz.Device(Name=UnifiDeviceName+" CPU",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" CPU")
                 new_unit = find_available_unit_udm()
                 Domoticz.Device(Name=UnifiDeviceName+" Local Board",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" Local Board")
                 new_unit = find_available_unit_udm()
                 Domoticz.Device(Name=UnifiDeviceName+" PHY Board",  Unit=new_unit, Used=1, TypeName="Temperature").Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" PHY Board")
                 new_unit = find_available_unit_udm()
                 Options = {'Custom': '1;ms'}
                 Domoticz.Device(Name=UnifiDeviceName+" Latency",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" Latency")
                 new_unit = find_available_unit_udm()
                 Options = {'Custom': '1;Mbps'}
                 Domoticz.Device(Name=UnifiDeviceName+" XPut Download",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
+                self.create_devicetable(new_unit, UnifiDeviceName+" XPut Download")
                 new_unit = find_available_unit_udm()
                 Options = {'Custom': '1;Mbps'}
                 Domoticz.Device(Name=UnifiDeviceName+" XPut Upload",  Unit=new_unit, Used=1, Type=243, Subtype=31, Options=Options).Create()
                 UpdateDevice(new_unit, 0, "0")
-
-
-
-
+                self.create_devicetable(new_unit, UnifiDeviceName+" XPut Upload")
 
 
         if (self.UNIFI_ANYONE_HOME_UNIT not in Devices):
             Domoticz.Device(Name="AnyOne",  Unit=self.UNIFI_ANYONE_HOME_UNIT, Used=1, TypeName="Switch", Image=Images['UnifiPresenceAnyone'].ID).Create()
             UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 0, "Off")
+        self._plugin_name = Devices[self.UNIFI_ANYONE_HOME_UNIT].Name[:-9]
+        Domoticz.Log(strName+"Plugin Name = "+self._plugin_name)
         if (self.UNIFI_OVERRIDE_UNIT not in Devices):
             Options = {"LevelActions": "||||",
                        "LevelNames": "Off|1 hour|2 hours|3 hours|On",
@@ -1168,8 +1194,7 @@ class BasePlugin:
             mac_id = mac_id.strip().lower()
             try:
                 for item in Devices:
-                    devName = Devices[item].Name
-                    position = devName.find("-")+2
+                    position = len(self._plugin_name)+3
                     if Devices[item].Name[position:] == phone_name:
                         Domoticz.Log(strName+"Found phone to monitor from configuration = "+device)
                         found_phone = True
@@ -1200,6 +1225,9 @@ class BasePlugin:
             # calculate total devices
             extra_devices = 1 # Override device
             self.total_devices_count = count_phone + extra_devices
+
+        f = open(Parameters["HomeFolder"] + "devicetable.txt")
+        self._device_table = f.readlines()
 
 global _plugin
 _plugin = BasePlugin()
