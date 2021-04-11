@@ -62,12 +62,14 @@ from datetime import datetime
 
 
 class BasePlugin:
+    _Off_Delay = 60
     _plugin_name = False
     _device_table = False
     _unifiConn = False
     override_time = 0
     hostAuth = False
     UNIFI_ANYONE_HOME_UNIT = 1
+    UNIFI_OFF_DELAY = 2
     UNIFI_OVERRIDE_UNIT = 255
     _Cookies = None
     _csrftoken = None
@@ -238,15 +240,30 @@ class BasePlugin:
             self.create_devices()
 
             # Create table
-            #     0           1         2           3        4              5
-            # Phone_Name | MAC_ID | Unit_Number | State | Last Online | Check Online
-            #   Test      1:1:1:1     50           Off      No             No
-            #   Test                  50           Off      No             Yes
-            #   Test                  50           On       Yes            Yes
-            #   Test                  50           On       Yes            No
-            #   Test                  50           Off      No             No
+            #               0           1         2           3        4              5            6       7
+            #           Phone_Name | MAC_ID | Unit_Number | State | Last Online | Check Online | Status | Time
+            #             Test      1:1:1:1     50           Off      No             No          Online
+            #             Test                  50           Off      No             Yes         Way
+            #             Test                  50           On       Yes            Yes         Offline
+            #             Test                  50           On       Yes            No          None
+            #             Test                  50           Off      No             No
+            # Step 1      User A    1:1:1:1     110          Off      No             No          Offline
+            # Step 2      User A    1:1:1:1     110          Off      No             No          Offline
+
+            # Step 1      User A    1:1:1:1     110          Off      No             Yes         Offline
+            # Step 2      User A    1:1:1:1     110          On       Yes            No          Online
+
+            # Step 1      User A    1:1:1:1     110          Off      Yes            Yes         Offline
+            # Step 2      User A    1:1:1:1     110          On       Yes            No          Online
+
+            # Step 1      User A    1:1:1:1     110          On       Yes            No          Online
+            # Step 2      User A    1:1:1:1     110          Off      No             No          Wait     11:30
+            # Step 3      User A    1:1:1:1     110          Off      No             No          Offline
+
+            # Step 1      User A    1:1:1:1     110          On       Yes            Yes         Online
+            # Step 2      User A    1:1:1:1     110          On       Yes            No          Online
             device_mac=Parameters["Mode2"].split(",")
-            w, h = 6, self.total_devices_count;
+            w, h = 8, self.total_devices_count;
             self.Matrix = [[0 for x in range(w)] for y in range(h)]
 
             count = 1
@@ -257,6 +274,7 @@ class BasePlugin:
             self.Matrix[0][3] = "Off"                 # Used for the OverRide Selector Switch
             self.Matrix[0][4] = "No"                  # Used for the OverRide Selector Switch
             self.Matrix[0][5] = "No"                  # Used for the OverRide Selector Switch
+            self.Matrix[0][6] = "None"                  # Used for the OverRide Selector Switch
             for device in device_mac:
                 device = device.strip()
                 Device_Name, Device_Mac = device.split("=")
@@ -266,6 +284,7 @@ class BasePlugin:
                 self.Matrix[count][3] = "Off"
                 self.Matrix[count][4] = "No"
                 self.Matrix[count][5] = "No"
+                self.Matrix[count][6] = "None"
                 found_user = Device_Name
                 for dv in Devices:
                     # Find the unit number
@@ -282,6 +301,7 @@ class BasePlugin:
                     self.Matrix[count][3] = "Off"
                     self.Matrix[count][4] = "No"
                     self.Matrix[count][5] = "GEO"
+                    self.Matrix[count][6] = "None"
                     found_user = "Geo "+Device_Name
                     for dv in Devices:
                         # Find the unit number
@@ -302,6 +322,10 @@ class BasePlugin:
 
             #self.devicesPerAP()
 
+        if Devices[self.UNIFI_OFF_DELAY].nValue == 0:
+            self._Off_Delay = 0
+        else:
+            self._Off_Delay = Devices[self.UNIFI_OFF_DELAY].nValue + 20
         Domoticz.Heartbeat(5)
 
     def onStop(self):
@@ -365,6 +389,10 @@ class BasePlugin:
                         UpdateDevice(self.UNIFI_OVERRIDE_UNIT, int(Level), str(Level))
                         self.Matrix[0][3] = "On"
                         self.Matrix[0][5] = "OverRide"
+                if self.UNIFI_OFF_DELAY == Unit:
+                    self._Off_Delay = Level + 20 #seconds
+                    Domoticz.Debug(strName+"Off Delay = "+str(self._Off_Delay))
+                    UpdateDevice(self.UNIFI_OFF_DELAY, Level, str(Level))
 
 
                 t = self.total_devices_count - self.count_g_device
@@ -419,6 +447,10 @@ class BasePlugin:
         strName = "onHeartbeat: "
         Domoticz.Debug(strName+"called")
         if self.versionCheck is True:
+            if Devices[self.UNIFI_OFF_DELAY].nValue == 0:
+                self._Off_Delay = 0
+            else:
+                self._Off_Delay = Devices[self.UNIFI_OFF_DELAY].nValue + 20
             if (self._current_status_code == None) or (self._current_status_code == 401) or (self._current_status_code == 404) or (self._current_status_code != 200):
                 Domoticz.Log(strName+'Attempting to reconnect Unifi Controller')
                 self.login()
@@ -876,8 +908,13 @@ class BasePlugin:
             svalueOff = "0"
             nvalueOff = 0  # 0 = OFF
         for x in range(self.total_devices_count):
+            Domoticz.Log(self.Matrix[x][0] + " - " + str(self.Matrix[x][1]) + " - " + str(self.Matrix[x][2]) + " - " + self.Matrix[x][3] + " - " + self.Matrix[x][4] + " - " + self.Matrix[x][5] + " - " + self.Matrix[x][6] + " - " +str(self.Matrix[x][7]))
             if self.Matrix[x][3] == "Off" and self.Matrix[x][4] == "No" and self.Matrix[x][5] == "No":
+                self.Matrix[x][3] = "Off"
                 self.Matrix[x][4] = self.Matrix[x][5]
+                self.Matrix[x][5] = "No"
+                self.Matrix[x][6] = "Offline"
+                self.Matrix[x][7] = ""
                 if Devices[self.Matrix[x][2]].nValue != 0:
                     UpdateDevice(self.Matrix[x][2], nvalueOff, svalueOff)
             elif self.Matrix[x][3] == "Off" and self.Matrix[x][4] == "No" and self.Matrix[x][5] == "Yes":
@@ -885,24 +922,40 @@ class BasePlugin:
                 self.Matrix[x][3] = "On"
                 self.Matrix[x][4] = self.Matrix[x][5]
                 self.Matrix[x][5] = "No"
+                self.Matrix[x][6] = "Online"
+                self.Matrix[x][7] = ""
                 UpdateDevice(self.Matrix[x][2], nvalueOn, svalueOn)
             elif self.Matrix[x][3] == "Off" and self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "Yes":
                 Domoticz.Log(strName+"Phone '"+self.Matrix[x][0]+"' connected to the Unifi Controller")
                 self.Matrix[x][3] = "On"
                 self.Matrix[x][4] = self.Matrix[x][5]
                 self.Matrix[x][5] = "No"
+                self.Matrix[x][6] = "Online"
+                self.Matrix[x][7] = ""
                 UpdateDevice(self.Matrix[x][2], nvalueOn, svalueOn)
             elif self.Matrix[x][3] == "On" and self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "No":
-                Domoticz.Log(strName+"Phone '"+self.Matrix[x][0]+"' disconnected from the Unifi Controller")
-                self.Matrix[x][3] = "Off"
-                self.Matrix[x][4] = self.Matrix[x][5]
-                self.Matrix[x][5] = "No"
-                UpdateDevice(self.Matrix[x][2], nvalueOff, svalueOff)
+                if self.Matrix[x][6] == "Online" or self.Matrix[x][6] == "None":
+                    Domoticz.Log(strName+"Seems we lost phone '"+self.Matrix[x][0]+"'")
+                    self.Matrix[x][6] = "Wait"
+                    self.Matrix[x][7] = datetime.now()
+                elif self.Matrix[x][6] == "Wait":
+                    timeDiffSeconds = round((datetime.now() - self.Matrix[x][7]).total_seconds())
+                    Domoticz.Log(strName+"Waiting for phone '"+self.Matrix[x][0]+"' to return ("+str(timeDiffSeconds)+"/"+str(self._Off_Delay)+" seconds)")
+                    if timeDiffSeconds >= self._Off_Delay:
+                        Domoticz.Log(strName+"Phone '"+self.Matrix[x][0]+"' disconnected from the Unifi Controller")
+                        self.Matrix[x][3] = "Off"
+                        self.Matrix[x][4] = self.Matrix[x][5]
+                        self.Matrix[x][5] = "No"
+                        self.Matrix[x][6] = "Offline"
+                        self.Matrix[x][7] = ""
+                        UpdateDevice(self.Matrix[x][2], nvalueOff, svalueOff)
             elif self.Matrix[x][3] == "On" and self.Matrix[x][4] == "Yes" and self.Matrix[x][5] == "Yes":
                 Domoticz.Debug(strName+"Phone '"+self.Matrix[x][0]+"' still connected to the Unifi Controller")
                 self.Matrix[x][3] = "On"
                 self.Matrix[x][4] = self.Matrix[x][5]
                 self.Matrix[x][5] = "No"
+                self.Matrix[x][6] = "Online"
+                self.Matrix[x][7] = ""
                 UpdateDevice(self.Matrix[x][2], nvalueOn, svalueOn)
 
         count = 0
@@ -919,6 +972,7 @@ class BasePlugin:
             UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 1, "On")
         else:
             UpdateDevice(self.UNIFI_ANYONE_HOME_UNIT, 0, "Off")
+
 
     def setVersionCheck(self, value, note):
         strName = "setVersionCheck - "
@@ -1181,6 +1235,15 @@ class BasePlugin:
                        "SelectorStyle": "0"}
             Domoticz.Device(Name="OverRide", Unit=self.UNIFI_OVERRIDE_UNIT, TypeName="Selector Switch", Switchtype=18, Used=1, Options=Options, Image=Images['UnifiPresenceOverride'].ID).Create()
         UpdateDevice(self.UNIFI_OVERRIDE_UNIT, 0, "0")
+
+        if (self.UNIFI_OFF_DELAY not in Devices):
+            Options = {"LevelActions": "||||",
+                       "LevelNames": "0 second|30 seconds|40 seconds|50 seconds|60 seconds|70 seconds|80 seconds|90 seconds",
+                       "LevelOffHidden": "false",
+                       "SelectorStyle": "1"}
+            Description = "If phone often connect and reconnect with the Unifi Controller or Dreammachine an Off Delay can be configured."
+            Domoticz.Device(Name="Off Delay", Unit=self.UNIFI_OFF_DELAY, TypeName="Selector Switch", Switchtype=18, Used=1, Options=Options, Description=Description, Image=9).Create()
+            UpdateDevice(self.UNIFI_OFF_DELAY, 0, "0")
 
         # create phone devices
         device_mac=Parameters["Mode2"].split(",")
