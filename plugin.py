@@ -908,7 +908,7 @@ class BasePlugin:
             svalueOff = "0"
             nvalueOff = 0  # 0 = OFF
         for x in range(self.total_devices_count):
-            Domoticz.Log(self.Matrix[x][0] + " - " + str(self.Matrix[x][1]) + " - " + str(self.Matrix[x][2]) + " - " + self.Matrix[x][3] + " - " + self.Matrix[x][4] + " - " + self.Matrix[x][5] + " - " + self.Matrix[x][6] + " - " +str(self.Matrix[x][7]))
+            #Domoticz.Log(self.Matrix[x][0] + " - " + str(self.Matrix[x][1]) + " - " + str(self.Matrix[x][2]) + " - " + self.Matrix[x][3] + " - " + self.Matrix[x][4] + " - " + self.Matrix[x][5] + " - " + self.Matrix[x][6] + " - " +str(self.Matrix[x][7]))
             if self.Matrix[x][3] == "Off" and self.Matrix[x][4] == "No" and self.Matrix[x][5] == "No":
                 self.Matrix[x][3] = "Off"
                 self.Matrix[x][4] = self.Matrix[x][5]
