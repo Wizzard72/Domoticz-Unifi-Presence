@@ -25,7 +25,7 @@
         <param field="Mode4" label="Select Unifi Controller" width="150px">
             <options>
                 <option label="Unifi Controller" value="unificontroller" default="true" />
-                <option label="Dream Machine Pro" value="dreammachinepro"/>
+                <option label="Dream Machine Pro/CloudKey-Gen2" value="dreammachinepro"/>
             </options>
         </param>
         <param field="Mode5" label="Posibility to block devices from the network?" width="75px">
