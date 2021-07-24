@@ -357,7 +357,7 @@ class BasePlugin:
         strName = "onCommand: "
         Domoticz.Log(strName+"called for Unit " + str(Unit) + ": Parameter '" + str(Command) + "', Level: " + str(Level))
         if self.versionCheck is True:
-            if self._current_status_code == 200:
+            if self._current_status_code == 200 or self._current_status_code == 404:
                 if self.UNIFI_OVERRIDE_UNIT == Unit:
                     if Level == 0: # Override Off
                         self.override_time = 0 #seconds
@@ -455,7 +455,7 @@ class BasePlugin:
                 Domoticz.Log(strName+'Attempting to reconnect Unifi Controller')
                 self.login()
 
-            if self._current_status_code == 200:
+            if self._current_status_code == 200 or self._current_status_code == 404:
                 if self.Matrix[0][3] == "On":
                     try:
                         timeDiff = datetime.now() - datetime.strptime(Devices[255].LastUpdate,'%Y-%m-%d %H:%M:%S')
@@ -513,6 +513,8 @@ class BasePlugin:
             self._lastloginfailed = False
         elif self._current_status_code == 400:
             Domoticz.Error(strName+"Failed to log in to api ("+controller+") with provided credentials ("+str(self._current_status_code)+")")
+        elif self._current_status_code == 404:
+            Domoticz.Error(strName+"Unifi Controller of Dreammachine Pro Not Found ("++str(self._current_status_code)+")")
         else:
             if self._lastloginfailed:
                 Domoticz.Error(strName+"Failed to login to the "+controller+" with errorcode "+str(self._current_status_code))
