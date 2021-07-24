@@ -758,14 +758,14 @@ class BasePlugin:
                                     UpdateDevice(devUnit, int(float(udm_mem)), str(udm_mem))
                         if 'temperatures' in item:
                             for itemTemp in item['temperatures']:
-                                json_field = "CPU"
-                                udmNameD = udmName + json_field
-                                if devName.find(udmNameD) >= 0:
-                                    Domoticz.Debug(strName+"itemTemp = "+str(itemTemp))
-                                    if 'name' in itemTemp:
-                                        if itemTemp['name'] == json_field:
-                                            udm_cpu_temp = itemTemp['value']
-                                            UpdateDevice(devUnit, int(float(udm_cpu_temp)), str(udm_cpu_temp))
+                                #json_field = "CPU"
+                                #udmNameD = udmName + json_field
+                                #if devName.find(udmNameD) >= 0:
+                                #    Domoticz.Debug(strName+"itemTemp = "+str(itemTemp))
+                                #    if 'name' in itemTemp:
+                                #        if itemTemp['name'] == json_field:
+                                #            udm_cpu_temp = itemTemp['value']
+                                            #UpdateDevice(devUnit, int(float(udm_cpu_temp)), str(udm_cpu_temp))
                                 json_field = "Local"
                                 udmNameD = udmName + json_field
                                 if devName.find(udmNameD) >= 0:
@@ -1356,17 +1356,23 @@ def DumpHTTPResponseToLog(httpResp, level=0):
     else:
         Domoticz.Debug(strName+indentStr + ">'" + x + "':'" + str(httpResp[x]) + "'")
 
+def is_whole(n):
+    return n % 1 == 0
+
 def UpdateDevice(Unit, nValue, sValue, Image=None):
     strName = "UpdateDevice: "
     # Make sure that the Domoticz device still exists (they can be deleted) before updating it
     if (Unit in Devices):
         if (Devices[Unit].nValue != nValue) or (Devices[Unit].sValue != sValue) or ((Image != None) and (Image != Devices[Unit].Image)):
             if (Image != None) and (Image != Devices[Unit].Image):
-                Devices[Unit].Update(nValue=nValue, sValue=str(sValue), Image=Image)
-                Domoticz.Log(strName+"Update "+str(nValue)+":'"+str(sValue)+"' ("+Devices[Unit].Name+") Image="+str(Image))
+                Domoticz.Log(strName+"Update (sValue): "+str(Devices[Unit].sValue)+" --> "+str(sValue)+" ("+Devices[Unit].Name+") Image="+str(Image))
+                Devices[Unit].Update(nValue=int(nValue), sValue=str(sValue), Image=Image)
+                #Domoticz.Log(strName+"Update "+str(nValue)+":'"+str(nValue)+"' ("+Devices[Unit].Name+") Image="+str(Image))
+                #Domoticz.Log(strName+"Update "+str(sValue)+":'"+str(sValue)+"' ("+Devices[Unit].Name+") Image="+str(Image))
             else:
-                Devices[Unit].Update(nValue=nValue, sValue=str(sValue))
-                Domoticz.Log(strName+"Update "+str(nValue)+":'"+str(sValue)+"' ("+Devices[Unit].Name+")")
+                #Domoticz.Log(strName+"Update  - Old nValue = "+str(Devices[Unit].nValue)+" To New nValue = "+str(nValue)+" ("+Devices[Unit].Name+")")
+                Domoticz.Log(strName+"Update (sValue): "+str(Devices[Unit].sValue)+" --> "+str(sValue)+" ("+Devices[Unit].Name+")")
+                Devices[Unit].Update(nValue=int(nValue), sValue=str(sValue))
 
     # Generic helper functions
 def DumpConfigToLog():
