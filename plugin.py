@@ -1262,6 +1262,8 @@ class BasePlugin:
                     position = len(self._plugin_name)+3
                     if Devices[item].Name[position:] == phone_name:
                         Domoticz.Log(strName+"Found phone to monitor from configuration = "+device)
+                        UpdateDevice(Devices[item].Unit, 1, "On")
+                        UpdateDevice(Devices[item].Unit, 0, "Off")
                         found_phone = True
                         if Parameters["Mode3"] == "Yes":
                             count_phone = count_phone + 2
@@ -1275,9 +1277,13 @@ class BasePlugin:
                         "LevelOffHidden": "false",
                         "SelectorStyle": "0"}
                         Domoticz.Device(Name=phone_name, Unit=new_unit_phone, TypeName="Selector Switch", Switchtype=18, Used=1, Options=Options, Image=Images['UnifiPresenceOverride'].ID).Create()
+                        UpdateDevice(new_unit_phone, 30, "On")
+                        UpdateDevice(new_unit_phone, 0, "Off")
                         count_phone = count_phone + 1
                     else:
                         Domoticz.Device(Name=phone_name, Unit=new_unit_phone, TypeName="Switch", Used=1, Image=Images['UnifiPresenceOverride'].ID).Create()
+                        UpdateDevice(new_unit_phone, 1, "On")
+                        UpdateDevice(new_unit_phone, 0, "Off")
                         count_phone = count_phone + 1
                     if Parameters["Mode3"] == "Yes":
                         new_unit_geo = find_available_unit_geo()
