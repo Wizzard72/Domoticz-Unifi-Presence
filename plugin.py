@@ -178,13 +178,13 @@ class BasePlugin:
         strName = "onStart: "
         Domoticz.Debug(strName+"called")
 
-        self._login_data['username'] = Parameters["Username"]
-        self._login_data['password'] = Parameters["Password"]
-        self._login_data['remember'] = True
-        self._site = Parameters["Mode1"]
-        self._verify_ssl = False
-        self._baseurl = 'https://'+Parameters["Address"]+':'+Parameters["Port"]
-        self._session = Session()
+        #self._login_data['username'] = Parameters["Username"]
+        #self._login_data['password'] = Parameters["Password"]
+        #self._login_data['remember'] = True
+        #self._site = Parameters["Mode1"]
+        #self._verify_ssl = False
+        #self._baseurl = 'https://'+Parameters["Address"]+':'+Parameters["Port"]
+        #self._session = Session()
 
         if (Parameters["Mode6"] != "0"):
             Domoticz.Debugging(int(Parameters["Mode6"]))
@@ -348,7 +348,7 @@ class BasePlugin:
         strData = Data["Data"].decode("utf-8", "ignore")
         status = int(Data["Status"])
 
-        if (self._current_status_code == 200):
+        if (self._current_status_code == 200 or self._current_status_code == 404):
             unifiResponse = json.loads(strData)
             Domoticz.Debug(strName+"Retrieved following json: "+json.dumps(unifiResponse))
             self.onHeartbeat()
@@ -488,6 +488,13 @@ class BasePlugin:
         api url for dreammachine pro: /api/auth/login
         api url for other: /api/login
         """
+        self._login_data['username'] = Parameters["Username"]
+        self._login_data['password'] = Parameters["Password"]
+        self._login_data['remember'] = True
+        self._site = Parameters["Mode1"]
+        self._verify_ssl = False
+        self._baseurl = "https://"+Parameters["Address"]+":"+Parameters["Port"]
+        self._session = Session()
         if Parameters["Mode4"] == "unificontroller":
             self._session.headers.update({'Content-Type' : 'application/json'})
             self._session.headers.update({'Connection' : 'keep-alive'})
@@ -513,8 +520,9 @@ class BasePlugin:
             self._lastloginfailed = False
         elif self._current_status_code == 400:
             Domoticz.Error(strName+"Failed to log in to api ("+controller+") with provided credentials ("+str(self._current_status_code)+")")
-        elif self._current_status_code == 404:
-            Domoticz.Error(strName+"Unifi Controller of Dreammachine Pro Not Found ("++str(self._current_status_code)+")")
+        #elif self._current_status_code == 404:
+        #    Domoticz.Error(strName+" "+controller+" Not Found ("+str(self._current_status_code)+")")
+        #    self.logout()
         else:
             if self._lastloginfailed:
                 Domoticz.Error(strName+"Failed to login to the "+controller+" with errorcode "+str(self._current_status_code))
