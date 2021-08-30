@@ -135,6 +135,7 @@ class BasePlugin:
         "US8P150":   ("usw",       "UniFi Switch 8 POE-150W"),
         "S28150":    ("usw",       "UniFi Switch 8 AT-150W"),
         "USC8":      ("usw",       "UniFi Switch 8"),
+        "USL8LP":    ("usw",       "Unifi Switch Lite 8 PoE"),
         "US16P150":  ("usw",       "UniFi Switch 16 POE-150W"),
         "S216150":   ("usw",       "UniFi Switch 16 AT-150W"),
         "US24":      ("usw",       "UniFi Switch 24"),
