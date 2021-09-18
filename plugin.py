@@ -164,7 +164,8 @@ class BasePlugin:
         "UP5c":      ("uph",       "UniFi Phone"),
         "UP5tc":     ("uph",       "UniFi Phone-Pro"),
         "UP7c":      ("uph",       "UniFi Phone-Executive"),
-        "UDMPRO":    ("udm",       "Unifi Dream Machine Pro")
+        "UDMPRO":    ("udm",       "Unifi Dream Machine Pro"),
+        "UDM":       ("udm",       "Unifi Dream Machine")
         }
     uap = []
     usw = []
