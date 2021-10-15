@@ -559,6 +559,8 @@ class BasePlugin:
                 r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
             except:
                 Domoticz.Error("Problem retrieving data. Trying to login...")
+                self._lastloginfailed = True
+                self._current_status_code = 999
                 self.login()
         elif Parameters["Mode4"] == "dreammachinepro":
             r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
