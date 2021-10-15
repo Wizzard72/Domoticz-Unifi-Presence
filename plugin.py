@@ -513,8 +513,6 @@ class BasePlugin:
         else:
             Domoticz.Error(strName+"Check configuration!!")
 
-        #r = self._session.post("{}{}".format(self._baseurl,url_api_login), data=json.dumps(self._login_data), verify=self._verify_ssl)
-
         self._current_status_code = r.status_code
         if self._current_status_code == 200:
             Domoticz.Log(strName+"Login successful into "+controller)
