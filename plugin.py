@@ -566,7 +566,11 @@ class BasePlugin:
             r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
         else:
             Domoticz.Error("Check configuration!!")
-        self._current_status_code = r.status_code
+        
+        if oke == 0:
+            self._current_status_code = r.status_code
+        else:
+            self._current_status_code = 9999
 
         if self._current_status_code == 200 and oke == 0:
             data = r.json()['data']
