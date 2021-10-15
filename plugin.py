@@ -555,7 +555,12 @@ class BasePlugin:
     def request_details(self):
         strName = "request_details: "
         if Parameters["Mode4"] == "unificontroller":
-            r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
+            try:
+                r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
+            except:
+                Domoticz.Error("Problem retrieving data. Trying to login...")
+                self.logout()
+                self.login()
         elif Parameters["Mode4"] == "dreammachinepro":
             r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
         else:
