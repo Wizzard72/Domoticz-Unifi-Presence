@@ -554,22 +554,21 @@ class BasePlugin:
 
     def request_details(self):
         strName = "request_details: "
-        r = 0
+        oke = 0
         if Parameters["Mode4"] == "unificontroller":
             try:
                 r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
             except:
                 Domoticz.Error("Problem retrieving data. Trying to login...")
                 self._lastloginfailed = True
-                r.status_code = 999
-                self.login()
+                oke = 1
         elif Parameters["Mode4"] == "dreammachinepro":
             r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
         else:
             Domoticz.Error("Check configuration!!")
         self._current_status_code = r.status_code
 
-        if self._current_status_code == 200:
+        if self._current_status_code == 200 and oke == 0:
             data = r.json()['data']
             for item in data:
                 Domoticz.Debug(strName+"Json Data (request details) = " + str(item))
