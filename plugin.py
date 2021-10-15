@@ -554,7 +554,7 @@ class BasePlugin:
 
     def request_details(self):
         strName = "request_details: "
-        r = ""
+        r = 0
         if Parameters["Mode4"] == "unificontroller":
             try:
                 r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
