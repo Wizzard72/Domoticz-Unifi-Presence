@@ -6,11 +6,7 @@
 #   2.0.0: Second release
 #   3.0.0: Third release: complete rewrite of requesting details and creating devices. Delete alle devices and delete the 'devicetable.txt file within de plugin folder.
 """
-<<<<<<< HEAD
 <plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.0" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
-=======
-<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="2.9.1" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
->>>>>>> 145dc47c9ed46124915f1959ab831b52dac9b629
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
