@@ -6,7 +6,11 @@
 #   2.0.0: Second release
 #   3.0.0: Third release: complete rewrite of requesting details and creating devices
 """
+<<<<<<< HEAD
 <plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.0" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+=======
+<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="2.9.1" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+>>>>>>> 145dc47c9ed46124915f1959ab831b52dac9b629
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
@@ -144,6 +148,7 @@ class BasePlugin:
         "USC8":      ("usw",       "UniFi Switch 8"),
         "USL8LP":    ("usw",       "Unifi Switch Lite 8 PoE"),
         "US16P150":  ("usw",       "UniFi Switch 16 POE-150W"),
+        "USL16P":    ("usw",       "UniFi Switch 16 150W"),
         "S216150":   ("usw",       "UniFi Switch 16 AT-150W"),
         "US24":      ("usw",       "UniFi Switch 24"),
         "US24P250":  ("usw",       "UniFi Switch 24 POE-250W"),
