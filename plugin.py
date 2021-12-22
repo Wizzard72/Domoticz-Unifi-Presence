@@ -5,8 +5,9 @@
 #   1.0.0: First release
 #   2.0.0: Second release
 #   3.0.0: Third release: complete rewrite of requesting details and creating devices. Delete alle devices and delete the 'devicetable.txt file within de plugin folder.
+#   3.0.1: Removed some unnecessary code
 """
-<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.0" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.1" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
@@ -618,7 +619,6 @@ class BasePlugin:
                     if item['type'] == j_json[0]:
                         device_found = 0
                         u_name_total_found = ""
-#                        devUnit_found = 1000
                         self.u_name_total = ""
                         if 'name' not in item:
                             u_name = item['model']
@@ -685,44 +685,12 @@ class BasePlugin:
         new_unit = 0
         if un_type == "uap":
             new_unit = find_available_unit_uap()
-            for device in self.uap:
-                device = device.strip()
-                if len(device.split(",")) == 3: #for excluding specific sensors per unifi device
-                    Device_Name, Device_Model, Device_Name_User = device.split(",")
-                    UnifiDeviceName = Device_Name_User
-                elif len(device.split(",")) == 2:
-                    Device_Name, Device_Model = device.split(",")
-                    UnifiDeviceName = Device_Model
         elif un_type == "usw":
             new_unit = find_available_unit_usw()
-            for device in self.usw:
-                device = device.strip()
-                if len(device.split(",")) == 3: #for excluding specific sensors per unifi device
-                    Device_Name, Device_Model, Device_Name_User = device.split(",")
-                    UnifiDeviceName = Device_Name_User
-                elif len(device.split(",")) == 2:
-                    Device_Name, Device_Model = device.split(",")
-                    UnifiDeviceName = Device_Model
         elif un_type == "ugw":
             new_unit = find_available_unit_ugw()
-            for device in self.ugw:
-                device = device.strip()
-                if len(device.split(",")) == 3: #for excluding specific sensors per unifi device
-                    Device_Name, Device_Model, Device_Name_User = device.split(",")
-                    UnifiDeviceName = Device_Name_User
-                elif len(device.split(",")) == 2:
-                    Device_Name, Device_Model = device.split(",")
-                    UnifiDeviceName = Device_Model
         elif un_type == "udm":
             new_unit = find_available_unit_udm()
-            for device in self.udm:
-                device = device.strip()
-                if len(device.split(",")) == 3: #for excluding specific sensors per unifi device
-                    Device_Name, Device_Model, Device_Name_User = device.split(",")
-                    UnifiDeviceName = Device_Name_User
-                elif len(device.split(",")) == 2:
-                    Device_Name, Device_Model = device.split(",")
-                    UnifiDeviceName = Device_Model
 
         if un_typename != "31":
             Domoticz.Log("Create device: " +un_name+" (type="+un_typename+")")
