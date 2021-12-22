@@ -5,9 +5,9 @@
 #   1.0.0: First release
 #   2.0.0: Second release
 #   3.0.0: Third release: complete rewrite of requesting details and creating devices. Delete alle devices and delete the 'devicetable.txt file within de plugin folder.
-#   3.0.1: Removed some unnecessary code
+#   3.0.2: Bug resolved
 """
-<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.1" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.2" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
@@ -632,7 +632,7 @@ class BasePlugin:
                                 devUnit = int(devUnit)
                                 device_found = 0
                                 found_devUnit = 0
-                                if devName.find(self.u_name_total) >= 0:
+                                if devName == self.u_name_total:
                                     #Found device
                                     device_found = 1
                                     found_u_name_total = self.u_name_total
