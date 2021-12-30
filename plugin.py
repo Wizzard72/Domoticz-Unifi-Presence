@@ -6,8 +6,9 @@
 #   2.0.0: Second release
 #   3.0.0: Third release: complete rewrite of requesting details and creating devices. Delete alle devices and delete the 'devicetable.txt file within de plugin folder.
 #   3.0.2: Bug resolved
+#   3.0.4: Bug when using Domoticz container
 """
-<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.3" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.4" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
@@ -95,7 +96,7 @@ class BasePlugin:
     _site = None
     _verify_ssl = False
     _baseurl = None
-    _session = Session()
+    _session = requests.Session()
     _uapDevices = []
     _total_phones_active_before = 0
     _lastloginfailed = False
@@ -507,40 +508,43 @@ class BasePlugin:
         self._verify_ssl = False
         self._baseurl = "https://"+Parameters["Address"]+":"+Parameters["Port"]
         self._session = Session()
-        if Parameters["Mode4"] == "unificontroller":
-            self._session.headers.update({'Content-Type' : 'application/json'})
-            self._session.headers.update({'Connection' : 'keep-alive'})
-            r = self._session.post("{}/api/login".format(self._baseurl), data=json.dumps(self._login_data), verify=self._verify_ssl, timeout=4000)
-            controller = "Unifi Controller"
-        elif Parameters["Mode4"] == "dreammachinepro":
-            self._session.headers.update({'Content-Type' : 'application/json'})
-            self._session.headers.update({'Connection' : 'keep-alive'})
-            r = self._session.post("{}/api/auth/login".format(self._baseurl), data=json.dumps(self._login_data), verify=self._verify_ssl, timeout=4000)
-            if 'X-CSRF-Token' in r.headers:
-                self._session.headers.update({'X-CSRF-Token': r.headers['X-CSRF-Token']})
-                Domoticz.Log(strName+"X-SCRF-Token found and added to header")
-            controller = "Dream Machine Pro"
-        else:
-            Domoticz.Error(strName+"Check configuration!!")
-
-        self._current_status_code = r.status_code
-        if self._current_status_code == 200:
-            Domoticz.Log(strName+"Login successful into "+controller)
-            self._Cookies = r.cookies
-            self._lastloginfailed = False
-        elif self._current_status_code == 400:
-            Domoticz.Error(strName+"Failed to log in to api ("+controller+") with provided credentials ("+str(self._current_status_code)+")")
-        #elif self._current_status_code == 404:
-        #    Domoticz.Error(strName+" "+controller+" Not Found ("+str(self._current_status_code)+")")
-        #    self.logout()
-        else:
-            if self._lastloginfailed:
-                Domoticz.Error(strName+"Failed to login to the "+controller+" with errorcode "+str(self._current_status_code))
-                self._current_status_code = 999
+        try:
+            if Parameters["Mode4"] == "unificontroller":
+                self._session.headers.update({'Content-Type' : 'application/json'})
+                self._session.headers.update({'Connection' : 'keep-alive'})
+                r = self._session.post("{}/api/login".format(self._baseurl), data=json.dumps(self._login_data), verify=self._verify_ssl, timeout=4000)
+                controller = "Unifi Controller"
+            elif Parameters["Mode4"] == "dreammachinepro":
+                self._session.headers.update({'Content-Type' : 'application/json'})
+                self._session.headers.update({'Connection' : 'keep-alive'})
+                r = self._session.post("{}/api/auth/login".format(self._baseurl), data=json.dumps(self._login_data), verify=self._verify_ssl, timeout=4000)
+                if 'X-CSRF-Token' in r.headers:
+                    self._session.headers.update({'X-CSRF-Token': r.headers['X-CSRF-Token']})
+                    Domoticz.Log(strName+"X-SCRF-Token found and added to header")
+                controller = "Dream Machine Pro"
             else:
-                Domoticz.Log(strName+"First attempt failed to login to the "+controller+" with errorcode "+str(self._current_status_code))
-                self._lastloginfailed = True
-                self._current_status_code = 999
+                Domoticz.Error(strName+"Check configuration!!")
+
+            self._current_status_code = r.status_code
+            if self._current_status_code == 200:
+                Domoticz.Log(strName+"Login successful into "+controller)
+                self._Cookies = r.cookies
+                self._lastloginfailed = False
+            elif self._current_status_code == 400:
+                Domoticz.Error(strName+"Failed to log in to api ("+controller+") with provided credentials ("+str(self._current_status_code)+")")
+            #elif self._current_status_code == 404:
+            #    Domoticz.Error(strName+" "+controller+" Not Found ("+str(self._current_status_code)+")")
+            #    self.logout()
+            else:
+                if self._lastloginfailed:
+                    Domoticz.Error(strName+"Failed to login to the "+controller+" with errorcode "+str(self._current_status_code))
+                    self._current_status_code = 999
+                else:
+                    Domoticz.Log(strName+"First attempt failed to login to the "+controller+"(URL="+self._baseurl+") with errorcode "+str(self._current_status_code))
+                    self._lastloginfailed = True
+                    self._current_status_code = 999
+        except:
+            Domoticz.Error("Login failed")
 
     def logout(self):
         strName = "logout: "
@@ -548,18 +552,21 @@ class BasePlugin:
         Log the user out
         :return: None
         """
-        if self._current_status_code == 200:
-            if Parameters["Mode4"] == "unificontroller":
-                self._session.post("{}/logout".format(self._baseurl, verify=self._verify_ssl))
-            elif Parameters["Mode4"] == "dreammachinepro":
-                #self._session.post("{}/proxy/network/logout".format(self._baseurl, verify=self._verify_ssl))
-                self._session.post("{}/api/auth".format(self._baseurl, verify=self._verify_ssl))
-            else:
-                Domoticz.Error("Check configuration!!")
-            Domoticz.Log(strName+"Logout of the Unifi API")
-            self._session.close()
-            self._current_status_code = 999
-            self._timeout_timer = None
+        try:
+            if self._current_status_code == 200:
+                if Parameters["Mode4"] == "unificontroller":
+                    self._session.post("{}/logout".format(self._baseurl, verify=self._verify_ssl))
+                elif Parameters["Mode4"] == "dreammachinepro":
+                    #self._session.post("{}/proxy/network/logout".format(self._baseurl, verify=self._verify_ssl))
+                    self._session.post("{}/api/auth".format(self._baseurl, verify=self._verify_ssl))
+                else:
+                    Domoticz.Error("Check configuration!!")
+                Domoticz.Log(strName+"Logout of the Unifi API")
+                self._session.close()
+                self._current_status_code = 999
+                self._timeout_timer = None
+            except:
+                Domoticz.Error("Logout failure")
 
 
 
@@ -569,111 +576,114 @@ class BasePlugin:
     def request_details(self):
         strName = "request_details: "
         oke = 0
-        if Parameters["Mode4"] == "unificontroller":
-            try:
-                r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
-            except:
-                Domoticz.Error("Problem retrieving data. Trying to login...")
-                self._lastloginfailed = True
-                oke = 1
-        elif Parameters["Mode4"] == "dreammachinepro":
-            r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
-        else:
-            Domoticz.Error("Check configuration!!")
+        try:
+            if Parameters["Mode4"] == "unificontroller":
+                try:
+                    r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
+                except:
+                    Domoticz.Error("Problem retrieving data. Trying to login...")
+                    self._lastloginfailed = True
+                    oke = 1
+            elif Parameters["Mode4"] == "dreammachinepro":
+                r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
+            else:
+                Domoticz.Error("Check configuration!!")
         
-        if oke == 0:
-            self._current_status_code = r.status_code
-        else:
-            self._current_status_code = 9999
+            if oke == 0:
+                self._current_status_code = r.status_code
+            else:
+                self._current_status_code = 9999
 
 
-        #Name      type,  jsonfield,     jsonfield
-        jsonFields = {
-        "01 CPU":           ("usw","Percentage","Custom","system-stats","cpu"),
-        "02 Memory":        ("usw","Percentage","Custom","system-stats","mem"),
-        "03 CPU Usage":     ("ugw","Percentage","Custom","system-stats","cpu"),
-        "04 Memory":        ("ugw","Percentage","Custom","system-stats","mem"),
-        "05 Board (CPU)":   ("ugw","Temperature","Custom","system-stats","temps","Board (CPU)"),
-        "06 Board (PHY)":   ("ugw","Temperature","Custom","system-stats","temps","Board (PHY)"),
-        "07 CPU Temp":      ("ugw","Temperature","Custom","system-stats","temps","CPU"),
-        "08 PHY":           ("ugw","Temperature","Custom","system-stats","temps","PHY"),
-        "09 Latency":       ("ugw","31","1;ms","speedtest-status","latency"),
-        "10 XPut Download": ("ugw","31","1;Mbps","speedtest-status","xput_download"),
-        "11 XPut Upload":   ("ugw","31","1;Mbps","speedtest-status","xput_upload"),
-        "12 CPU":           ("uap","Percentage","Custom","system-stats","cpu"),
-        "13 Memory":        ("uap","Percentage","Custom","system-stats","mem"),
-        "14 CPU":           ("udm","Temperature","Custom","temperatures","0","value"),
-        "15 Local":         ("udm","Temperature","Custom","temperatures","1","value"),
-        "16 PHY":           ("udm","Temperature","Custom","temperatures","2","value"),
-        "17 CPU Usage":     ("udm","Percentage","Custom","system-stats","cpu"),
-        "18 Memory":        ("udm","Percentage","Custom","system-stats","mem"),
-        "19 Latency":       ("udm","31","{1;ms}","speedtest-status","latency"),
-        "20 XPut Download": ("udm","31","{1;Mbps}","speedtest-status","xput_download"),
-        "21 XPut Upload":   ("udm","31","{1;Mbps}","speedtest-status","xput_upload")
-        }
+            #Name      type,  jsonfield,     jsonfield
+            jsonFields = {
+            "01 CPU":           ("usw","Percentage","Custom","system-stats","cpu"),
+            "02 Memory":        ("usw","Percentage","Custom","system-stats","mem"),
+            "03 CPU Usage":     ("ugw","Percentage","Custom","system-stats","cpu"),
+            "04 Memory":        ("ugw","Percentage","Custom","system-stats","mem"),
+            "05 Board (CPU)":   ("ugw","Temperature","Custom","system-stats","temps","Board (CPU)"),
+            "06 Board (PHY)":   ("ugw","Temperature","Custom","system-stats","temps","Board (PHY)"),
+            "07 CPU Temp":      ("ugw","Temperature","Custom","system-stats","temps","CPU"),
+            "08 PHY":           ("ugw","Temperature","Custom","system-stats","temps","PHY"),
+            "09 Latency":       ("ugw","31","1;ms","speedtest-status","latency"),
+            "10 XPut Download": ("ugw","31","1;Mbps","speedtest-status","xput_download"),
+            "11 XPut Upload":   ("ugw","31","1;Mbps","speedtest-status","xput_upload"),
+            "12 CPU":           ("uap","Percentage","Custom","system-stats","cpu"),
+            "13 Memory":        ("uap","Percentage","Custom","system-stats","mem"),
+            "14 CPU":           ("udm","Temperature","Custom","temperatures","0","value"),
+            "15 Local":         ("udm","Temperature","Custom","temperatures","1","value"),
+            "16 PHY":           ("udm","Temperature","Custom","temperatures","2","value"),
+            "17 CPU Usage":     ("udm","Percentage","Custom","system-stats","cpu"),
+            "18 Memory":        ("udm","Percentage","Custom","system-stats","mem"),
+            "19 Latency":       ("udm","31","{1;ms}","speedtest-status","latency"),
+            "20 XPut Download": ("udm","31","{1;Mbps}","speedtest-status","xput_download"),
+            "21 XPut Upload":   ("udm","31","{1;Mbps}","speedtest-status","xput_upload")
+            }
 
 
-        if self._current_status_code == 200 and oke == 0:
-            data = r.json()['data']
-            for j_name, j_json  in jsonFields.items():
-                for item in data:
-                    if item['type'] == j_json[0]:
-                        device_found = 0
-                        u_name_total_found = ""
-                        self.u_name_total = ""
-                        if 'name' not in item:
-                            u_name = item['model']
-                        elif 'name' in item:
-                            u_name = item['name']
-                        self.u_name_total = u_name + " " + j_name[3:]
-                        if self.is_non_zero_file(Parameters["HomeFolder"] + "devicetable.txt"):
-                            for devicetable in self._device_table:
-                                devUnit, devName = devicetable.split(",")
-                                devName = devName.strip()
-                                devUnit = int(devUnit)
-                                device_found = 0
-                                found_devUnit = 0
-                                if devName == self.u_name_total:
-                                    #Found device
-                                    device_found = 1
-                                    found_u_name_total = self.u_name_total
-                                    found_devUnit = devUnit
-                                    break
-                        else:
-                            devName = ""
-                            devUnit = 0
-                        try:
-                            if len(j_json) == 4:
-                                #future use
-                                value = item["" +j_json[3]+ ""]
-                            elif len(j_json) == 5:
-                                value = item["" +j_json[3]+ ""]["" +j_json[4]+ ""]
-                                if isinstance(value, float):
-                                    value = round(value, 2)
-                                if device_found == 1:
-                                    UpdateDevice(devUnit, int(float(value)), str(value))
-                                elif value != "" and device_found == 0:
-                                    #create device
-                                    self.create_device(j_json[0], self.u_name_total, j_json[1], j_json[2])
-                                    UpdateDevice(self.devUnit_found, int(float(value)), str(value))
-                            elif len(j_json) == 6:
-                                value = item["" +j_json[3]+ ""]
-                                if j_json[0] == "udm":
-                                    for p in value:
-                                        if p['name'].lower() == j_name[3:].lower():
-                                            value = p['value']
-                                            if isinstance(value, float):
-                                                value = round(value, 2)
-                                            if device_found == 1:
-                                                UpdateDevice(devUnit, int(float(value)), str(value))
-                                            elif device_found == 0:
-                                                #create device
-                                                self.create_device(j_json[0], self.u_name_total, j_json[1], j_json[2])
-                                                UpdateDevice(self.devUnit_found, int(float(value)), str(value))
-                                elif j_json == "ugw":
-                                    Domoticz.Error("Send the API output: '/api/s/default/stat/device' (Unifi Controller) or '/proxy/network/api/s/{}/stat/device' (Dreammachine)")
-                        except:
-                            pass
+            if self._current_status_code == 200 and oke == 0:
+                data = r.json()['data']
+                for j_name, j_json  in jsonFields.items():
+                    for item in data:
+                        if item['type'] == j_json[0]:
+                            device_found = 0
+                            u_name_total_found = ""
+                            self.u_name_total = ""
+                            if 'name' not in item:
+                                u_name = item['model']
+                            elif 'name' in item:
+                                u_name = item['name']
+                            self.u_name_total = u_name + " " + j_name[3:]
+                            if self.is_non_zero_file(Parameters["HomeFolder"] + "devicetable.txt"):
+                                for devicetable in self._device_table:
+                                    devUnit, devName = devicetable.split(",")
+                                    devName = devName.strip()
+                                    devUnit = int(devUnit)
+                                    device_found = 0
+                                    found_devUnit = 0
+                                    if devName == self.u_name_total:
+                                        #Found device
+                                        device_found = 1
+                                        found_u_name_total = self.u_name_total
+                                        found_devUnit = devUnit
+                                        break
+                            else:
+                                devName = ""
+                                devUnit = 0
+                            try:
+                                if len(j_json) == 4:
+                                    #future use
+                                    value = item["" +j_json[3]+ ""]
+                                elif len(j_json) == 5:
+                                    value = item["" +j_json[3]+ ""]["" +j_json[4]+ ""]
+                                    if isinstance(value, float):
+                                        value = round(value, 2)
+                                    if device_found == 1:
+                                        UpdateDevice(devUnit, int(float(value)), str(value))
+                                    elif value != "" and device_found == 0:
+                                        #create device
+                                        self.create_device(j_json[0], self.u_name_total, j_json[1], j_json[2])
+                                        UpdateDevice(self.devUnit_found, int(float(value)), str(value))
+                                elif len(j_json) == 6:
+                                    value = item["" +j_json[3]+ ""]
+                                    if j_json[0] == "udm":
+                                        for p in value:
+                                            if p['name'].lower() == j_name[3:].lower():
+                                                value = p['value']
+                                                if isinstance(value, float):
+                                                    value = round(value, 2)
+                                                if device_found == 1:
+                                                    UpdateDevice(devUnit, int(float(value)), str(value))
+                                                elif device_found == 0:
+                                                    #create device
+                                                    self.create_device(j_json[0], self.u_name_total, j_json[1], j_json[2])
+                                                    UpdateDevice(self.devUnit_found, int(float(value)), str(value))
+                                    elif j_json == "ugw":
+                                        Domoticz.Error("Send the API output: '/api/s/default/stat/device' (Unifi Controller) or '/proxy/network/api/s/{}/stat/device' (Dreammachine)")
+                            except:
+                                pass
+        except requests.ReadTimeout:
+            Domoticz.Error("Request to " +Parameters["Mode4"]+" timed out.")
 
 
     def is_non_zero_file(self, fpath):  
@@ -705,47 +715,44 @@ class BasePlugin:
         f = open(Parameters["HomeFolder"] + "devicetable.txt")
         self._device_table = f.readlines()
 
-
-
-
     def request_online_phones(self):
         strName = "request_online_phones: "
-        if Parameters["Mode4"] == "unificontroller":
-            r = self._session.get("{}/api/s/{}/stat/sta".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
-        elif Parameters["Mode4"] == "dreammachinepro":
-            r = self._session.get("{}/proxy/network/api/s/{}/stat/sta".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
-        else:
-            Domoticz.Error("Check configuration!!")
-
-        self._current_status_code = r.status_code
-
-        if self._current_status_code == 200:
-            data = r.json()['data']
-
-            for item in data:
-                Domoticz.Debug(strName+"Json Data (device) = " + str(item))
-                device_mac=Parameters["Mode2"].split(",")
-                found_mac = 0
-                found_mac_address = None
-                found_user = None
-                for device in device_mac:
-                    device_unit = None
-                    device = device.strip()
-                    phone_name, mac_id = device.split("=")
-                    phone_name = phone_name.strip()
-                    mac_id = mac_id.strip().lower()
-                    if str(item['mac']) == mac_id and not item['is_wired']:
-                        # Found MAC address in API output
-                        for x in range(self.total_devices_count):
-                            if self.Matrix[x][1] == mac_id:
-                                self.Matrix[x][5] = "Yes"
-            self.ProcessDevices()
-        elif self._current_status_code == 401:
-            Domoticz.Log(strName+"Invalid login, or login has expired")
-            self.login()
-        elif self._current_status_code == 404:
-            Domoticz.Log(strName+"Invalid login, or login has expired")
-            self.login()
+        try:
+            if Parameters["Mode4"] == "unificontroller":
+                r = self._session.get("{}/api/s/{}/stat/sta".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
+            elif Parameters["Mode4"] == "dreammachinepro":
+                r = self._session.get("{}/proxy/network/api/s/{}/stat/sta".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
+            else:
+                Domoticz.Error("Check configuration!!")
+            self._current_status_code = r.status_code
+            if self._current_status_code == 200:
+                data = r.json()['data']
+                for item in data:
+                    Domoticz.Debug(strName+"Json Data (device) = " + str(item))
+                    device_mac=Parameters["Mode2"].split(",")
+                    found_mac = 0
+                    found_mac_address = None
+                    found_user = None
+                    for device in device_mac:
+                        device_unit = None
+                        device = device.strip()
+                        phone_name, mac_id = device.split("=")
+                        phone_name = phone_name.strip()
+                        mac_id = mac_id.strip().lower()
+                        if str(item['mac']) == mac_id and not item['is_wired']:
+                            # Found MAC address in API output
+                            for x in range(self.total_devices_count):
+                                if self.Matrix[x][1] == mac_id:
+                                    self.Matrix[x][5] = "Yes"
+                self.ProcessDevices()
+            elif self._current_status_code == 401:
+                Domoticz.Log(strName+"Invalid login, or login has expired")
+                self.login()
+            elif self._current_status_code == 404:
+                Domoticz.Log(strName+"Invalid login, or login has expired")
+                self.login()
+        except requests.ReadTimeout:
+            Domoticz.Error("Request to " +Parameters["Mode4"]+" timed out.")
 
 
     def block_phone(self, phone_name, mac):
@@ -882,55 +889,56 @@ class BasePlugin:
 
     def detectUnifiDevices(self):
         strName = "detect Unifi Devices: "
-        if Parameters["Mode4"] == "unificontroller":
-            r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
-        elif Parameters["Mode4"] == "dreammachinepro":
-            r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
-        else:
-            Domoticz.Error("Check configuration!!")
+        try:
+            if Parameters["Mode4"] == "unificontroller":
+                r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
+            elif Parameters["Mode4"] == "dreammachinepro":
+                r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
+            else:
+                Domoticz.Error("Check configuration!!")
+            self._current_status_code = r.status_code
 
-        self._current_status_code = r.status_code
-
-        if self._current_status_code == 200:
-            data = r.json()['data']
-            totalUnifiDevices = 0
-            for item in data:
-                Domoticz.Debug(strName+"Json Data (device) = " + str(item))
-                deviceCode = item['model']
-                try:
-                    deviceName = self.UnifiDevicesNames[deviceCode][1]
-                    if self.UnifiDevicesNames[deviceCode][0] == "uap":
-                        if 'name' not in item:
-                            self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
-                        elif 'name' in item:
-                            self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
-                    elif self.UnifiDevicesNames[deviceCode][0] == "usw":
-                        if 'name' not in item:
-                            self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
-                        elif 'name' in item:
-                            self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
-                    elif self.UnifiDevicesNames[deviceCode][0] == "ugw":
-                        if 'name' not in item:
-                            self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
-                        elif 'name' in item:
-                            self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
-                    elif self.UnifiDevicesNames[deviceCode][0] == "uph":
-                        if 'name' not in item:
-                            self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
-                        elif 'name' in item:
-                            self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
-                    elif self.UnifiDevicesNames[deviceCode][0] == "udm":
-                        if 'name' not in item:
-                            self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
-                        elif 'name' in item:
-                            self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
-                    Domoticz.Log(strName+"Found Unifi Device: "+deviceName+" ("+deviceCode+")")
-                except KeyError:
-                    Domoticz.Error(strName+"Unifi device ("+deviceCode+") is not present in the table.")
-                    self.setVersionCheck(False, "detectUnifiDevices")
-        elif self._current_status_code == 401:
-            Domoticz.Log(strName+"Invalid login, or login has expired")
-
+            if self._current_status_code == 200:
+                data = r.json()['data']
+                totalUnifiDevices = 0
+                for item in data:
+                    Domoticz.Debug(strName+"Json Data (device) = " + str(item))
+                    deviceCode = item['model']
+                    try:
+                        deviceName = self.UnifiDevicesNames[deviceCode][1]
+                        if self.UnifiDevicesNames[deviceCode][0] == "uap":
+                            if 'name' not in item:
+                                self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
+                            elif 'name' in item:
+                                self.uap.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
+                        elif self.UnifiDevicesNames[deviceCode][0] == "usw":
+                            if 'name' not in item:
+                                self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
+                            elif 'name' in item:
+                                self.usw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
+                        elif self.UnifiDevicesNames[deviceCode][0] == "ugw":
+                            if 'name' not in item:
+                                self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
+                            elif 'name' in item:
+                                self.ugw.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
+                        elif self.UnifiDevicesNames[deviceCode][0] == "uph":
+                            if 'name' not in item:
+                                self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
+                            elif 'name' in item:
+                                self.uph.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model']+","+item['name'])
+                        elif self.UnifiDevicesNames[deviceCode][0] == "udm":
+                            if 'name' not in item:
+                                self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['model'])
+                            elif 'name' in item:
+                                self.udm.append(self.UnifiDevicesNames[deviceCode][1]+","+item['name'])
+                        Domoticz.Log(strName+"Found Unifi Device: "+deviceName+" ("+deviceCode+")")
+                    except KeyError:
+                        Domoticz.Error(strName+"Unifi device ("+deviceCode+") is not present in the table.")
+                        self.setVersionCheck(False, "detectUnifiDevices")
+            elif self._current_status_code == 401:
+                Domoticz.Log(strName+"Invalid login, or login has expired")
+        except requests.ReadTimeout:
+            Domoticz.Error("Request to " +Parameters["Mode4"]+" timed out.")
 
     def devicesPerAP(self):
         strName = "devicesPerAP - "
