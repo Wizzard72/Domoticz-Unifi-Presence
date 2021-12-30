@@ -7,7 +7,7 @@
 #   3.0.0: Third release: complete rewrite of requesting details and creating devices. Delete alle devices and delete the 'devicetable.txt file within de plugin folder.
 #   3.0.2: Bug resolved
 """
-<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.2" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.3" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
@@ -122,6 +122,7 @@ class BasePlugin:
         "U7SHD":     ("uap",       "UniFi AP-SHD"),
         "U7NHD":     ("uap",       "UniFi AP-nanoHD"),
         "UAL6":      ("uap",       "UniFi AP-U6-Lite"),
+        "UAP6MP":    ("uap",       "UniFi WiFi 6 Pro"),
         "UFLHD":     ("uap",       "UniFi AP-Flex-HD"),
         "UHDIW":     ("uap",       "UniFi AP-HD-In Wall"),
         "UCXG":      ("uap",       "UniFi AP-XG"),
