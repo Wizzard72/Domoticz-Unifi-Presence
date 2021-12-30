@@ -565,8 +565,8 @@ class BasePlugin:
                 self._session.close()
                 self._current_status_code = 999
                 self._timeout_timer = None
-            except:
-                Domoticz.Error("Logout failure")
+        except:
+            Domoticz.Error("Logout failure")
 
 
 
