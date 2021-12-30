@@ -571,13 +571,13 @@ class BasePlugin:
         oke = 0
         if Parameters["Mode4"] == "unificontroller":
             try:
-                r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
+                r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
             except:
                 Domoticz.Error("Problem retrieving data. Trying to login...")
                 self._lastloginfailed = True
                 oke = 1
         elif Parameters["Mode4"] == "dreammachinepro":
-            r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
+            r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
         else:
             Domoticz.Error("Check configuration!!")
         
@@ -711,9 +711,9 @@ class BasePlugin:
     def request_online_phones(self):
         strName = "request_online_phones: "
         if Parameters["Mode4"] == "unificontroller":
-            r = self._session.get("{}/api/s/{}/stat/sta".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
+            r = self._session.get("{}/api/s/{}/stat/sta".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
         elif Parameters["Mode4"] == "dreammachinepro":
-            r = self._session.get("{}/proxy/network/api/s/{}/stat/sta".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
+            r = self._session.get("{}/proxy/network/api/s/{}/stat/sta".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
         else:
             Domoticz.Error("Check configuration!!")
 
@@ -883,9 +883,9 @@ class BasePlugin:
     def detectUnifiDevices(self):
         strName = "detect Unifi Devices: "
         if Parameters["Mode4"] == "unificontroller":
-            r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
+            r = self._session.get("{}/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
         elif Parameters["Mode4"] == "dreammachinepro":
-            r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), data="json={}", cookies=self._Cookies)
+            r = self._session.get("{}/proxy/network/api/s/{}/stat/device".format(self._baseurl, self._site, verify=self._verify_ssl), cookies=self._Cookies)
         else:
             Domoticz.Error("Check configuration!!")
 
