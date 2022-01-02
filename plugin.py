@@ -155,7 +155,7 @@ class BasePlugin:
         "US24P500":  ("usw",       "UniFi Switch 24 POE-500W"),
         "S224250":   ("usw",       "UniFi Switch 24 AT-250W"),
         "S224500":   ("usw",       "UniFi Switch 24 AT-500W"),
-        "USL24P":    ("usw",       "UniFi Switch 24 PoE"),
+        "USL24P":    ("usw",       "UniFi Switch 24 PoE gen 2"),
         "US48":      ("usw",       "UniFi Switch 48"),
         "US48P500":  ("usw",       "UniFi Switch 48 POE-500W"),
         "US48PL2":   ("usw",       "UniFi Switch 48 L2 POE"),
