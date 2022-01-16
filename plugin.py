@@ -7,8 +7,9 @@
 #   3.0.0: Third release: complete rewrite of requesting details and creating devices. Delete alle devices and delete the 'devicetable.txt file within de plugin folder.
 #   3.0.2: Bug resolved
 #   3.0.4: Bug when using Domoticz container
+#   3.0.5: Added some checks and USL16LP
 """
-<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.4" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.5" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
@@ -150,6 +151,7 @@ class BasePlugin:
         "USL8LP":    ("usw",       "Unifi Switch Lite 8 PoE"),
         "US16P150":  ("usw",       "UniFi Switch 16 POE-150W"),
         "USL16P":    ("usw",       "UniFi Switch 16 150W"),
+        "USL16LP":   ("usw",       "Unifi Switch Lite 16 PoE"),
         "S216150":   ("usw",       "UniFi Switch 16 AT-150W"),
         "US24":      ("usw",       "UniFi Switch 24"),
         "US24P250":  ("usw",       "UniFi Switch 24 POE-250W"),
