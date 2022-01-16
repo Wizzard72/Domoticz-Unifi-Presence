@@ -7,7 +7,7 @@
 #   3.0.0: Third release: complete rewrite of requesting details and creating devices. Delete alle devices and delete the 'devicetable.txt file within de plugin folder.
 #   3.0.2: Bug resolved
 #   3.0.4: Bug when using Domoticz container
-#   3.0.5: Added some checks and USL16LP
+#   3.0.5: Added some checks and USL16LP. New switch added to enable or disable status changes of the internal devices. Phone changes are still reported in the log.
 """
 <plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.5" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
