@@ -1141,15 +1141,15 @@ def UpdateDevice(Unit, nValue, sValue, Log=True, Image=None):
         if (Devices[Unit].nValue != nValue) or (Devices[Unit].sValue != sValue) or ((Image != None) and (Image != Devices[Unit].Image)):
             if (Image != None) and (Image != Devices[Unit].Image):
                 if Unit >= 80 and Log:
-                    Domoticz.Log(strName+"1 Update (sValue): "+str(Devices[Unit].sValue)+" --> "+str(sValue)+" ("+Devices[Unit].Name+") Image="+str(Image))
+                    Domoticz.Log(strName+"Update (sValue): "+str(Devices[Unit].sValue)+" --> "+str(sValue)+" ("+Devices[Unit].Name+") Image="+str(Image))
                 elif Unit < 80:
-                    Domoticz.Log(strName+"1.1 Update (sValue): "+str(Devices[Unit].sValue)+" --> "+str(sValue)+" ("+Devices[Unit].Name+") Image="+str(Image))
+                    Domoticz.Log(strName+"Update (sValue): "+str(Devices[Unit].sValue)+" --> "+str(sValue)+" ("+Devices[Unit].Name+") Image="+str(Image))
                 Devices[Unit].Update(nValue=int(nValue), sValue=str(sValue), Image=Image)
             else:
                 if Unit >= 80 and Log:
-                    Domoticz.Log(strName+"4 Update (sValue): "+str(Devices[Unit].sValue)+" --> "+str(sValue)+" ("+Devices[Unit].Name+") Image="+str(Image))
+                    Domoticz.Log(strName+"Update (sValue): "+str(Devices[Unit].sValue)+" --> "+str(sValue)+" ("+Devices[Unit].Name+") Image="+str(Image))
                 elif Unit < 80:
-                    Domoticz.Log(strName+"4.1 Update (sValue): "+str(Devices[Unit].sValue)+" --> "+str(sValue)+" ("+Devices[Unit].Name+") Image="+str(Image))
+                    Domoticz.Log(strName+"Update (sValue): "+str(Devices[Unit].sValue)+" --> "+str(sValue)+" ("+Devices[Unit].Name+") Image="+str(Image))
                 Devices[Unit].Update(nValue=int(nValue), sValue=str(sValue))
 
     # Generic helper functions
