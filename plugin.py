@@ -690,7 +690,7 @@ class BasePlugin:
                                     elif value != "" and device_found == 0:
                                         #create device
                                         self.create_device(j_json[0], self.u_name_total, j_json[1], j_json[2])
-                                        UpdateDevice(self.devUnit_found, int(float(value)), str(value), self._log_update)
+                                        UpdateDevice(self.devUnit_found, int(float(value)), str(value), self._log_devices)
                                 elif len(j_json) == 6:
                                     value = item["" +j_json[3]+ ""]
                                     if j_json[0] == "udm":
@@ -700,11 +700,11 @@ class BasePlugin:
                                                 if isinstance(value, float):
                                                     value = round(value, 2)
                                                 if device_found == 1:
-                                                    UpdateDevice(devUnit, int(float(value)), str(value), self._log_update)
+                                                    UpdateDevice(devUnit, int(float(value)), str(value), self._log_devices)
                                                 elif device_found == 0:
                                                     #create device
                                                     self.create_device(j_json[0], self.u_name_total, j_json[1], j_json[2])
-                                                    UpdateDevice(self.devUnit_found, int(float(value)), str(value), self._log_update)
+                                                    UpdateDevice(self.devUnit_found, int(float(value)), str(value), self._log_devices)
                                     elif j_json == "ugw":
                                         Domoticz.Error("Send the API output: '/api/s/default/stat/device' (Unifi Controller) or '/proxy/network/api/s/{}/stat/device' (Dreammachine)")
                             except:
