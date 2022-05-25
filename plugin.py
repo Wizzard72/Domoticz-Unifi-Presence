@@ -8,8 +8,9 @@
 #   3.0.2: Bug resolved
 #   3.0.4: Bug when using Domoticz container
 #   3.0.5: Added some checks and USL16LP. New switch added to enable or disable status changes of the internal devices. Phone changes are still reported in the log.
+#   3.0.6: Added UAP U6-Enterprise and UDR. Not sure if UDR works with the plugin
 """
-<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.5" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.6" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
@@ -181,6 +182,7 @@ class BasePlugin:
         "UP5c":      ("uph",       "UniFi Phone"),
         "UP5tc":     ("uph",       "UniFi Phone-Pro"),
         "UP7c":      ("uph",       "UniFi Phone-Executive"),
+        "UDR":       ("udm",       "Unifi Dream Router"),
         "UDMPRO":    ("udm",       "Unifi Dream Machine Pro"),
         "UDMPROSE":  ("udm",       "Unifi Dream Machine Pro SE"),
         "UDMSE":     ("udm",       "Unifi Dream Machine SE"),
