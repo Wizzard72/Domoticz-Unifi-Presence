@@ -127,6 +127,7 @@ class BasePlugin:
         "U7NHD":     ("uap",       "UniFi AP-nanoHD"),
         "UAL6":      ("uap",       "UniFi AP-U6-Lite"),
         "UAP6MP":    ("uap",       "UniFi WiFi 6 Pro"),
+        "U6ENT":     ("uap",       "UniFi AP-U6-Enterprise"),
         "UFLHD":     ("uap",       "UniFi AP-Flex-HD"),
         "UHDIW":     ("uap",       "UniFi AP-HD-In Wall"),
         "UCXG":      ("uap",       "UniFi AP-XG"),
