@@ -580,7 +580,7 @@ class BasePlugin:
         except requests.exceptions.ConnectionError:
             r.status_code = "Connection refused"
             Domoticz.Error(r.status.code+" to "+Paramters["Mode4"])
-            self.login)
+            self.login()
         except:
             Domoticz.Error("Login failed")
 
