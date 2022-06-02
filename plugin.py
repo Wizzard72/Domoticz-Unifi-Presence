@@ -9,8 +9,9 @@
 #   3.0.4: Bug when using Domoticz container
 #   3.0.5: Added some checks and USL16LP. New switch added to enable or disable status changes of the internal devices. Phone changes are still reported in the log.
 #   3.0.6: Added UAP U6-Enterprise and UDR. Not sure if UDR works with the plugin
+#   3.0.7: Add code (for testing) to solve SSL errors
 """
-<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.6" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.7" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
@@ -573,6 +574,13 @@ class BasePlugin:
                     Domoticz.Log(strName+"First attempt failed to login to the "+controller+"(URL="+self._baseurl+") with errorcode "+str(self._current_status_code))
                     self._lastloginfailed = True
                     self._current_status_code = 999
+        except requests.exceptions.ReadTimeout:
+            r.status.code = "Read Timeout"
+            Domoticz.Error("Request to " +Parameters["Mode4"]+" timed out.")
+        except requests.exceptions.ConnectionError:
+            r.status_code = "Connection refused"
+            Domoticz.Error(r.status.code+" to "+Paramters["Mode4"])
+            self.login)
         except:
             Domoticz.Error("Login failed")
 
@@ -595,6 +603,12 @@ class BasePlugin:
                 self._session.close()
                 self._current_status_code = 999
                 self._timeout_timer = None
+        except requests.exceptions.ReadTimeout:
+            r.status.code = "Read Timeout"
+            Domoticz.Error("Request to " +Parameters["Mode4"]+" timed out.")
+        except requests.exceptions.ConnectionError:
+            r.status_code = "Connection refused"
+            Domoticz.Error(r.status.code+" to "+Paramters["Mode4"])
         except:
             Domoticz.Error("Logout failure")
 
@@ -712,9 +726,13 @@ class BasePlugin:
                                         Domoticz.Error("Send the API output: '/api/s/default/stat/device' (Unifi Controller) or '/proxy/network/api/s/{}/stat/device' (Dreammachine)")
                             except:
                                 pass
-        except requests.ReadTimeout:
+        except requests.exceptions.ReadTimeout:
+            r.status.code = "Read Timeout"
             Domoticz.Error("Request to " +Parameters["Mode4"]+" timed out.")
-
+        except requests.exceptions.ConnectionError:
+            r.status_code = "Connection refused"
+            Domoticz.Error(r.status.code+" to "+Paramters["Mode4"])
+            self.login()
 
     def is_non_zero_file(self, fpath):  
         return os.path.isfile(fpath) and os.path.getsize(fpath) > 0
@@ -781,8 +799,13 @@ class BasePlugin:
             elif self._current_status_code == 404:
                 Domoticz.Log(strName+"Invalid login, or login has expired")
                 self.login()
-        except requests.ReadTimeout:
+        except requests.exceptions.ReadTimeout:
+            r.status.code = "Read Timeout"
             Domoticz.Error("Request to " +Parameters["Mode4"]+" timed out.")
+        except requests.exceptions.ConnectionError:
+            r.status_code = "Connection refused"
+            Domoticz.Error(r.status.code+" to "+Paramters["Mode4"])
+            self.login()
 
 
     def block_phone(self, phone_name, mac):
