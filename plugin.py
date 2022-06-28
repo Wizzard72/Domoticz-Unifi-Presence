@@ -10,8 +10,9 @@
 #   3.0.5: Added some checks and USL16LP. New switch added to enable or disable status changes of the internal devices. Phone changes are still reported in the log.
 #   3.0.6: Added UAP U6-Enterprise and UDR. Not sure if UDR works with the plugin
 #   3.0.7: Add code (for testing) to solve SSL errors
+#   3.0.8: Added UniFi Switch Flex
 """
-<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.7" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
+<plugin key="UnifiPresence" name="Unifi Presence" author="Wizzard72" version="3.0.8" wikilink="https://github.com/Wizzard72/Domoticz-Unifi-Presence">
     <description>
         <h2>Unifi Presence Detection plugin</h2><br/>
         This plugin reads the Unifi Controller information such as the sensors on the Unifi Gateway.
@@ -172,6 +173,7 @@ class BasePlugin:
         "US6XG150":  ("usw",       "UniFi Switch 6XG POE-150W"),
         "USXG":      ("usw",       "UniFi Switch 16XG"),
         "USMINI":    ("usw",       "Unifi Switch Flex Mini"),
+        "USF5P":     ("usw",       "UniFi Switch Flex"),
         "UGW3":      ("ugw",       "UniFi Security Gateway 3P"),
         "UGW4":      ("ugw",       "UniFi Security Gateway 4P"),
         "UGWHD4":    ("ugw",       "UniFi Security Gateway HD"),
