@@ -492,7 +492,7 @@ class BasePlugin:
             Domoticz.Error(r.status.code+" to "+Paramters["Mode4"])
             self.login()
         except:
-            Domoticz.Error("Login failed")
+            Domoticz.Error("Login failed. If it's first attemp then oke, otherwise there is something wrong")
 
     def logout(self):
         strName = "logout: "
