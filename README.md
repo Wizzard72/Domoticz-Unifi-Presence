@@ -1,3 +1,5 @@
+# !!!! Final version - I'm not maintaining this plugin anymore. Recently migrated to Home Assistant.
+
 # Domoticz-Unifi-Presence
 This plugin detects devices - usualy phone(s) - on a Unifi (Controller) network. When a phone is detected on the network it turns on the corresponding switch. If the switch AnyOne is Off it will be turned on. If the last configured phone is off, the switch AnyOne will be switched off.
 
